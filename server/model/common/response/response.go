@@ -2,6 +2,7 @@ package response
 
 import (
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 )
@@ -60,4 +61,67 @@ func NoAuth(message string, c *gin.Context) {
 
 func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 	Result(ERROR, data, message, c)
+}
+
+type ResponseV2 struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+func ResultV2(code int, data interface{}, msg string, c *gin.Context) {
+	responseData := map[string]interface{}{
+		"code": code,
+		"msg":  msg,
+	}
+
+	if data != nil {
+		val := reflect.ValueOf(data)
+		typ := reflect.TypeOf(data)
+
+		switch val.Kind() {
+		case reflect.Struct:
+			for i := 0; i < val.NumField(); i++ {
+				fieldName := typ.Field(i).Tag.Get("json")
+				if fieldName == "" {
+					fieldName = typ.Field(i).Name
+				}
+				responseData[fieldName] = val.Field(i).Interface()
+			}
+		case reflect.Map:
+			for _, key := range val.MapKeys() {
+				responseData[key.String()] = val.MapIndex(key).Interface()
+			}
+		default:
+			responseData["data"] = data
+		}
+	}
+	c.JSON(http.StatusOK, responseData)
+}
+
+func OkV2(c *gin.Context) {
+	ResultV2(SUCCESS, map[string]interface{}{}, "操作成功", c)
+}
+
+func OkWithMessageV2(message string, c *gin.Context) {
+	ResultV2(SUCCESS, map[string]interface{}{}, message, c)
+}
+
+func OkWithDataV2(data interface{}, c *gin.Context) {
+	ResultV2(SUCCESS, data, "查询成功", c)
+}
+
+func OkWithDetailedV2(data interface{}, message string, c *gin.Context) {
+	ResultV2(SUCCESS, data, message, c)
+}
+
+func FailV2(c *gin.Context) {
+	ResultV2(ERROR, map[string]interface{}{}, "操作失败", c)
+}
+
+func FailWithMessageV2(message string, c *gin.Context) {
+	ResultV2(ERROR, map[string]interface{}{}, message, c)
+}
+
+func FailWithDetailedV2(data interface{}, message string, c *gin.Context) {
+	ResultV2(ERROR, data, message, c)
 }

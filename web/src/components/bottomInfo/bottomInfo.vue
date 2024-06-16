@@ -9,8 +9,8 @@
       <span>
         <a
           class="font-bold text-active"
-          href="https://github.com/flipped-aurora/gin-vue-admin"
-        >Gin-Vue-Admin</a>
+          href=""
+        >薛定饿了不养喵</a>
       </span>
     </div>
     <slot />
@@ -19,8 +19,8 @@
       <span>
         <a
           class="font-bold text-active"
-          href="https://github.com/flipped-aurora"
-        >flipped-aurora团队</a>
+          href=""
+        >薛定饿了不养喵</a>
       </span>
     </div>
   </div>
@@ -31,11 +31,11 @@ defineOptions({
   name: 'BottomInfo'
 })
 
-console.log(
-  `%c powered by %c flipped-aurorae %c`,
-  'background:#0081ff; padding: 1px; border-radius: 3px 0 0 3px; color: #fff',
-  'background:#354855; padding: 1px 5px; border-radius: 0 3px 3px 0; color: #fff; font-weight: bold;',
-  'background:transparent'
-)
+// console.log(
+//   `%c powered by %c flipped-aurorae %c`,
+//   'background:#0081ff; padding: 1px; border-radius: 3px 0 0 3px; color: #fff',
+//   'background:#354855; padding: 1px 5px; border-radius: 0 3px 3px 0; color: #fff; font-weight: bold;',
+//   'background:transparent'
+// )
 </script>
 

@@ -1,13 +1,20 @@
 package system
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"net/url"
+	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
+	sysReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 
 	"github.com/gin-gonic/gin"
@@ -90,6 +97,113 @@ func (autoApi *AutoCodeApi) CreateTemp(c *gin.Context) {
 	}
 	c.Writer.Header().Add("Content-Type", "application/json")
 	c.Writer.Header().Add("success", "true")
+	if a.AutoKeepCode {
+		var records []system.RecordsDeleteCode
+		result := global.GVA_DB.Table("records").Select("path", "file", "update_time").Find(&records)
+		// 从 records 表中获取被删除的代码文件的路径和文件名
+		if result.Error != nil {
+			global.GVA_LOG.Error("无任何删除记录!", zap.Error(result.Error))
+			response.FailWithMessage("无任何删除记录", c)
+			return
+		}
+
+		for _, record := range records {
+			srcFile := record.Path
+			file := record.File
+
+			// destFile 是新创建的文件的路径
+			destFile := filepath.Join(global.GVA_CONFIG.AutoCode.Root, file)
+			// 检查新文件的路径是否存在
+			if _, err := os.Stat(destFile); err == nil {
+				if err := extractAndAppendCodeBlocks(srcFile, destFile); err != nil {
+					global.GVA_LOG.Error("提取代码块失败!", zap.Error(err))
+					response.FailWithMessage("提取代码块失败", c)
+					return
+				}
+				// 删除数据库中的记录
+				result := global.GVA_DB.Where("path = ? AND file = ?", srcFile, file).Delete(&system.RecordsDeleteCode{})
+				if result.Error != nil {
+					global.GVA_LOG.Error("删除记录失败!", zap.Error(result.Error))
+					response.FailWithMessage("删除记录失败", c)
+					return
+				}
+			}
+		}
+	}
+}
+
+// 提取rm_file(删除文件存放)代码文件中的标记代码段,添加到目标文件末尾,如果目标文件不存在则自动创建
+func extractAndAppendCodeBlocks(srcFile, destFile string) error {
+
+	source, err := os.Open(srcFile)
+	if err != nil {
+		return err
+	}
+	defer source.Close()
+
+	// 检查目标文件是否存在，如果不存在则创建
+	dest, err := os.OpenFile(destFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer dest.Close()
+
+	scanner := bufio.NewScanner(source)
+	writer := bufio.NewWriter(dest)
+	defer writer.Flush()
+
+	keepWriting := false
+	nestCount := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		trimmedLine := strings.TrimSpace(line)
+
+		if isStartTag(trimmedLine) {
+			nestCount++
+			if nestCount == 1 {
+				keepWriting = true
+			}
+		}
+
+		if keepWriting {
+			_, err = writer.WriteString(line + "\n")
+			if err != nil {
+				return err
+			}
+		}
+
+		if isEndTag(trimmedLine) {
+			if nestCount > 0 {
+				nestCount--
+			}
+			if nestCount == 0 {
+				keepWriting = false
+			}
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
+	if nestCount != 0 {
+		return errors.New("发现未匹配的标签")
+	}
+
+	return nil
+}
+
+// isStartTag 检查一行是否包含开始标签。
+func isStartTag(line string) bool {
+	match, _ := regexp.MatchString(`^\s*//\s*@gvastartkeep\s*$`, line)
+	return match
+}
+
+// isEndTag 检查一行是否包含结束标签。
+func isEndTag(line string) bool {
+	match, _ := regexp.MatchString(`^\s*//\s*@gvaendkeep\s*$`, line)
+	return match
 }
 
 // GetDB
@@ -193,6 +307,34 @@ func (autoApi *AutoCodeApi) CreatePackage(c *gin.Context) {
 	}
 }
 
+// UpdatePackage
+// @Tags      AutoCode
+// @Summary   更新package展示名字/描述
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     data  body      system.SysAutoCode                                         true  "更新package"
+// @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "更新package成功"
+// @Router    /autoCode/updatePackageDetail [post]
+func (autoApi *AutoCodeApi) UpdatePackageDetail(c *gin.Context) {
+	var a sysReq.SysAutoCode
+	var autoCode system.SysAutoCode
+	_ = c.ShouldBindJSON(&a)
+	if err := global.GVA_DB.Where("id = ?", a.ID).First(&autoCode).Error; err != nil {
+		response.FailWithMessage("获取package失败", c)
+		return
+	}
+	// 更新展示名字/描述
+	autoCode.Label = a.Label
+	autoCode.Desc = a.Desc
+	if err := global.GVA_DB.Save(&autoCode).Error; err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
+}
+
 // GetPackage
 // @Tags      AutoCode
 // @Summary   获取package
@@ -208,6 +350,34 @@ func (autoApi *AutoCodeApi) GetPackage(c *gin.Context) {
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(gin.H{"pkgs": pkgs}, "获取成功", c)
+	}
+}
+
+// auto_code_api.go
+
+// GetPackageByID
+// @Tags      AutoCode
+// @Summary   根据ID获取package
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     id  body      int                                                true  "package ID"
+// @Success   200  {object}  response.Response{data=system.SysAutoCode,msg=string}  "根据ID获取package成功"
+// @Router    /autoCode/getPackageByID/ POST
+func (autoApi *AutoCodeApi) GetPackageById(c *gin.Context) {
+	var pkgId request.GetById
+	err := c.ShouldBindJSON(&pkgId)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	var autoCode system.SysAutoCode
+	fmt.Printf("pkgId%+v", pkgId)
+	if err := global.GVA_DB.First(&autoCode, pkgId).Error; err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(gin.H{"pkg": autoCode}, "获取成功", c)
 	}
 }
 
