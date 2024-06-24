@@ -18,6 +18,7 @@ services:
     build:
       context: ../../web
       dockerfile: ./Dockerfile
+    image: gva-web:latest
     container_name: gva-web
     restart: always
     ports:
@@ -35,6 +36,7 @@ services:
     build:
       context: ../../server
       dockerfile: ./Dockerfile
+    image: gva-server:latest
     container_name: gva-server
     restart: always
     ports:
