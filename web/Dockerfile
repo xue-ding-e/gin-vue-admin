@@ -8,7 +8,7 @@ COPY . .
 # --unsafe-perm 允许以root权限运行
 #RUN npm config set registry https://192.168.1.148:7890 \
 #    && npm install --unsafe-perm \
-#    && RUN npm run build
+#    && RUN run build
 
 #这个用不了 出错问淼子
 RUN npm config set registry https://192.168.1.148:7890 && yarn && yarn build
@@ -17,6 +17,9 @@ FROM nginx:alpine
 #TODO PRODUCTION 根据实际情况修改邮箱(前端)
 LABEL MAINTAINER="SliverHorn@sliver_horn@qq.com"
 
+#TODO PRODUCTION
+ENV HTTP_PROXY=http://192.168.1.148:7890
+ENV HTTPS_PROXY=http://192.168.1.148:7890
 COPY .docker-compose/nginx/conf.d/my.conf /etc/nginx/conf.d/my.conf
 #TODO PRODUCTION 填写证书位置
 # 拷贝证书文件到容器内的指定位置

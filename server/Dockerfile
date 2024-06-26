@@ -12,9 +12,12 @@ COPY . .
 #    && go env \
 #    && go mod tidy \
 #    && go build -o server .
+
+#TODO PRODUCTION
+ENV HTTP_PROXY=http://192.168.1.148:7890
+ENV HTTPS_PROXY=http://192.168.1.148:7890
 #TODO PRODUCTION 根据自己的项目修改实际的代理或者不需要   设置为env -w GOPROXY=https://goproxy.cn,direct  上面是默认
 RUN go env -w GO111MODULE=on \
-    && go go env -w GOPROXY=https://192.168.1.148:7890 \
     && go env -w CGO_ENABLED=0 \
     && go env \
     && go mod tidy \
@@ -29,6 +32,9 @@ FROM alpine:latest
 # 镜像编写者及邮箱
 LABEL MAINTAINER="SliverHorn@sliver_horn@qq.com"
 
+#TODO PRODUCTION
+ENV HTTP_PROXY=http://192.168.1.148:7890
+ENV HTTPS_PROXY=http://192.168.1.148:7890
 # 声明工作目录
 WORKDIR /go/src/github.com/flipped-aurora/gin-vue-admin/server
 
