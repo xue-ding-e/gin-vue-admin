@@ -1,23 +1,17 @@
 version: "3"
 
-# 声明一个名为network的networks,subnet为network的子网地址,默认网关是177.7.0.1
 networks:
   network:
     ipam:
       driver: default
       config:
         - subnet: '177.7.0.0/16'
-
-# 设置mysql，redis持久化保存
 volumes:
   mysql:
   redis:
 
 services:
   web:
-    build:
-      context: ../../web
-      dockerfile: ./Dockerfile
     image: gva-web:latest
     container_name: gva-web
     restart: always
@@ -31,11 +25,12 @@ services:
     networks:
       network:
         ipv4_address: 177.7.0.11
+    volumes:
+      - ./my.conf:/etc/nginx/conf.d/my.conf
+    environment:
+      - TZ=Asia/Shanghai
 
   server:
-    build:
-      context: ../../server
-      dockerfile: ./Dockerfile
     image: gva-server:latest
     container_name: gva-server
     restart: always
@@ -53,20 +48,24 @@ services:
       network:
         ipv4_address: 177.7.0.12
 
+    volumes:
+      - ./config.docker.yaml:/go/src/gin-vue-admin/config.docker.yaml
+    environment:
+      - TZ=Asia/Shanghai
   mysql:
-    image: mysql:8.0.21       # 如果您是 arm64 架构：如 MacOS 的 M1，请修改镜像为 image: mysql/mysql-server:8.0.21
+    image: mysql:8.0.21
     container_name: gva-mysql
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci #设置utf8字符集
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
     ports:
-      - "13306:3306"  # host物理直接映射端口为13306
+      - "13306:3306"
     environment:
-      #PRODUCTION  数据库设置修改为生产环境
-      MYSQL_ROOT_PASSWORD: 'xuedingeQq781408517' # root管理员用户密码
-      MYSQL_DATABASE: 'gva' # 初始化启动时要创建的数据库的名称
+      MYSQL_ROOT_PASSWORD: 'Aa@6447985'
+      MYSQL_DATABASE: 'qmPlus'
       MYSQL_USER: 'root'
+      TZ: Asia/Shanghai
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "gva", "-pxuedingeQq781408517"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "gva", "-pAa@6447985"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -78,7 +77,7 @@ services:
 
   redis:
     image: redis:6.0.6
-    container_name: gva-redis # 容器名
+    container_name: gva-redis
     restart: always
     ports:
       - '16379:6379'

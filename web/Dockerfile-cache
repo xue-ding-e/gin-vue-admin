@@ -1,0 +1,12 @@
+# 运行命令docker build --pull -t 项目名字-yarn-cache:latest .    使用cachebuild.sh脚本构建镜像记得更改
+FROM node:20.11.0
+ENV HTTP_PROXY=http://192.168.1.148:7890
+ENV HTTPS_PROXY=http://192.168.1.148:7890
+RUN mkdir /app
+ADD . /app
+
+WORKDIR /app
+RUN yarn
+
+WORKDIR /
+RUN rm -Rf /app
