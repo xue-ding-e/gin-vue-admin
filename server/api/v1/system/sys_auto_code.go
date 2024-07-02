@@ -369,7 +369,7 @@ func (autoApi *AutoCodeApi) GetPackage(c *gin.Context) {
 // @Success   200  {object}  response.Response{data=system.SysAutoCode,msg=string}  "根据ID获取package成功"
 // @Router    /autoCode/getPackageByID/ POST
 func (autoApi *AutoCodeApi) GetPackageById(c *gin.Context) {
-	var pkgId request.GetById
+	var pkgId commonRequest.GetById
 	err := c.ShouldBindJSON(&pkgId)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
