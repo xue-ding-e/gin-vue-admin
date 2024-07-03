@@ -367,7 +367,7 @@ func (autoApi *AutoCodeApi) GetPackage(c *gin.Context) {
 // @Produce   application/json
 // @Param     id  body      int                                                true  "package ID"
 // @Success   200  {object}  response.Response{data=system.SysAutoCode,msg=string}  "根据ID获取package成功"
-// @Router    /autoCode/getPackageByID/ POST
+// @Router    /autoCode/getPackageByID/ [post]
 func (autoApi *AutoCodeApi) GetPackageById(c *gin.Context) {
 	var pkgId commonRequest.GetById
 	err := c.ShouldBindJSON(&pkgId)
