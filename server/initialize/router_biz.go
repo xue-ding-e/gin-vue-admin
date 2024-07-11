@@ -15,5 +15,5 @@ func initBizRouter(routers ...*gin.RouterGroup) {
 	privateGroup := routers[0]
 	publicGroup := routers[1]
 
-	holder(publicGroup, privateGroup)
+	holder(privateGroup, publicGroup)
 }
