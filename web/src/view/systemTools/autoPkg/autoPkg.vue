@@ -96,6 +96,7 @@
           <el-input
             v-model="form.packageName"
             autocomplete="off"
+            disabled="type === 'edit'"
           />
         </el-form-item>
         <el-form-item
@@ -104,6 +105,7 @@
         >
           <el-select
             v-model="form.template"
+            disabled="type === 'edit'"
           >
             <el-option v-for="template in templatesOptions" :label="template" :value="template" :key="template"/>
           </el-select>
@@ -154,6 +156,7 @@ import {
   getPackageApi,
   deletePackageApi,
   getTemplatesApi,
+  updatePackageDetail,
   getPackageById
 } from '@/api/autoCode'
 import { ref } from 'vue'
@@ -190,7 +193,7 @@ const validateNum = (rule, value, callback) => {
     callback()
   }
 }
-
+const type = ref('')
 const rules = ref({
   packageName: [
     { required: true, message: '请输入包名', trigger: 'blur' },
@@ -202,8 +205,30 @@ const rules = ref({
   ]
 })
 
+// 编辑弹窗相关
+
+const initForm = () => {
+  pkgForm.value.resetFields()
+  form.value = {
+    packageName: '',
+    desc: '',
+    label: '',
+  }
+}
+const dialogTitle = ref('新增')
 const dialogFormVisible = ref(false)
-const openDialog = () => {
+const openDialog = (key) => {
+  switch (key) {
+    case 'addPackage':
+      dialogTitle.value = '新增'
+      break
+    case 'edit':
+      dialogTitle.value = '更新'
+      break
+    default:
+      break
+  }
+  type.value = key
   dialogFormVisible.value = true
 }
 
@@ -218,19 +243,48 @@ const closeDialog = () => {
 }
 
 const pkgForm = ref(null)
-const enterDialog = async() => {
+const enterDialog = async () => {
   pkgForm.value.validate(async valid => {
     if (valid) {
-      const res = await createPackageApi(form.value)
-      if (res.code === 0) {
-        ElMessage({
-          type: 'success',
-          message: '添加成功',
-          showClose: true
-        })
+      switch (type.value) {
+        case 'addPackage': {
+          const res = await createPackageApi(form.value)
+          if (res.code === 0) {
+            ElMessage({
+              type: 'success',
+              message: '添加成功',
+              showClose: true
+            })
+          }
+          getTableData()
+          closeDialog()
+        }
+          break
+        case 'edit': {
+          const res = await updatePackageDetail(form.value)
+          if (res.code === 0) {
+            ElMessage({
+              type: 'success',
+              message: '编辑成功',
+              showClose: true
+
+            })
+          }
+          getTableData()
+          closeDialog()
+        }
+          break
+        default:
+          // eslint-disable-next-line no-lone-blocks
+        {
+          ElMessage({
+            type: 'error',
+            message: '未知操作',
+            showClose: true
+          })
+        }
+          break
       }
-      getTableData()
-      closeDialog()
     }
   })
 }
@@ -244,7 +298,7 @@ const getTableData = async() => {
 }
 
 const editPackageFunc = async (row) => {
-  const res = await getPackageById({id: row.ID})
+  const res = await getPackageById(row)
   form.value = res.data.pkg
   openDialog('edit')
 }
