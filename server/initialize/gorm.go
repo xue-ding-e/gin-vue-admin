@@ -49,7 +49,7 @@ func RegisterTables() {
 		system.SysExportTemplate{},
 		system.Condition{},
 		system.JoinTemplate{},
-		system.RecordsDeleteCode{},
+		//system.RecordsDeleteCode{},
 
 		example.ExaFile{},
 		example.ExaCustomer{},
