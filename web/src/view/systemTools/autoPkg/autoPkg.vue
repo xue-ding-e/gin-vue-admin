@@ -153,7 +153,8 @@ import {
   createPackageApi,
   getPackageApi,
   deletePackageApi,
-  getTemplatesApi
+  getTemplatesApi,
+  getPackageById
 } from '@/api/autoCode'
 import { ref } from 'vue'
 import WarningBar from '@/components/warningBar/warningBar.vue'
@@ -240,6 +241,12 @@ const getTableData = async() => {
   if (table.code === 0) {
     tableData.value = table.data.pkgs
   }
+}
+
+const editPackageFunc = async (row) => {
+  const res = await getPackageById({id: row.ID})
+  form.value = res.data.pkg
+  openDialog('edit')
 }
 
 const deleteApiFunc = async(row) => {
