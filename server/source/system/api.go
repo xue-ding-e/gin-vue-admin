@@ -120,7 +120,8 @@ func (i *initApi) InitializeData(ctx context.Context) (context.Context, error) {
 		{ApiGroup: "模板配置", Method: "GET", Path: "/autoCode/getTemplates", Description: "获取模板文件"},
 		{ApiGroup: "模板配置", Method: "POST", Path: "/autoCode/getPackage", Description: "获取所有模板"},
 		{ApiGroup: "模板配置", Method: "POST", Path: "/autoCode/delPackage", Description: "删除模板"},
-		{ApiGroup: "模板配置", Method: "POST", Path: "/autoCode/updatePackageDetail", Description: "更新包展示名/描述(package)"},
+		{ApiGroup: "模板配置", Method: "POST", Path: "/autoCode/GetPackageById", Description: "根据ID获取模板信息"},
+		{ApiGroup: "模板配置", Method: "POST", Path: "/autoCode/updatePackageDetail", Description: "更新模板展示名/描述"},
 
 		{ApiGroup: "代码生成器历史", Method: "POST", Path: "/autoCode/getMeta", Description: "获取meta信息"},
 		{ApiGroup: "代码生成器历史", Method: "POST", Path: "/autoCode/rollback", Description: "回滚自动生成代码"},

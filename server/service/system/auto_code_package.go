@@ -113,6 +113,15 @@ func (s *autoCodePackage) Delete(ctx context.Context, info common.GetById) error
 	return nil
 }
 
+// 根据ID获取包 GetByID
+func (s *autoCodePackage) GetByID(ctx context.Context, info common.GetById) error {
+	err := global.GVA_DB.WithContext(ctx).First(&model.SysAutoCodePackage{}, info.Uint()).Error
+	if err != nil {
+		return errors.Wrap(err, "获取失败!")
+	}
+	return nil
+}
+
 // All 获取所有包
 // @author: [piexlmax](https://github.com/piexlmax)
 // @author: [SliverHorn](https://github.com/SliverHorn)

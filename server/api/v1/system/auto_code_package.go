@@ -42,6 +42,34 @@ func (a *AutoCodePackageApi) Create(c *gin.Context) {
 	response.OkWithMessage("创建成功", c)
 }
 
+// UpdatePackage
+// @Tags      AutoCode
+// @Summary   更新package展示名字/描述
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     data  body      system.SysAutoCode                                         true  "更新package"
+// @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "更新package成功"
+// @Router    /autoCode/updatePackageDetail [post]
+//func (a *AutoCodePackageApi) UpdatePackageDetail(c *gin.Context) {
+//	var a sysReq.SysAutoCode
+//	var autoCode system.SysAutoCode
+//	_ = c.ShouldBindJSON(&a)
+//	if err := global.GVA_DB.Where("id = ?", a.ID).First(&autoCode).Error; err != nil {
+//		response.FailWithMessage("获取package失败", c)
+//		return
+//	}
+//	// 更新展示名字/描述
+//	autoCode.Label = a.Label
+//	autoCode.Desc = a.Desc
+//	if err := global.GVA_DB.Save(&autoCode).Error; err != nil {
+//		global.GVA_LOG.Error("更新失败!", zap.Error(err))
+//		response.FailWithMessage("更新失败", c)
+//	} else {
+//		response.OkWithMessage("更新成功", c)
+//	}
+//}
+
 // Delete
 // @Tags      AutoCode
 // @Summary   删除package
@@ -61,6 +89,27 @@ func (a *AutoCodePackageApi) Delete(c *gin.Context) {
 		return
 	}
 	response.OkWithMessage("删除成功", c)
+}
+
+// GetPackageById
+// @Tags      AutoCode
+// @Summary   根据ID获取package
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     id  body      int                                                true  "package ID"
+// @Success   200  {object}  response.Response{data=system.SysAutoCode,msg=string}  "根据ID获取package成功"
+// @Router    /autoCode/getPackageByID [post]
+func (a *AutoCodePackageApi) GetPackageById(c *gin.Context) {
+	var info common.GetById
+	_ = c.ShouldBindJSON(&info)
+	err := autoCodePackageService.GetByID(c.Request.Context(), info)
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+	response.OkWithMessage("获取成功", c)
 }
 
 // All
