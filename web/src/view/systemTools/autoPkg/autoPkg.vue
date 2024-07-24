@@ -9,7 +9,7 @@
         <el-button
           type="primary"
           icon="plus"
-          @click="openDialog('addApi')"
+          @click="openDialog('add')"
         >
           新增
         </el-button>
@@ -96,7 +96,7 @@
           <el-input
             v-model="form.packageName"
             autocomplete="off"
-            disabled="type === 'edit'"
+            :disabled="type === 'edit'"
           />
         </el-form-item>
         <el-form-item
@@ -105,7 +105,7 @@
         >
           <el-select
             v-model="form.template"
-            disabled="type === 'edit'"
+            :disabled="type === 'edit'"
           >
             <el-option v-for="template in templatesOptions" :label="template" :value="template" :key="template"/>
           </el-select>
@@ -205,24 +205,16 @@ const rules = ref({
   ]
 })
 
-// 编辑弹窗相关
 
-const initForm = () => {
-  pkgForm.value.resetFields()
-  form.value = {
-    packageName: '',
-    desc: '',
-    label: '',
-  }
-}
 const dialogTitle = ref('新增')
 const dialogFormVisible = ref(false)
 const openDialog = (key) => {
+  console.log("key->",key)
   switch (key) {
-    case 'addPackage':
+    case "add":
       dialogTitle.value = '新增'
       break
-    case 'edit':
+    case "edit":
       dialogTitle.value = '更新'
       break
     default:
@@ -247,7 +239,7 @@ const enterDialog = async () => {
   pkgForm.value.validate(async valid => {
     if (valid) {
       switch (type.value) {
-        case 'addPackage': {
+        case 'add': {
           const res = await createPackageApi(form.value)
           if (res.code === 0) {
             ElMessage({
