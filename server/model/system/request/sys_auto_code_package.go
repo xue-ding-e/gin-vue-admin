@@ -5,6 +5,7 @@ import (
 )
 
 type SysAutoCodePackageCreate struct {
+	ID          string `json:"ID"`
 	Desc        string `json:"desc" example:"描述"`
 	Label       string `json:"label" example:"展示名"`
 	Template    string `json:"template"  example:"模版"`

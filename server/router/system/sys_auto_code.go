@@ -19,9 +19,11 @@ func (s *AutoCodeRouter) InitAutoCodeRouter(Router *gin.RouterGroup, RouterPubli
 		autoCodeRouter.POST("createTemp", autoCodeTemplateApi.Create) // 创建自动化代码
 	}
 	{
-		autoCodeRouter.POST("getPackage", autoCodePackageApi.All)       // 获取package包
-		autoCodeRouter.POST("delPackage", autoCodePackageApi.Delete)    // 删除package包
-		autoCodeRouter.POST("createPackage", autoCodePackageApi.Create) // 创建package包
+		autoCodeRouter.POST("getPackage", autoCodePackageApi.All)                          // 获取package包
+		autoCodeRouter.POST("getPackageByID", autoCodePackageApi.GetPackageById)           // 获取package包根据ID
+		autoCodeRouter.POST("updatePackageDetail", autoCodePackageApi.UpdatePackageDetail) // 更新package包描述和展示名
+		autoCodeRouter.POST("delPackage", autoCodePackageApi.Delete)                       // 删除package包
+		autoCodeRouter.POST("createPackage", autoCodePackageApi.Create)                    // 创建package包
 	}
 	{
 		autoCodeRouter.GET("getTemplates", autoCodePackageApi.Templates) // 创建package包

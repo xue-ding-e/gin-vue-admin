@@ -118,7 +118,7 @@ export const deletePackageApi = (data) => {
 }
 export const getPackageById = (data) => {
   return service({
-    url: '/autoCode/getPackageById',
+    url: '/autoCode/getPackageByID',
     method: 'post',
     data
   })
