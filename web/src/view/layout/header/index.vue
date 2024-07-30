@@ -4,15 +4,15 @@
 !-->
 
 <template>
-  <div class="flex justify-between fixed top-0 left-0 right-0 z-10 h-16 bg-white text-slate-700 dark:text-slate-300  dark:bg-slate-900 shadow dark:shadow-gray-700 flex items-center px-2">
+  <div class="flex justify-between fixed top-0 left-0 right-0 z-10 h-20 bg-white text-slate-700 dark:text-slate-300  dark:bg-slate-900 shadow dark:shadow-gray-700 flex items-center px-2">
     <div
       class="flex items-center cursor-pointer flex-1"
     >
       <div class="flex items-center cursor-pointer" @click="router.push({ path: '/' })">
         <img
           v-if="!isMobile"
-          class="h-16 bg-white rounded-full"
-          src="../../../../public/favicon.ico"
+          class="h-20 bg-white rounded-full"
+          src="../../../../public/logo.png"
         >
       </div>
       <el-breadcrumb v-show="!isMobile" v-if="config.side_mode !== 'head'&& config.side_mode !== 'combination'" class="ml-4">
@@ -41,7 +41,7 @@
             <CustomPic />
             <span
               v-show="!isMobile"
-              class="w-16"
+              class="w-36"
             >{{ userStore.userInfo.nickName }}</span>
             <el-icon>
               <arrow-down />

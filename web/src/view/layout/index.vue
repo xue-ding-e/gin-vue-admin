@@ -11,7 +11,7 @@
       :content="userStore.userInfo.nickName"
     />
     <gva-header />
-    <div class="flex flex-row w-full gva-container pt-16 box-border h-full">
+    <div class="flex flex-row w-full gva-container pt-20 box-border h-full">
         <gva-aside v-if="config.side_mode === 'normal' || (device === 'mobile' && config.side_mode == 'head' ) || (device === 'mobile' && config.side_mode == 'combination' )" />
         <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal"/>
       <div class="flex-1 p-2 w-0 h-full">
