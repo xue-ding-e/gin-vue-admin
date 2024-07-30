@@ -10,19 +10,11 @@
     >
       <div class="flex items-center cursor-pointer" @click="router.push({ path: '/' })">
         <img
-          alt
-          class="h-12 bg-white rounded-full"
-          :src="$GIN_VUE_ADMIN.appLogo"
-        >
-        <div
           v-if="!isMobile"
-          class="inline-flex font-bold text-2xl ml-2"
-          :class="(config.side_mode === 'head' || config.side_mode === 'combination') &&'min-w-fit'"
+          class="h-16 bg-white rounded-full"
+          src="../../../../public/favicon.ico"
         >
-          {{ $GIN_VUE_ADMIN.appName }}
-        </div>
       </div>
-
       <el-breadcrumb v-show="!isMobile" v-if="config.side_mode !== 'head'&& config.side_mode !== 'combination'" class="ml-4">
         <el-breadcrumb-item
           v-for="item in matched.slice(1, matched.length)"
