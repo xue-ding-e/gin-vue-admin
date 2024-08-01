@@ -174,3 +174,12 @@ export const llmAuto = (params) => {
     }
   })
 }
+
+
+export const addFunc = (data) => {
+  return service({
+    url: '/autoCode/addFunc',
+    method: 'post',
+    data
+  })
+}
