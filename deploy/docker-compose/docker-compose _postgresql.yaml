@@ -1,0 +1,92 @@
+version: "3"
+
+# 声明一个名为network的networks,subnet为network的子网地址,默认网关是177.7.0.1
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: '177.7.0.0/16'
+
+# 设置postgresql，redis持久化保存
+volumes:
+  postgresql:
+  redis:
+
+services:
+  web:
+    build:
+      context: ../../web
+      dockerfile: ./Dockerfile
+    image: gva-web:latest
+    container_name: gva-web
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
+    depends_on:
+      - server
+    command: [ 'nginx-debug', '-g', 'daemon off;' ]
+    networks:
+      network:
+        ipv4_address: 177.7.0.11
+
+  server:
+    build:
+      context: ../../server
+      dockerfile: ./Dockerfile
+    image: gva-server:latest
+    container_name: gva-server
+    restart: always
+    ports:
+      - '8888:8888'
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    links:
+      - postgresql
+      - redis
+    networks:
+      network:
+        ipv4_address: 177.7.0.12
+
+  postgresql:
+    image: postgres:13       # 使用PostgreSQL 13镜像
+    container_name: gva-postgresql
+    restart: always
+    ports:
+      - "15432:5432"  # host物理直接映射端口为15432
+    environment:
+      POSTGRES_DB: 'gva' # 初始化启动时要创建的数据库的名称
+      POSTGRES_USER: 'root' # 默认用户
+      POSTGRES_PASSWORD: 'xuedingeQq781408517' # root用户密码
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      network:
+        ipv4_address: 177.7.0.13
+
+  redis:
+    image: redis:6.0.6
+    container_name: gva-redis # 容器名
+    restart: always
+    ports:
+      - '16379:6379'
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - redis:/data
+    networks:
+      network:
+        ipv4_address: 177.7.0.14
