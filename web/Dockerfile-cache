@@ -1,9 +1,11 @@
-# 运行命令docker build --pull -t 项目名字-yarn-cache:latest .    使用cachebuild.sh脚本构建镜像记得更改
+# 运行命令docker build --pull -t 项目名字-yarn-cache:latest .   这里也可以去cachebuild.sh里更改
 FROM node:20.11.0
-ENV HTTP_PROXY=http://192.168.1.148:7890
-ENV HTTPS_PROXY=http://192.168.1.148:7890
+# ENV HTTP_PROXY=http://192.168.1.4:7890
+# ENV HTTPS_PROXY=http://192.168.1.4:7890
 RUN mkdir /app
 ADD . /app
+# 配置 yarn 使用淘宝镜像
+RUN yarn config set registry https://registry.npmmirror.com
 
 WORKDIR /app
 RUN yarn

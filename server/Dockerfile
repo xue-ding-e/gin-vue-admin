@@ -18,10 +18,17 @@ COPY . .
 #ENV HTTPS_PROXY=http://192.168.1.148:7890
 #PRODUCTION 根据自己的项目修改实际的代理或者不需要   设置为env -w GOPROXY=https://goproxy.cn,direct  上面是默认
 RUN go env -w GO111MODULE=on \
+    && go env -w GOPROXY=https://goproxy.cn,direct \
     && go env -w CGO_ENABLED=0 \
     && go env \
     && go mod tidy \
     && go build -o server .
+
+#RUN go env -w GO111MODULE=on \
+#    && go env -w CGO_ENABLED=0 \
+#    && go env \
+#    && go mod tidy \
+#    && go build -o server .
 
 #PRODUCTION 取消代理环境变量
 #RUN unset HTTP_PROXY HTTPS_PROXY
@@ -37,12 +44,19 @@ LABEL MAINTAINER="SliverHorn@sliver_horn@qq.com"
 #ENV HTTPS_PROXY=http://192.168.1.148:7890
 # 设置时区
 ENV TZ=Asia/Shanghai
-# 安装 tzdata 和 openntpd
-RUN apk update && apk add --no-cache tzdata openntpd \
-    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-
+#PRODUCTION 临时设置代理环境变量来下载包
+RUN export HTTP_PROXY=http://192.168.1.4:7890 \
+    && export HTTPS_PROXY=http://192.168.1.4:7890 \
+    && apk update \
+    && apk add --no-cache tzdata openntpd \
+    && unset HTTP_PROXY HTTPS_PROXY \
+    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 #PRODUCTION 取消代理环境变量
-#RUN unset HTTP_PROXY HTTPS_PROXY
+RUN unset HTTP_PROXY HTTPS_PROXY
+
+# 安装 tzdata 和 openntpd
+#RUN apk update && apk add --no-cache tzdata openntpd \
+#    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
 
 # 声明工作目录
 WORKDIR /go/src/gin-vue-admin
