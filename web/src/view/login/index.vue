@@ -14,16 +14,17 @@
             <div class="flex items-center justify-center">
 
               <img
-                class="w-24"
+                class="w-72"
                 :src="$GIN_VUE_ADMIN.appLogo"
                 alt
               >
             </div>
-            <div class="mb-9">
-              <p class="text-center text-4xl font-bold">{{ $GIN_VUE_ADMIN.appName }}</p>
-              <p class="text-center text-sm font-normal text-gray-500 mt-2.5">A management platform using Golang and Vue
-              </p>
-            </div>
+<!--    FEATURE 这里是文字logo        -->
+<!--            <div class="mb-9">-->
+<!--              <p class="text-center text-4xl font-bold">{{ $GIN_VUE_ADMIN.appName }}</p>-->
+<!--              <p class="text-center text-sm font-normal text-gray-500 mt-2.5">A management platform using Golang and Vue-->
+<!--              </p>-->
+<!--            </div>-->
             <el-form
               ref="loginForm"
               :model="loginFormData"
