@@ -1,18 +1,25 @@
 package {{.Package}}
 
 import (
-	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/{{.Package}}"
-    {{.Package}}Req "github.com/flipped-aurora/gin-vue-admin/server/model/{{.Package}}/request"
+	{{if not .OnlyTemplate}}
+	"{{.Module}}/global"
+    "{{.Module}}/model/common/response"
+    "{{.Module}}/model/{{.Package}}"
+    {{.Package}}Req "{{.Module}}/model/{{.Package}}/request"
     "github.com/gin-gonic/gin"
     "go.uber.org/zap"
     {{- if .AutoCreateResource}}
-    "github.com/flipped-aurora/gin-vue-admin/server/utils"
+    "{{.Module}}/utils"
     {{- end }}
+    {{- else}}
+    "{{.Module}}/model/common/response"
+    "github.com/gin-gonic/gin"
+    {{- end}}
 )
 
 type {{.StructName}}Api struct {}
+
+{{if not .OnlyTemplate}}
 
 // Create{{.StructName}} 创建{{.Description}}
 // @Tags {{.StructName}}
@@ -36,7 +43,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Create{{.StructName}}(c *gin.Con
 	err = {{.Abbreviation}}Service.Create{{.StructName}}(&{{.Abbreviation}})
 	if err != nil {
         global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
+		response.FailWithMessage("创建失败:" + err.Error(), c)
 		return
 	}
     response.OkWithMessage("创建成功", c)
@@ -59,7 +66,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Delete{{.StructName}}(c *gin.Con
 	err := {{.Abbreviation}}Service.Delete{{.StructName}}({{.PrimaryField.FieldJson}} {{- if .AutoCreateResource -}},userID{{- end -}})
 	if err != nil {
         global.GVA_LOG.Error("删除失败!", zap.Error(err))
-		response.FailWithMessage("删除失败", c)
+		response.FailWithMessage("删除失败:" + err.Error(), c)
 		return
 	}
 	response.OkWithMessage("删除成功", c)
@@ -81,7 +88,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Delete{{.StructName}}ByIds(c *gi
 	err := {{.Abbreviation}}Service.Delete{{.StructName}}ByIds({{.PrimaryField.FieldJson}}s{{- if .AutoCreateResource }},userID{{- end }})
 	if err != nil {
         global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
-		response.FailWithMessage("批量删除失败", c)
+		response.FailWithMessage("批量删除失败:" + err.Error(), c)
 		return
 	}
 	response.OkWithMessage("批量删除成功", c)
@@ -109,7 +116,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Update{{.StructName}}(c *gin.Con
 	err = {{.Abbreviation}}Service.Update{{.StructName}}({{.Abbreviation}})
 	if err != nil {
         global.GVA_LOG.Error("更新失败!", zap.Error(err))
-		response.FailWithMessage("更新失败", c)
+		response.FailWithMessage("更新失败:" + err.Error(), c)
 		return
 	}
 	response.OkWithMessage("更新成功", c)
@@ -129,7 +136,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Find{{.StructName}}(c *gin.Conte
 	re{{.Abbreviation}}, err := {{.Abbreviation}}Service.Get{{.StructName}}({{.PrimaryField.FieldJson}})
 	if err != nil {
         global.GVA_LOG.Error("查询失败!", zap.Error(err))
-		response.FailWithMessage("查询失败", c)
+		response.FailWithMessage("查询失败:" + err.Error(), c)
 		return
 	}
 	response.OkWithData(re{{.Abbreviation}}, c)
@@ -154,7 +161,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}List(c *gin.Co
 	list, total, err := {{.Abbreviation}}Service.Get{{.StructName}}InfoList(pageInfo)
 	if err != nil {
 	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
+        response.FailWithMessage("获取失败:" + err.Error(), c)
         return
     }
     response.OkWithDetailed(response.PageResult{
@@ -178,11 +185,13 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}DataSource(c *
     dataSource, err := {{.Abbreviation}}Service.Get{{.StructName}}DataSource()
     if err != nil {
         global.GVA_LOG.Error("查询失败!", zap.Error(err))
-   		response.FailWithMessage("查询失败", c)
+   		response.FailWithMessage("查询失败:" + err.Error(), c)
    		return
     }
    response.OkWithData(dataSource, c)
 }
+{{- end }}
+
 {{- end }}
 
 // Get{{.StructName}}Public 不需要鉴权的{{.Description}}接口
@@ -196,6 +205,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}DataSource(c *
 func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}Public(c *gin.Context) {
     // 此接口不需要鉴权
     // 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
+    {{.Abbreviation}}Service.Get{{.StructName}}Public()
     response.OkWithDetailed(gin.H{
        "info": "不需要鉴权的{{.Description}}接口信息",
     }, "获取成功", c)

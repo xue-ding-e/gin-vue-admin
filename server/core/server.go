@@ -16,6 +16,7 @@ func RunWindowsServer() {
 	if global.GVA_CONFIG.System.UseMultipoint || global.GVA_CONFIG.System.UseRedis {
 		// 初始化redis服务
 		initialize.Redis()
+		initialize.RedisList()
 	}
 	if global.GVA_CONFIG.System.UseMongo {
 		err := initialize.Mongo.Initialization()
@@ -29,7 +30,6 @@ func RunWindowsServer() {
 	}
 
 	Router := initialize.Routers()
-	Router.Static("/form-generator", "./resource/page")
 
 	address := fmt.Sprintf(":%d", global.GVA_CONFIG.System.Addr)
 	s := initServer(address, Router)
