@@ -22,7 +22,7 @@
             <template #content>
               <div>【完全免费】前往<a class="text-blue-600" href="https://plugin.gin-vue-admin.com/#/layout/userInfo/center" target="_blank">插件市场个人中心</a>申请AIPath，填入config.yaml的ai-path属性即可使用。</div>
             </template>
-            <el-button type="primary" @click="llmAutoFunc()">
+            <el-button :disabled="form.onlyTemplate" type="primary" @click="llmAutoFunc()">
               <el-icon size="18">
                 <ai-gva />
               </el-icon> 生成
@@ -163,7 +163,7 @@
                 v-model="form.structName"
                 placeholder="首字母自动转换大写"
               />
-                <el-button type="primary" @click="llmAutoFunc(true)">
+                <el-button :disabled="form.onlyTemplate" type="primary" @click="llmAutoFunc(true)">
                   <el-icon size="18">
                     <ai-gva />
                   </el-icon> 生成
@@ -1030,10 +1030,12 @@ const fieldTemplate = {
   fieldIndexType: '',
   dictType: '',
   dataSource: {
+    dbName: '',
     association:1,
     table: '',
     label: '',
-    value: ''
+    value: '',
+    hasDeletedAt: false
   }
 }
 const route = useRoute()
@@ -1127,10 +1129,12 @@ const editAndAddField = (item) => {
     addFlag.value = 'edit'
     if(!item.dataSource){
       item.dataSource = {
+        dbName: '',
         association:1,
         table: '',
         label: '',
-        value: ''
+        value: '',
+        hasDeletedAt: false
       }
     }
     bk.value = JSON.parse(JSON.stringify(item))
@@ -1178,6 +1182,7 @@ const enterForm = async(isPreview) => {
 
   if(!form.value.onlyTemplate){
 
+
   if (form.value.fields.length <= 0) {
     ElMessage({
       type: 'error',
@@ -1194,6 +1199,9 @@ const enterForm = async(isPreview) => {
     return false
   }
 
+
+
+
   if (
     form.value.fields.some(item => item.fieldName === form.value.structName)
   ) {
@@ -1203,6 +1211,16 @@ const enterForm = async(isPreview) => {
     })
     return false
   }
+
+    if (
+        form.value.fields.some(item => item.fieldJson === form.value.package)
+    ) {
+      ElMessage({
+        type: 'error',
+        message: '存在与模板同名的的字段JSON'
+      })
+      return false
+    }
 
 
   if (form.value.fields.some(item => !item.fieldType)) {
@@ -1341,10 +1359,12 @@ const getColumnFunc = async() => {
                 excel: false,
                 desc: true,
                 dataSource: {
+                  dbName: '',
                   association:1,
                   table: '',
                   label: '',
-                  value: ''
+                  value: '',
+                  hasDeletedAt: false
                 }
               })
             }

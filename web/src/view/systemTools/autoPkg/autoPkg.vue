@@ -19,7 +19,7 @@
         <el-table-column
           align="left"
           label="id"
-          width="60"
+          width="120"
           prop="ID"
         />
         <el-table-column
@@ -60,7 +60,6 @@
               @click="editPackageFunc(scope.row)"
             >编辑</el-button>
             <el-button icon="delete"
-
               type="primary"
               link
               @click="deleteApiFunc(scope.row)"
