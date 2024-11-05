@@ -10,7 +10,6 @@
         <el-input v-model="prompt"
                   type="textarea"
                   :rows="5"
-                  :maxlength="100"
                   :placeholder="`现已完全免费\n试试描述你的表，让AI帮你完成。\n此功能需要到插件市场个人中心获取自己的AI-Path，把AI-Path填入config.yaml下的autocode-->ai-path，重启项目即可使用。\n按下 Ctrl+Enter 或 Cmd+Enter 直接生成`"
                   resize="none"
                   @focus="handleFocus"
@@ -846,7 +845,7 @@ const llmAutoFunc = async (flag) =>{
     return
   }
   //删除多余的字符
-  propmt.value = prompt.value.replace(/\s+/g, '')
+  prompt.value = prompt.value.replace(/\s+/g, '')
   if (!flag&&!prompt.value) {
     ElMessage.error('请输入描述')
     return
