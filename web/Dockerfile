@@ -1,3 +1,4 @@
+# node:20
 # 从cache镜像中中获取构建
 FROM cows-yarn-cache:latest as build
 # 声明工作目录
