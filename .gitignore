@@ -28,7 +28,8 @@ rm_file/
 /server/server
 /server/latest_log
 /server/__debug_bin*
-server/uploads/
+/server/uploads/
+/server/业务
 
 *.iml
 web/.pnpm-debug.log
