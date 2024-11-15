@@ -39,7 +39,7 @@ RUN go env -w GO111MODULE=on \
 FROM alpine:latest
 #PRODUCTION 根据生产环境实际配置邮箱
 # 镜像编写者及邮箱
-LABEL MAINTAINER="SliverHorn@sliver_horn@qq.com"
+LABEL MAINTAINER="781408517@qq.com"
 #ENV HTTP_PROXY=http://192.168.1.148:7890
 #ENV HTTPS_PROXY=http://192.168.1.148:7890
 # 设置时区
