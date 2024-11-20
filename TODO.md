@@ -66,6 +66,10 @@ func main() {
 
 ## 已完成
 
+### 2024-11-21更新内容
+
+登录admin 默认username去掉
+
 ```
 item.path = encodeURIComponent(item.path);  // 路径中文编码
 url
