@@ -1,9 +1,10 @@
 package system
 
 import (
-	"github.com/flipped-aurora/gin-vue-admin/server/model/common"
 	"strconv"
 	"time"
+
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
@@ -87,10 +88,12 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 	}
 	if !global.GVA_CONFIG.System.UseMultipoint {
 		utils.SetToken(c, token, int(claims.RegisteredClaims.ExpiresAt.Unix()-time.Now().Unix()))
-		response.OkWithDetailed(systemRes.LoginResponse{
-			User:      user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		response.OkWithDetailed(systemRes.LoginSysUserResponse{
+			LoginResponse: systemRes.LoginResponse{
+				Token:     token,
+				ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			},
+			User: user,
 		}, "登录成功", c)
 		return
 	}
@@ -102,10 +105,12 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			return
 		}
 		utils.SetToken(c, token, int(claims.RegisteredClaims.ExpiresAt.Unix()-time.Now().Unix()))
-		response.OkWithDetailed(systemRes.LoginResponse{
-			User:      user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		response.OkWithDetailed(systemRes.LoginSysUserResponse{
+			User: user,
+			LoginResponse: systemRes.LoginResponse{
+				Token:     token,
+				ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			},
 		}, "登录成功", c)
 	} else if err != nil {
 		global.GVA_LOG.Error("设置登录状态失败!", zap.Error(err))
@@ -122,10 +127,12 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			return
 		}
 		utils.SetToken(c, token, int(claims.RegisteredClaims.ExpiresAt.Unix()-time.Now().Unix()))
-		response.OkWithDetailed(systemRes.LoginResponse{
-			User:      user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		response.OkWithDetailed(systemRes.LoginSysUserResponse{
+			User: user,
+			LoginResponse: systemRes.LoginResponse{
+				Token:     token,
+				ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			},
 		}, "登录成功", c)
 	}
 }
