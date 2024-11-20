@@ -1,7 +1,6 @@
 package request
 
 import (
-	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Wx/model/request"
 	jwt "github.com/golang-jwt/jwt/v4"
 )
 
