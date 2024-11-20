@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -79,4 +80,12 @@ func RandomString(n int) string {
 
 func RandomInt(min, max int) int {
 	return min + rand.Intn(max-min)
+}
+
+func ParseStringToUint(s string) (uint, error) {
+	id64, err := strconv.ParseUint(s, 10, strconv.IntSize)
+	if err != nil {
+		return 0, err
+	}
+	return uint(id64), nil
 }
