@@ -24,7 +24,7 @@ type SysUser struct {
 	Password      string         `json:"-"  gorm:"comment:用户登录密码"`                                                                           // 用户登录密码
 	NickName      string         `json:"nickName" gorm:"default:系统用户;comment:用户昵称"`                                                          // 用户昵称
 	HeaderImg     string         `json:"headerImg" gorm:"default:https://qmplusimg.henrongyi.top/gva_header.jpg;comment:用户头像"`               // 用户头像
-	AuthorityId   uint           `json:"authorityId" gorm:"default:888;comment:用户角色ID"`                                                      // 用户角色ID
+	AuthorityId   uint           `json:"authorityId" gorm:"default:8881;comment:用户角色ID"`                                                     // 用户角色ID
 	Authority     SysAuthority   `json:"authority" gorm:"foreignKey:AuthorityId;references:AuthorityId;comment:用户角色"`                        // 用户角色
 	Authorities   []SysAuthority `json:"authorities" gorm:"many2many:sys_user_authority;"`                                                   // 多用户角色
 	Phone         string         `json:"phone"  gorm:"comment:用户手机号"`                                                                        // 用户手机号
