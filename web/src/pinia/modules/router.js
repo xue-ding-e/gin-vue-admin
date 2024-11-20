@@ -15,6 +15,7 @@ const formatRouter = (routes, routeMap, parent) => {
       item.parent = parent
       item.meta.btns = item.btns
       item.meta.hidden = item.hidden
+      item.path = encodeURIComponent(item.path);  // 路径中文编码
       if (item.meta.defaultMenu === true) {
         if (!parent) {
           item = { ...item, path: `/${item.path}` }
