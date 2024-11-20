@@ -10,7 +10,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
-	"github.com/gofrs/uuid/v5"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +30,6 @@ func (userService *UserService) Register(u system.SysUser) (userInter system.Sys
 	}
 	// 否则 附加uuid 密码hash加密 注册
 	u.Password = utils.BcryptHash(u.Password)
-	u.UUID = uuid.Must(uuid.NewV4())
 	err = global.GVA_DB.Create(&u).Error
 	return u, err
 }
@@ -269,9 +267,9 @@ func (userService *UserService) SetSelfSetting(req common.JSONMap, uid uint) err
 //@param: uuid uuid.UUID
 //@return: err error, user system.SysUser
 
-func (userService *UserService) GetUserInfo(uuid uuid.UUID) (user system.SysUser, err error) {
+func (userService *UserService) GetUserInfo(id uint) (user system.SysUser, err error) {
 	var reqUser system.SysUser
-	err = global.GVA_DB.Preload("Authorities").Preload("Authority").First(&reqUser, "uuid = ?", uuid).Error
+	err = global.GVA_DB.Preload("Authorities").Preload("Authority").First(&reqUser, "id = ?", id).Error
 	if err != nil {
 		return reqUser, err
 	}
@@ -285,24 +283,10 @@ func (userService *UserService) GetUserInfo(uuid uuid.UUID) (user system.SysUser
 //@param: id int
 //@return: err error, user *model.SysUser
 
-func (userService *UserService) FindUserById(id int) (user *system.SysUser, err error) {
+func (userService *UserService) FindUserById(id uint) (user *system.SysUser, err error) {
 	var u system.SysUser
 	err = global.GVA_DB.Where("id = ?", id).First(&u).Error
 	return &u, err
-}
-
-//@author: [SliverHorn](https://github.com/SliverHorn)
-//@function: FindUserByUuid
-//@description: 通过uuid获取用户信息
-//@param: uuid string
-//@return: err error, user *model.SysUser
-
-func (userService *UserService) FindUserByUuid(uuid string) (user *system.SysUser, err error) {
-	var u system.SysUser
-	if err = global.GVA_DB.Where("uuid = ?", uuid).First(&u).Error; err != nil {
-		return &u, errors.New("用户不存在")
-	}
-	return &u, nil
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)

@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/gofrs/uuid/v5"
+	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Wx/model/request"
 	jwt "github.com/golang-jwt/jwt/v4"
 )
 
@@ -13,7 +13,6 @@ type CustomClaims struct {
 }
 
 type BaseClaims struct {
-	UUID        uuid.UUID
 	ID          uint
 	Username    string
 	NickName    string

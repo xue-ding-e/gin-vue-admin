@@ -1,13 +1,8 @@
 package system
 
-import (
-	"github.com/gofrs/uuid/v5"
-)
-
 type Login interface {
 	GetUsername() string
 	GetNickname() string
-	GetUUID() uuid.UUID
 	GetUserId() uint
 	GetAuthorityId() uint
 	GetUserInfo() any
@@ -29,10 +24,6 @@ func (s *SysUser) GetUsername() string {
 
 func (s *SysUser) GetNickname() string {
 	return s.NickName
-}
-
-func (s *SysUser) GetUUID() uuid.UUID {
-	return s.UUID
 }
 
 func (s *SysUser) GetUserId() uint {
