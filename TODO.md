@@ -1,4 +1,6 @@
-TODO:各个部分拆分成插件,合并、删除重复的业务,待删除9528角色(测试角色)
+## TODO
+
+各个部分拆分成插件,合并、删除重复的业务,待删除9528角色(测试角色)
 去掉UUID替换为雪花ID(注释掉 设置为待用状态而不是一定要使用 有需要再根据文档使用)
 
 C端用户默认api 和默认菜单
@@ -13,29 +15,7 @@ common封装登录返回的信息( Login去掉密码验证)
 
 个人信息默认资料
 
-```
-item.path = encodeURIComponent(item.path);  // 讲中文编码
-url
 
-const formatRouter = (routes, routeMap, parent) => {
-  routes && routes.forEach(item => {
-    item.parent = parent
-    item.meta.btns = item.btns
-    item.meta.hidden = item.hidden
-    item.path = encodeURIComponent(item.path);  // 讲中文编码
-    if (item.meta.defaultMenu === true) {
-      if (!parent) {
-        item = { ...item, path: `/${item.path}` }
-        notLayoutRouterArr.push(item)
-      }
-    }
-    routeMap[item.name] = item
-    if (item.children && item.children.length > 0) {
-      formatRouter(item.children, routeMap, item)
-    }
-  })
-}
-```
 
 IgnoreRecordNotFoundError
 
@@ -84,3 +64,28 @@ func main() {
 }
 ```
 
+## 已完成
+
+```
+item.path = encodeURIComponent(item.path);  // 路径中文编码
+url
+
+const formatRouter = (routes, routeMap, parent) => {
+  routes && routes.forEach(item => {
+    item.parent = parent
+    item.meta.btns = item.btns
+    item.meta.hidden = item.hidden
+    item.path = encodeURIComponent(item.path);  // 路径中文编码
+    if (item.meta.defaultMenu === true) {
+      if (!parent) {
+        item = { ...item, path: `/${item.path}` }
+        notLayoutRouterArr.push(item)
+      }
+    }
+    routeMap[item.name] = item
+    if (item.children && item.children.length > 0) {
+      formatRouter(item.children, routeMap, item)
+    }
+  })
+}
+```
