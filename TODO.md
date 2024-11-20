@@ -1,31 +1,28 @@
 ## TODO
 
+### 本体
+
 各个部分拆分成插件,合并、删除重复的业务,待删除9528角色(测试角色)
-去掉UUID替换为雪花ID(注释掉 设置为待用状态而不是一定要使用 有需要再根据文档使用)
 
 C端用户默认api 和默认菜单
 
-go-pay微信插件初始化必须绑定所有所需信息
+common封装登录返回的信息( Login去掉密码验证)
+
+个人信息默认资料
+
+### xuedinge 插件
 
 etcd插件初始化信息(链接信息panic等) , 获取锁等信息将fmt.Errorf 为 global.GVA_LOG.中的内容
 
-common封装登录返回的信息( Login去掉密码验证)
+go-pay微信插件初始化必须绑定所有所需信息
 
 支付插件
-
-个人信息默认资料
 
 
 
 IgnoreRecordNotFoundError
 
-xuedinge 插件
-
-登录admin 默认username去掉
-
-b.TokenNext放到common
-
-前端随机生成字符串库
+b.TokenNext放到common(待考虑)
 
 后端角色id和名称对应字典(待考虑)
 
@@ -68,7 +65,11 @@ func main() {
 
 ### 2024-11-21更新内容
 
+去掉UUID替换为雪花ID(注释掉 设置为待用状态而不是一定要使用 有需要再根据文档使用)
+
 登录admin 默认username去掉
+
+中文路径编码
 
 ```
 item.path = encodeURIComponent(item.path);  // 路径中文编码
