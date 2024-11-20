@@ -51,7 +51,9 @@ func (b *BaseApi) Login(c *gin.Context) {
 	var oc bool = openCaptcha == 0 || openCaptcha < interfaceToInt(v)
 
 	if !oc || (l.CaptchaId != "" && l.Captcha != "" && store.Verify(l.CaptchaId, l.Captcha, true)) {
-		u := &system.SysUser{Username: l.Username, Password: l.Password}
+		u := &system.SysUser{CommonUser: system.CommonUser{
+			Username: l.Username, Password: l.Password,
+		}}
 		user, err := userService.Login(u)
 		if err != nil {
 			global.GVA_LOG.Error("登陆失败! 用户名不存在或者密码错误!", zap.Error(err))
@@ -153,7 +155,9 @@ func (b *BaseApi) Register(c *gin.Context) {
 			AuthorityId: v,
 		})
 	}
-	user := &system.SysUser{Username: r.Username, NickName: r.NickName, Password: r.Password, HeaderImg: r.HeaderImg, AuthorityId: r.AuthorityId, Authorities: authorities, Enable: r.Enable, Phone: r.Phone, Email: r.Email}
+	user := &system.SysUser{CommonUser: system.CommonUser{
+		Username: r.Username, NickName: r.NickName, Password: r.Password, HeaderImg: r.HeaderImg, AuthorityId: r.AuthorityId, Authorities: authorities, Enable: r.Enable, Phone: r.Phone, Email: r.Email,
+	}}
 	userReturn, err := userService.Register(*user)
 	if err != nil {
 		global.GVA_LOG.Error("注册失败!", zap.Error(err))
@@ -184,7 +188,9 @@ func (b *BaseApi) ChangePassword(c *gin.Context) {
 		return
 	}
 	uid := utils.GetUserID(c)
-	u := &system.SysUser{GVA_MODEL: global.GVA_MODEL{ID: uid}, Password: req.Password}
+	u := &system.SysUser{CommonUser: system.CommonUser{
+		GVA_MODEL: global.GVA_MODEL{ID: uid}, Password: req.Password,
+	}}
 	_, err = userService.ChangePassword(u, req.NewPassword)
 	if err != nil {
 		global.GVA_LOG.Error("修改失败!", zap.Error(err))
@@ -361,7 +367,7 @@ func (b *BaseApi) SetUserInfo(c *gin.Context) {
 			return
 		}
 	}
-	err = userService.SetUserInfo(system.SysUser{
+	err = userService.SetUserInfo(system.SysUser{CommonUser: system.CommonUser{
 		GVA_MODEL: global.GVA_MODEL{
 			ID: user.ID,
 		},
@@ -370,7 +376,7 @@ func (b *BaseApi) SetUserInfo(c *gin.Context) {
 		Phone:     user.Phone,
 		Email:     user.Email,
 		Enable:    user.Enable,
-	})
+	}})
 	if err != nil {
 		global.GVA_LOG.Error("设置失败!", zap.Error(err))
 		response.FailWithMessage("设置失败", c)
@@ -396,7 +402,7 @@ func (b *BaseApi) SetSelfInfo(c *gin.Context) {
 		return
 	}
 	user.ID = utils.GetUserID(c)
-	err = userService.SetSelfInfo(system.SysUser{
+	err = userService.SetSelfInfo(system.SysUser{CommonUser: system.CommonUser{
 		GVA_MODEL: global.GVA_MODEL{
 			ID: user.ID,
 		},
@@ -405,7 +411,7 @@ func (b *BaseApi) SetSelfInfo(c *gin.Context) {
 		Phone:     user.Phone,
 		Email:     user.Email,
 		Enable:    user.Enable,
-	})
+	}})
 	if err != nil {
 		global.GVA_LOG.Error("设置失败!", zap.Error(err))
 		response.FailWithMessage("设置失败", c)
