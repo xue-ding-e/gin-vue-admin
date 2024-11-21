@@ -5,6 +5,17 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common"
 )
 
+type Login interface {
+	GetUsername() string
+	GetNickname() string
+	GetUserId() uint
+	GetAuthorityId() uint
+	GetUserInfo() any
+}
+
+var _ Login = new(SysUser)
+
+// 这个CommonUser字段前期的业务没分开之前公共方法以及公共字段放在这里后期明确分开之后可以单独放到各自的结构体中
 // TODO:Avatar和HeadrImg逻辑重复
 type CommonUser struct {
 	global.GVA_MODEL
@@ -23,9 +34,28 @@ type CommonUser struct {
 	CreatedBy uint `gorm:"column:created_by;comment:创建者"`
 	UpdatedBy uint `gorm:"column:updated_by;comment:更新者"`
 	DeletedBy uint `gorm:"column:deleted_by;comment:删除者"`
+}
 
-	//业务字段
-	Avatar string `json:"avatar" form:"avatar" gorm:"column:avatar;comment:头像;type:text"` //头像
-	Gender string `json:"gender" form:"gender" gorm:"column:gender;comment:性别;"`          //性别
+func (CommonUser) TableName() string {
+	return "sys_users"
+}
 
+func (self *CommonUser) GetUsername() string {
+	return self.Username
+}
+
+func (self *CommonUser) GetNickname() string {
+	return self.NickName
+}
+
+func (self *CommonUser) GetUserId() uint {
+	return self.ID
+}
+
+func (self *CommonUser) GetAuthorityId() uint {
+	return self.AuthorityId
+}
+
+func (self *CommonUser) GetUserInfo() any {
+	return *self
 }
