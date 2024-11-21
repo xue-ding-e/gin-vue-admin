@@ -12,7 +12,7 @@ common封装登录返回的信息( Login去掉密码验证)
 
 ### xuedinge 插件
 
-etcd插件初始化信息(链接信息panic等) , 获取锁等信息将fmt.Errorf 为 global.GVA_LOG.中的内容
+
 
 go-pay微信插件初始化必须绑定所有所需信息
 
@@ -64,6 +64,8 @@ func main() {
 ## 已完成
 
 ### 2024-11-21更新内容
+
+etcd插件初始化链接失败增加panic
 
 去掉UUID替换为雪花ID(注释掉 设置为待用状态而不是一定要使用 有需要再根据文档使用)
 
