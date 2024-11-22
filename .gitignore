@@ -25,6 +25,8 @@ yarn-error.log*
 rm_file/
 /server/log/
 /server/gva
+/server/*.exe
+/server/main
 /server/server
 /server/latest_log
 /server/__debug_bin*
