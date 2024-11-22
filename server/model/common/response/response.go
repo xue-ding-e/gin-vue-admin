@@ -14,8 +14,9 @@ type Response struct {
 }
 
 const (
-	ERROR   = 7
-	SUCCESS = 0
+	SYSTEM_ERROR = 110
+	ERROR        = 7
+	SUCCESS      = 0
 )
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
@@ -47,8 +48,16 @@ func Fail(c *gin.Context) {
 	Result(ERROR, map[string]interface{}{}, "操作失败", c)
 }
 
+func FailSystemError(c *gin.Context) {
+	Result(SYSTEM_ERROR, map[string]interface{}{}, "系统错误", c)
+}
+
 func FailWithMessage(message string, c *gin.Context) {
 	Result(ERROR, map[string]interface{}{}, message, c)
+}
+
+func FailSystemErrorWithMessage(message string, c *gin.Context) {
+	Result(SYSTEM_ERROR, map[string]interface{}{}, message, c)
 }
 
 func NoAuth(message string, c *gin.Context) {
@@ -61,6 +70,10 @@ func NoAuth(message string, c *gin.Context) {
 
 func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 	Result(ERROR, data, message, c)
+}
+
+func FailSystemErrorWithDetailed(data interface{}, message string, c *gin.Context) {
+	Result(SYSTEM_ERROR, data, message, c)
 }
 
 type ResponseV2 struct {
