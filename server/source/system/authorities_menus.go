@@ -50,9 +50,9 @@ func (i *initMenuAuthority) InitializeData(ctx context.Context) (next context.Co
 	}
 
 	// 5555
-	menu8881 := menus[:2]
-	menu8881 = append(menu8881, menus[7])
-	if err = db.Model(&authorities[1]).Association("SysBaseMenus").Replace(menu8881); err != nil {
+	menu5555 := menus[:2]
+	menu5555 = append(menu5555, menus[7])
+	if err = db.Model(&authorities[1]).Association("SysBaseMenus").Replace(menu5555); err != nil {
 		return next, err
 	}
 
