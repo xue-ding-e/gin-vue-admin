@@ -32,6 +32,7 @@ rm_file/
 /server/__debug_bin*
 /server/uploads/
 /server/业务
+uni
 
 *.iml
 web/.pnpm-debug.log
