@@ -12,57 +12,6 @@ common封装登录返回的信息( Login去掉密码验证)
 
 个人信息默认资料
 
-Hasura增加HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'anonymous' 
-
-```
-services:
-  hasura:
-    image: hasura/graphql-engine:v2.0.10
-    restart: always
-    ports:
-      - "8080:8080"  # 将容器内的 8090 端口映射到主机的 8090 端口
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:8588q1590@10.0.0.197:5432/zaoshifu
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # web控制界面
-      HASURA_GRAPHQL_ADMIN_SECRET: 8588q1590
-      HASURA_GRAPHQL_JWT_SECRET: >
-        {"type": "HS256", "key": "6d87be67-8f5f-4dd5-87cd-5d30fa995794", "claims_namespace" : "zaoshifu"}
-      HASURA_GRAPHQL_SERVER_PORT: 8080 # 设置 Hasura 服务在容器内部监听的端口为 8090
-      HASURA_GRAPHQL_SERVER_HOST: "0.0.0.0" # 监听所有网络接口
-      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'anonymous' # 没有token能访问的
-  etcd:
-    image: quay.io/coreos/etcd:v3.5.0
-    restart: always
-    network_mode: "host" # 使用主机网络模式
-    command: |
-      /usr/local/bin/etcd
-      --data-dir=/etcd-data
-      --name=etcd-server
-      --initial-advertise-peer-urls=http://0.0.0.0:2380
-      --listen-peer-urls=http://0.0.0.0:2380
-      --advertise-client-urls=http://0.0.0.0:2379
-      --listen-client-urls=http://0.0.0.0:2379
-      --initial-cluster=etcd-server=http://0.0.0.0:2380
-    volumes:
-      - etcd_data:/etcd-data
-  postgres:
-    image: postgres:12
-    ports:
-      - "5432:5432" #数据库暴露的端口
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 8588q1590 #数据库的密码
-      POSTGRES_DB: zaoshifu 
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-volumes:
-  etcd_data:
-  postgres_data:
-```
-
-
-
 ### xuedinge 插件
 
 uni 微信一键build上传
