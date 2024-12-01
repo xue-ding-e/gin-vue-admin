@@ -1,5 +1,5 @@
 package system
 
-type BussinesUser struct {
+type BusinessUser struct {
 	CommonUser
 }
