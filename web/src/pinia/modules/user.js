@@ -15,7 +15,7 @@ export const useUserStore = defineStore('user', () => {
 
   const userInfo = ref({
     uuid: '',
-    nickName: '',
+    nickname: '',
     headerImg: '',
     authority: {}
   })

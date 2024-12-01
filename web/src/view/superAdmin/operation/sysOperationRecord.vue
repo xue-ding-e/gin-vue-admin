@@ -40,7 +40,7 @@
         <el-table-column align="left" label="操作人" width="140">
           <template #default="scope">
             <div>
-              {{ scope.row.user.userName }}({{ scope.row.user.nickName }})
+              {{ scope.row.user.userName }}({{ scope.row.user.nickname }})
             </div>
           </template>
         </el-table-column>

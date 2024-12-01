@@ -7056,7 +7056,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "头像链接"
                 },
-                "nickName": {
+                "nickname": {
                     "type": "string",
                     "example": "昵称"
                 },
@@ -8041,7 +8041,7 @@ const docTemplate = `{
                     "description": "用户头像",
                     "type": "string"
                 },
-                "nickName": {
+                "nickname": {
                     "description": "用户昵称",
                     "type": "string"
                 },

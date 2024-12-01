@@ -19,7 +19,7 @@
                 v-if="!editFlag"
                 class="text-3xl flex justify-center items-center gap-4"
               >
-                {{ userStore.userInfo.nickName }}
+                {{ userStore.userInfo.nickname }}
                 <el-icon
                   class="cursor-pointer text-sm"
                   color="#66b1ff"
@@ -29,7 +29,7 @@
                 </el-icon>
               </p>
               <p v-if="editFlag" class="flex justify-center items-center gap-4">
-                <el-input v-model="nickName" />
+                <el-input v-model="nickname" />
                 <el-icon
                   class="cursor-pointer"
                   color="#67c23a"
@@ -55,7 +55,7 @@
                   <el-icon>
                     <user />
                   </el-icon>
-                  {{ userStore.userInfo.nickName }}
+                  {{ userStore.userInfo.nickname }}
                 </li>
                 <el-tooltip
                   class="item"
@@ -297,7 +297,7 @@
   const modifyPwdForm = ref(null)
   const showPassword = ref(false)
   const pwdModify = ref({})
-  const nickName = ref('')
+  const nickname = ref('')
   const editFlag = ref(false)
   const savePassword = async () => {
     modifyPwdForm.value.validate((valid) => {
@@ -341,27 +341,27 @@
   )
 
   const openEdit = () => {
-    nickName.value = userStore.userInfo.nickName
+    nickname.value = userStore.userInfo.nickname
     editFlag.value = true
   }
 
   const closeEdit = () => {
-    nickName.value = ''
+    nickname.value = ''
     editFlag.value = false
   }
 
   const enterEdit = async () => {
     const res = await setSelfInfo({
-      nickName: nickName.value
+      nickname: nickname.value
     })
     if (res.code === 0) {
-      userStore.ResetUserInfo({ nickName: nickName.value })
+      userStore.ResetUserInfo({ nickname: nickname.value })
       ElMessage({
         type: 'success',
         message: '设置成功'
       })
     }
-    nickName.value = ''
+    nickname.value = ''
     editFlag.value = false
   }
 

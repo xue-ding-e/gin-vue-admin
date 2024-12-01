@@ -923,7 +923,7 @@ definitions:
       headerImg:
         example: 头像链接
         type: string
-      nickName:
+      nickname:
         example: 昵称
         type: string
       passWord:
@@ -1606,7 +1606,7 @@ definitions:
       headerImg:
         description: 用户头像
         type: string
-      nickName:
+      nickname:
         description: 用户昵称
         type: string
       phone:

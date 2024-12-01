@@ -3,9 +3,10 @@ package system
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common"
 	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
-	"time"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
@@ -90,7 +91,7 @@ func (userService *UserService) GetUserInfoList(info systemReq.GetUserList) (lis
 	var userList []system.SysUser
 
 	if info.NickName != "" {
-		db = db.Where("nick_name LIKE ?", "%"+info.NickName+"%")
+		db = db.Where("nickname LIKE ?", "%"+info.NickName+"%")
 	}
 	if info.Phone != "" {
 		db = db.Where("phone LIKE ?", "%"+info.Phone+"%")
@@ -226,11 +227,11 @@ func (userService *UserService) DeleteUser(id int) (err error) {
 
 func (userService *UserService) SetUserInfo(req system.SysUser) error {
 	return global.GVA_DB.Model(&system.SysUser{}).
-		Select("updated_at", "nick_name", "header_img", "phone", "email", "enable").
+		Select("updated_at", "nickname", "header_img", "phone", "email", "enable").
 		Where("id=?", req.ID).
 		Updates(map[string]interface{}{
 			"updated_at": time.Now(),
-			"nick_name":  req.NickName,
+			"nickname":   req.NickName,
 			"header_img": req.HeaderImg,
 			"phone":      req.Phone,
 			"email":      req.Email,

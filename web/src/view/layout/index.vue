@@ -8,7 +8,7 @@
       :z-index="9999"
       :gap="[180, 150]"
       class="absolute inset-0 pointer-events-none"
-      :content="userStore.userInfo.nickName"
+      :content="userStore.userInfo.nickname"
     />
     <gva-header />
     <div class="flex flex-row w-full gva-container pt-20 box-border h-full">

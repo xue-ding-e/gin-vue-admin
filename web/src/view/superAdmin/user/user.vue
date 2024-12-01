@@ -46,7 +46,7 @@
           align="left"
           label="昵称"
           min-width="150"
-          prop="nickName"
+          prop="nickname"
         />
         <el-table-column
           align="left"
@@ -178,8 +178,8 @@
         <el-form-item v-if="dialogFlag === 'add'" label="密码" prop="password">
           <el-input v-model="userInfo.password" />
         </el-form-item>
-        <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="userInfo.nickName" />
+        <el-form-item label="昵称" prop="nickname">
+          <el-input v-model="userInfo.nickname" />
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="userInfo.phone" />
@@ -386,7 +386,7 @@
   const userInfo = ref({
     userName: '',
     password: '',
-    nickName: '',
+    nickname: '',
     headerImg: '',
     authorityId: '',
     authorityIds: [],
@@ -402,7 +402,7 @@
       { required: true, message: '请输入用户密码', trigger: 'blur' },
       { min: 6, message: '最低6位字符', trigger: 'blur' }
     ],
-    nickName: [{ required: true, message: '请输入用户昵称', trigger: 'blur' }],
+    nickname: [{ required: true, message: '请输入用户昵称', trigger: 'blur' }],
     phone: [
       {
         pattern: /^1([38][0-9]|4[014-9]|[59][0-35-9]|6[2567]|7[0-8])\d{8}$/,

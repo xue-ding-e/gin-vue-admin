@@ -42,7 +42,7 @@
             <span
               v-show="!isMobile"
               class="w-36"
-            >{{ userStore.userInfo.nickName }}</span>
+            >{{ userStore.userInfo.nickname }}</span>
             <el-icon>
               <arrow-down />
             </el-icon>
