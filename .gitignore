@@ -3,6 +3,7 @@
 /web/dist
 rm_file/
 .DS_Store
+*.zip
 
 # local env files
 .env.local
@@ -33,6 +34,7 @@ rm_file/
 /server/uploads/
 /server/业务
 uni
+/server/config.ignore.yaml
 
 *.iml
 web/.pnpm-debug.log
