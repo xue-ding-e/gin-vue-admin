@@ -2,7 +2,17 @@
 
 ### 2024-11-30更新内容
 
+昵称统一字段为nickname 前后端和数据库
+
+uni navigator 移动到utils下  navigation文件改名navigator
+
+后端wx 创建用户增加appid
+
 修改CommonUser 的Authorities 外键 gorm标签指定名称  以及替换SysAuthority 中的Users为CommonUser
+
+wx支付插件 service G微信小程序支付业务逻辑scan改first
+
+utils 和 model/system 循环导包
 
 Hasura以及后端常用辅助中间件docker-compose.yaml
 
@@ -59,80 +69,3 @@ common封装登录返回的信息( Login去掉密码验证)  ( 时不知道什�
 build状态删除console.log
 
 各个部分拆分成插件,合并、删除重复的业务,待删除9528角色(测试角色)
-
-
-
-### xuedinge 插件
-
-微信登录自动创建用户  createdby钩子  传入id就是对应的id  不传入默认使用自增id
-
-order 身份证正面照片和反面照片
-
-后端wx 创建用户增加appid
-
-uni 微信一键build上传
-
-uni 退出登录  (注释跳转) 清楚本地个人信息（并刷新) 登录页面微信一键登录
-
-wx支付插件 service G微信小程序支付业务逻辑scan改first
-
-uni 商城
-
-uni 个人地址
-
-uni 前端角色id -> 角色名字 map utils
-
-uni navigator 移动到utils下  navigation文件改名navigator
-
-nick_name 前后端
-
-uni 永久存储
-
-utils 和 model/system 循环导包
-
-go-pay微信插件初始化必须绑定所有所需信息
-
-支付插件
-
-
-
-IgnoreRecordNotFoundError
-
-b.TokenNext放到common(待考虑)
-
-后端角色id和名称对应字典(待考虑)
-
-复制两个结构体之间对应的字段
-
-```
-import (
-    "fmt"
-    "github.com/jinzhu/copier"
-)
-
-type User struct {
-    Name     string
-    Age      int
-    Location string
-}
-
-type Person struct {
-    Name string
-    Age  int
-    City string
-}
-
-func main() {
-    user := User{
-        Name:     "张三",
-        Age:      30,
-        Location: "北京",
-    }
-
-    var person Person
-    copier.Copy(&person, &user)
-
-    fmt.Printf("%+v\n", person)
-    // 输出: {Name:张三 Age:30 City:}
-}
-```
