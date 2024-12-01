@@ -14,8 +14,9 @@ type SysAuthority struct {
 	DataAuthorityId []*SysAuthority `json:"dataAuthorityId" gorm:"many2many:sys_data_authority_id;"`
 	Children        []SysAuthority  `json:"children" gorm:"-"`
 	SysBaseMenus    []SysBaseMenu   `json:"menus" gorm:"many2many:sys_authority_menus;"`
-	Users           []SysUser       `json:"-" gorm:"many2many:sys_user_authority;"`
-	DefaultRouter   string          `json:"defaultRouter" gorm:"comment:默认菜单;default:dashboard"` // 默认菜单(默认dashboard)
+	//Users           []SysUser       `json:"-" gorm:"many2many:sys_user_authority;"`
+	Users         []CommonUser `json:"-" gorm:"many2many:sys_user_authority;joinForeignKey:AuthorityId;joinReferences:SysUserId"`
+	DefaultRouter string       `json:"defaultRouter" gorm:"comment:默认菜单;default:dashboard"` // 默认菜单(默认dashboard)
 }
 
 func (SysAuthority) TableName() string {

@@ -2,6 +2,8 @@
 
 ### 2024-11-30更新内容
 
+修改CommonUser 的Authorities 外键 gorm标签指定名称  以及替换SysAuthority 中的Users为CommonUser
+
 Hasura以及后端常用辅助中间件docker-compose.yaml
 
 Business 拼写问题 全局替换
@@ -54,15 +56,15 @@ common封装登录返回的信息( Login去掉密码验证)  ( 时不知道什�
 
 个人信息默认资料(暂时不知道什么意思 忘了  个人信息例如性别 昵称 国家这些 有必要的相关内容改为指针nil) (下次遇到立刻更改)
 
-修改CommonUser 的Authorities 外键 gorm标签指定名称  以及替换SysAuthority 中的Users为CommonUser
-
-微信登录自动创建用户  createdby钩子  传入id就是对应的id  不传入默认使用自增id
-
 build状态删除console.log
 
 各个部分拆分成插件,合并、删除重复的业务,待删除9528角色(测试角色)
 
+
+
 ### xuedinge 插件
+
+微信登录自动创建用户  createdby钩子  传入id就是对应的id  不传入默认使用自增id
 
 order 身份证正面照片和反面照片
 
