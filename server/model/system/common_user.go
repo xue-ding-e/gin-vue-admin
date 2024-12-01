@@ -21,7 +21,7 @@ type CommonUser struct {
 	global.GVA_MODEL
 	Username      string         `json:"userName" gorm:"index;comment:用户登录名"`                                                                             // 用户登录名
 	Password      string         `json:"-"  gorm:"comment:用户登录密码"`                                                                                        // 用户登录密码
-	NickName      string         `json:"nickname" gorm:"default:系统用户;comment:用户昵称"`                                                                       // 用户昵称
+	NickName      string         `json:"nickname" gorm:"default:系统用户;column:nickname;comment:用户昵称"`                                                       // 用户昵称
 	HeaderImg     string         `json:"headerImg" gorm:"default:https://qmplusimg.henrongyi.top/gva_header.jpg;comment:用户头像"`                            // 用户头像
 	AuthorityId   uint           `json:"authorityId" gorm:"default:5555;comment:用户角色ID"`                                                                  // 用户角色ID
 	Authority     SysAuthority   `json:"authority" gorm:"foreignKey:AuthorityId;references:AuthorityId;comment:用户角色"`                                     // 用户角色
