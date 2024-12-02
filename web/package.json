@@ -7,7 +7,8 @@
         "build": "vite build --mode production",
         "limit-build": "npm install increase-memory-limit-fixbug cross-env -g && npm run fix-memory-limit && node ./limit && npm run build",
         "preview": "vite preview",
-        "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit"
+        "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit",
+        "deploy": "pnpm run build && node deploy.js"
     },
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.1",
@@ -64,6 +65,7 @@
         "eslint": "^9.14.0",
         "eslint-plugin-vue": "^9.30.0",
         "sass": "^1.78.0",
+        "ssh2-sftp-client": "^11.0.0",
         "terser": "^5.31.6",
         "vite": "^5.4.3",
         "vite-plugin-banner": "^0.8.0",
