@@ -2,12 +2,12 @@ package initialize
 
 import (
 	"bufio"
-	"github.com/songzhibin97/gkit/cache/local_cache"
 	"os"
 	"strings"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/songzhibin97/gkit/cache/local_cache"
 )
 
 func OtherInit() {
@@ -29,4 +29,12 @@ func OtherInit() {
 		scanner.Scan()
 		global.GVA_CONFIG.AutoCode.Module = strings.TrimPrefix(scanner.Text(), "module ")
 	}
+}
+
+func BusinessInit() {
+	init_func1()
+}
+
+func init_func1() {
+
 }

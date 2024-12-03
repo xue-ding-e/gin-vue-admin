@@ -32,6 +32,9 @@ func RunWindowsServer() {
 
 	Router := initialize.Routers()
 
+	// 业务相关初始化
+	initialize.BusinessInit()
+
 	address := fmt.Sprintf(":%d", global.GVA_CONFIG.System.Addr)
 	s := initServer(address, Router)
 

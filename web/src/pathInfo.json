@@ -63,5 +63,7 @@
   "/src/view/systemTools/system/system.vue": "Config",
   "/src/plugin/announcement/form/info.vue": "InfoForm",
   "/src/plugin/announcement/view/info.vue": "Info",
+  "/src/plugin/BusinessConfig/form/businessConfig.vue": "BusinessConfig",
+  "/src/plugin/BusinessConfig/view/businessConfig.vue": "BusinessConfig",
   "/src/plugin/email/view/index.vue": "Email"
 }
