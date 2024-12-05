@@ -65,5 +65,7 @@
   "/src/plugin/announcement/view/info.vue": "Info",
   "/src/plugin/BusinessConfig/form/businessConfig.vue": "BusinessConfig",
   "/src/plugin/BusinessConfig/view/businessConfig.vue": "BusinessConfig",
-  "/src/plugin/email/view/index.vue": "Email"
+  "/src/plugin/email/view/index.vue": "Email",
+  "/src/plugin/minio/form/minio.vue": "MinioForm",
+  "/src/plugin/minio/view/minio.vue": "Minio"
 }

@@ -8,4 +8,6 @@ type Minio struct {
 	UseSSL          bool   `mapstructure:"use-ssl" json:"use-ssl" yaml:"use-ssl"`
 	BasePath        string `mapstructure:"base-path" json:"base-path" yaml:"base-path"`
 	BucketUrl       string `mapstructure:"bucket-url" json:"bucket-url" yaml:"bucket-url"`
+
+	BucketName2 string `mapstructure:"bucket-name2" json:"bucket-name2" yaml:"bucket-name2"`
 }

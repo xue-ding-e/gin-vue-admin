@@ -3,8 +3,8 @@ services:
     image: hasura/graphql-engine:v2.0.10
     restart: always
     ports:
-      - "65510:65510"  # 将容器内的 65510 端口映射到主机的 65510 端口
-    environment:  # PRODUCTION
+      - "65510:65510" # 将容器内的 65510 端口映射到主机的 65510 端口
+    environment: # PRODUCTION
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:qq781408517@127.0.0.1:5432/Hasura #postgres://postgres:数据库密码@数据库内网ip:5432(默认端口)/数据库dbname
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # web面板
       HASURA_GRAPHQL_ADMIN_SECRET: qq781408517 # 数据库密码 (和上面相同) PRODUCTION 下面也需要更改
@@ -12,7 +12,7 @@ services:
         {"type": "HS256", "key": "jwt-secret(和后端相同)", "claims_namespace" : "xuedinge"}
       HASURA_GRAPHQL_SERVER_PORT: 65510 # 设置 Hasura 服务在容器内部监听的端口为 65510
       HASURA_GRAPHQL_SERVER_HOST: "0.0.0.0" # 监听所有网络接口
-      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'anonymous' # 没有token的默认角色
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous" # 没有token的默认角色
     depends_on:
       - postgres
 
@@ -31,7 +31,7 @@ services:
       --initial-cluster=etcd-server=http://0.0.0.0:2380
     volumes:
       - etcd_data:/etcd-data
-      
+
   postgres:
     image: postgres:12
     ports:
@@ -41,11 +41,27 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: qq781408517 #数据库密码 (和上面相同) PRODUCTION
       POSTGRES_DB: Hasura #(默认初始dbname)
+      TZ: Asia/Shanghai
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#      - ./init-postgresql.sql:/docker-entrypoint-initdb.d/init-permissions.sql
-      
+      # - ./init-postgresql.sql:/docker-entrypoint-initdb.d/init-permissions.sql
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "65590:9000" # MinIO API 端口
+      - "65591:9001" # MinIO 控制台端口
+    environment: #PRODUCTION  
+      MINIO_ROOT_USER: "minioadmin" #管理员账号
+      MINIO_ROOT_PASSWORD: "minioadmin123" #管理员密码
+      MINIO_REGION: "cn-north-1" # 地区设置 遵循aws  cn-north-1北京
+      TZ: "Asia/Shanghai"
+    volumes:
+      - minio_data:/data
+      # - ./certs:/root/.minio/certs #证书挂载 nginx配置证书可取消
 volumes:
   etcd_data:
   postgres_data:
-
+  minio_data:

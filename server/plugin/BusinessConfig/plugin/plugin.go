@@ -9,7 +9,8 @@ var GLOBAL_MAP map[string]interface{}
 var GLOBAL_CONFIG GLOBAL_CONFIG_TYPE
 
 type GLOBAL_CONFIG_TYPE struct {
-	G文件上传最大值 *int `json:"文件上传最大值" form:"文件上传最大值" mapstructure:"文件上传最大值"` // 文件上传最大值(MB)
+	G文件上传最大值      *int `json:"文件上传最大值" form:"文件上传最大值" mapstructure:"文件上传最大值"`                   // 文件上传最大值(MB)
+	Minio预下载url时长 *int `json:"minio预下载url时长" form:"minio预下载url时长" mapstructure:"minio预下载url时长"` // 文件上传最大值(MB)
 }
 
 // 校验函数
