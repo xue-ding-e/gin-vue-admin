@@ -22,7 +22,7 @@ func (r *MI) Init(public *gin.RouterGroup, private *gin.RouterGroup) {
 	}
 	{
 		// 测试用
-		// group := public.Group("minio")
-		// group.GET("getMinioSts", apiMinio.GetMinioSts) // 获取minio sts凭证
+		//grouppublic := public.Group("minio/public")
+		//grouppublic.GET("getMinioSts", apiMinio.GetMinioSts) // 获取minio sts凭证
 	}
 }

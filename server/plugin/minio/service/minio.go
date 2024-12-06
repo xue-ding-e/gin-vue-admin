@@ -28,7 +28,7 @@ func (a *MI) GetMinioSts(policy string) (map[string]string, error) {
                 "s3:GetBucketLocation"
             ],
             "Resource": [
-                "arn:aws:s3:::test/1*"
+                "arn:aws:s3:::test/1/*"
             ]
         }
     ]
