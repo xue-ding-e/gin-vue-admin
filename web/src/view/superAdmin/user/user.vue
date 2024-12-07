@@ -3,6 +3,9 @@
     <warning-bar title="注：右上角头像下拉可切换角色" />
     <div class="gva-search-box">
       <el-form ref="searchForm" :inline="true" :model="searchInfo">
+        <el-form-item label="ID">
+          <el-input v-model="searchInfo.ID" placeholder="ID" />
+        </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="searchInfo.username" placeholder="用户名" />
         </el-form-item>

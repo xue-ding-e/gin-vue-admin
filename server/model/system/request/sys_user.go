@@ -58,6 +58,7 @@ type ChangeUserInfo struct {
 
 type GetUserList struct {
 	common.PageInfo
+	ID       string `json:"id" form:"id"`
 	Username string `json:"username" form:"username"`
 	NickName string `json:"nickname" form:"nickname"`
 	Phone    string `json:"phone" form:"phone"`

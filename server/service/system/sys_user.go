@@ -89,7 +89,9 @@ func (userService *UserService) GetUserInfoList(info systemReq.GetUserList) (lis
 	offset := info.PageSize * (info.Page - 1)
 	db := global.GVA_DB.Model(&system.SysUser{})
 	var userList []system.SysUser
-
+	if info.ID != "" {
+		db = db.Where("id = ?", info.ID)
+	}
 	if info.NickName != "" {
 		db = db.Where("nickname LIKE ?", "%"+info.NickName+"%")
 	}
