@@ -159,13 +159,14 @@
 
   const form = reactive({
     adminPassword: '123456',
-    dbType: 'mysql',
+    dbType: 'pgsql',
     host: '127.0.0.1',
-    port: '3306',
-    userName: 'root',
+    port: '5432',
+    userName: 'postgres',
     password: '',
     dbName: 'gva',
-    dbPath: ''
+    dbPath: '',
+    template: 'template0'
   })
 
   const changeDB = (val) => {
