@@ -5,7 +5,7 @@ services:
     ports:
       - "65510:65510" # 将容器内的 65510 端口映射到主机的 65510 端口
     environment: # PRODUCTION
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:qq781408517@127.0.0.1:5432/Hasura #postgres://postgres:数据库密码@数据库内网ip:5432(默认端口)/数据库dbname
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:qq781408517@127.0.0.1:5432/数据库dbname #postgres://postgres:数据库密码@数据库内网ip:5432(默认端口)/数据库dbname
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # web面板
       HASURA_GRAPHQL_ADMIN_SECRET: qq781408517 # 数据库密码 (和上面相同) PRODUCTION 下面也需要更改
       HASURA_GRAPHQL_JWT_SECRET: >
