@@ -208,6 +208,13 @@ const loginFormData = reactive({
   captchaId: '',
   openCaptcha: false,
 })
+// 默认测试使用账号密码
+if (process.env.NODE_ENV === 'development') {
+  loginFormData.username = 'admin'
+  loginFormData.password = '123456'
+}
+
+
 const rules = reactive({
   username: [{ validator: checkUsername, trigger: 'blur' }],
   password: [{ validator: checkPassword, trigger: 'blur' }],
