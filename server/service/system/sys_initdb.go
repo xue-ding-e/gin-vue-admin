@@ -5,10 +5,13 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"sort"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	"gorm.io/gorm"
-	"sort"
+
+	"sync/atomic"
 )
 
 const (
@@ -27,6 +30,13 @@ const (
 	InitOrderInternal = 1000
 	InitOrderExternal = 100000
 )
+
+var initCounter int32 = InitOrderExternal
+
+// GetInitCounter 提供下一个初始化顺序，保证原子操作
+func GetInitCounter() int32 {
+	return atomic.AddInt32(&initCounter, 1)
+}
 
 var (
 	ErrMissingDBContext        = errors.New("missing db in context")
