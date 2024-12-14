@@ -31,6 +31,8 @@ yarn-error.log*
 /server/业务
 /server/config.ignore.yaml
 /server/fileDir
+/server/生产环境所需
+!/server/生产环境所需/业务设置/
 
 *.iml
 /web/.pnpm-debug.log
