@@ -33,7 +33,7 @@ services:
       - etcd_data:/etcd-data
 
   postgres:
-    image: postgres:12
+    image: postgis/postgis:15-3.3  # 使用 PostgreSQL 15 和 PostGIS 3.3
     ports:
       - "5432:5432" #数据库暴露的端口
     restart: always
