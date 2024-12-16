@@ -29,6 +29,10 @@ etcd插件初始化链接失败增加panic
 
 中文路径编码
 
+### 2024-11-21更新内容
+
+登录admin 默认username去掉
+
 ```
 item.path = encodeURIComponent(item.path);  // 路径中文编码
 url
@@ -57,6 +61,18 @@ const formatRouter = (routes, routeMap, parent) => {
 ## TODO
 
 ### 本体
+
+#### 急!!!!!
+
+web  api请求加入baseurl
+
+
+
+#### 不急
+
+python 重置postgresql游标改为golang
+
+插件导入数据增加.sql的形式 , 增加插件自动初始化权限(菜单 , api) 的代码
 
 server dockerfile  gva原生更新到xuedinge分支
 
