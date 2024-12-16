@@ -17,9 +17,7 @@ const createIconComponent = (name) => ({
 
 const registerIcons = async (app) => {
   const iconModules = import.meta.glob('@/assets/icons/**/*.svg') // 系统目录 svg 图标
-  const pluginIconModules = import.meta.glob(
-    '@/plugin/**/assets/icons/**/*.svg'
-  ) // 插件目录 svg 图标
+  const pluginIconModules = import.meta.glob('@/plugin/**/assets/icons/**/*.svg') // 插件目录 svg 图标
   const mergedIconModules = Object.assign({}, iconModules, pluginIconModules) // 合并所有 svg 图标
   for (const path in mergedIconModules) {
     let pluginName = ''
@@ -37,8 +35,7 @@ const registerIcons = async (app) => {
     }
     const key = `${pluginName}${iconName}`
     // 开发模式下列出所有 svg 图标，方便开发者直接查找复制使用
-    import.meta.env.MODE == 'development' &&
-      console.log(`svg-icon-component: <${key} />`)
+    import.meta.env.MODE == 'development' && console.log(`svg-icon-component: <${key} />`)
     const iconComponent = createIconComponent(key)
     config.logs.push({
       key: key,
@@ -57,3 +54,5 @@ export const register = (app) => {
   registerIcons(app)
   app.config.globalProperties.$GIN_VUE_ADMIN = config
 }
+
+export const requestBaseUrl = import.meta.env.VITE_APP_API_BASE_URL + import.meta.env.VITE_BASE_URL + import.meta.env.VITE_BASE_API

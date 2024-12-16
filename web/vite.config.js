@@ -13,7 +13,7 @@ import { AddSecret } from './vitePlugin/secret'
 export default ({ mode }) => {
   AddSecret('')
   const NODE_ENV = mode || 'development'
-  const envFiles = [`.env.${NODE_ENV}`]
+  const envFiles = [`.env.${NODE_ENV}`, '.env']
   for (const file of envFiles) {
     const envConfig = dotenv.parse(fs.readFileSync(file))
     for (const k in envConfig) {
@@ -38,12 +38,13 @@ export default ({ mode }) => {
     output: {
       entryFileNames: 'assets/[name].[hash].js',
       chunkFileNames: 'assets/[name].[hash].js',
-      assetFileNames: 'assets/[name].[hash].[ext]',
-    },
+      assetFileNames: 'assets/[name].[hash].[ext]'
+    }
   }
 
   const config = {
-    base: '/', // 编译后js导入的资源路径
+    base: process.env.VITE_BASE_URL + '/',
+    // base: '/', // 编译后js导入的资源路径
     root: './', // index.html文件所在位置
     publicDir: 'public', // 静态资源文件夹
     resolve: {
@@ -66,12 +67,11 @@ export default ({ mode }) => {
       proxy: {
         // 把key的路径代理到target位置
         // detail: https://cli.vuejs.org/config/#devserver-proxy
-        [process.env.VITE_BASE_API]: {
+        [process.env.VITE_BASE_URL + process.env.VITE_BASE_API]: {
           // 需要代理的路径   例如 '/api'
           target: `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/`, // 代理到 目标路径
           changeOrigin: true,
-          rewrite: (path) =>
-            path.replace(new RegExp('^' + process.env.VITE_BASE_API), '')
+          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_BASE_URL + process.env.VITE_BASE_API), '')
         }
       }
     },
@@ -92,17 +92,9 @@ export default ({ mode }) => {
     esbuild,
     optimizeDeps,
     plugins: [
-      process.env.VITE_POSITION === 'open' &&
-        vueDevTools({ launchEditor: process.env.VITE_EDITOR }),
+      process.env.VITE_POSITION === 'open' && vueDevTools({ launchEditor: process.env.VITE_EDITOR }),
       legacyPlugin({
-        targets: [
-          'Android > 39',
-          'Chrome >= 60',
-          'Safari >= 10.1',
-          'iOS >= 10.3',
-          'Firefox >= 54',
-          'Edge >= 15'
-        ]
+        targets: ['Android > 39', 'Chrome >= 60', 'Safari >= 10.1', 'iOS >= 10.3', 'Firefox >= 54', 'Edge >= 15']
       }),
       vuePlugin(),
       svgBuilder('./src/assets/icons/'),

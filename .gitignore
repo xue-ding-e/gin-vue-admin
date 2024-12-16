@@ -1,6 +1,7 @@
 rm_file/
 .DS_Store
 *.zip
+__pycache__
 
 # local env files
 .env.local

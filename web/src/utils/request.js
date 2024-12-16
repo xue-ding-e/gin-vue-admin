@@ -4,9 +4,10 @@ import { useUserStore } from '@/pinia/modules/user'
 import router from '@/router/index'
 import { ElLoading } from 'element-plus'
 import qs from 'qs' // 引入 qs 库
+import { requestBaseUrl } from '@/core/global'
 
 const service = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API,
+  baseURL: requestBaseUrl,
   timeout: 99999,
   paramsSerializer: params => {
     return qs.stringify(params, { arrayFormat: 'repeat' }) // 自定义参数序列化函数
