@@ -43,7 +43,7 @@ export default ({ mode }) => {
   }
 
   const config = {
-    base: process.env.VITE_BASE_URL + '/',
+    base: process.env.VITE_ROUTER_BASE_PREFIX + '/',
     // base: '/', // 编译后js导入的资源路径
     root: './', // index.html文件所在位置
     publicDir: 'public', // 静态资源文件夹
@@ -67,11 +67,17 @@ export default ({ mode }) => {
       proxy: {
         // 把key的路径代理到target位置
         // detail: https://cli.vuejs.org/config/#devserver-proxy
-        [process.env.VITE_BASE_URL + process.env.VITE_BASE_API]: {
+        [process.env.VITE_ROUTER_BASE_PREFIX + process.env.VITE_APP_PROXY_PREFIX]: {//富文本图片使用
           // 需要代理的路径   例如 '/api'
-          target: `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/`, // 代理到 目标路径
+          target: process.env.VITE_SERVER_PORT ? `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/` : `${process.env.VITE_BASE_PATH}/`, // 代理到 目标路径
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_BASE_URL + process.env.VITE_BASE_API), '')
+          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_ROUTER_BASE_PREFIX + process.env.VITE_APP_PROXY_PREFIX), '')
+        },
+        [process.env.VITE_APP_PROXY_PREFIX]:{//正常api转发
+          target: process.env.VITE_SERVER_PORT ? `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/` : `${process.env.VITE_APP_PROXY_PREFIX}/`, // 代理到 目标路径
+          changeOrigin: true,
+          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_APP_PROXY_PREFIX), '')
+
         }
       }
     },

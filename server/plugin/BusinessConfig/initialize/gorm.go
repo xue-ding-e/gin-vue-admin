@@ -3,6 +3,7 @@ package initialize
 import (
 	"context"
 	"fmt"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/BusinessConfig/model"
 	config "github.com/flipped-aurora/gin-vue-admin/server/plugin/BusinessConfig/plugin"
@@ -11,9 +12,9 @@ import (
 
 func Iinit(ctx context.Context) {
 	v := viper.New()
-	v.SetConfigName("config") // 配置文件名（无扩展名）
-	v.SetConfigType("yaml")   // 配置文件类型
-	v.AddConfigPath("业务设置/")  // 配置文件所在的目录
+	v.SetConfigName("config")       // 配置文件名（无扩展名）
+	v.SetConfigType("yaml")         // 配置文件类型
+	v.AddConfigPath("生产环境所需/业务设置/") // 配置文件所在的目录
 
 	if err := v.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("读取配置文件失败: %s \n", err))

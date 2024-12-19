@@ -55,8 +55,4 @@ export const register = (app) => {
   app.config.globalProperties.$GIN_VUE_ADMIN = config
 }
 
-export const requestBaseUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_BASE_API
-
-export const getUrlPath = import.meta.env.VITE_BASE_API
-
-export const getUrlPath = import.meta.env.VITE_BASE_API
+export const requestBaseUrl = import.meta.env.VITE_APP_PROXY_PREFIX
