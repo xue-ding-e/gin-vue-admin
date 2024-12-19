@@ -16,5 +16,5 @@ func Api(ctx context.Context) {
 			Method:      "GET",
 		},
 	}
-	utils.RegisterApis(entities...)
+	utils.RegisterApis(entities)
 }

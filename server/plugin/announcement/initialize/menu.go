@@ -18,5 +18,5 @@ func Menu(ctx context.Context) {
 			Meta:      model.Meta{Title: "公告管理", Icon: "box"},
 		},
 	}
-	utils.RegisterMenus(entities...)
+	utils.RegisterMenus(entities)
 }
