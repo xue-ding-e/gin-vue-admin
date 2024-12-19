@@ -87,6 +87,9 @@ system:
     router-prefix: ""
     #  严格角色模式 打开后权限将会存在上下级关系
     use-strict-auth: false
+    #  生产模式,开发模式,测试模式等;判断运行中间件等服务
+    # debug,release,test
+    mode: debug
 
 # captcha configuration
 captcha:

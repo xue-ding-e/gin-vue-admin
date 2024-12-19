@@ -291,6 +291,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 					}
 					return nil, nil, nil, errors.Errorf("[filpath:%s]非法模版文件!", three)
 				}
+				fmt.Println("secondDirs[j].Name() =>", secondDirs[j].Name())
 				switch secondDirs[j].Name() {
 				case "api", "router", "service":
 					var threeDirs []os.DirEntry
@@ -536,6 +537,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 								RightRouterGroupName: "private",
 							}
 							asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()] = pluginInitializeRouter
+							fmt.Println("asts=>", asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()])
 							creates[four] = pluginInitializeRouter.Path
 						}
 						if data != -1 {

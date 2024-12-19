@@ -4,6 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/core"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/initialize"
+	"github.com/gin-gonic/gin"
 	_ "go.uber.org/automaxprocs"
 	"go.uber.org/zap"
 )
@@ -22,6 +23,7 @@ import (
 // @BasePath                    /
 func main() {
 	global.GVA_VP = core.Viper() // 初始化Viper
+	gin.SetMode(global.GVA_CONFIG.System.Mode)
 	initialize.OtherInit()
 	global.GVA_LOG = core.Zap() // 初始化zap日志库
 	zap.ReplaceGlobals(global.GVA_LOG)

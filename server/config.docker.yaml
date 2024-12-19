@@ -62,6 +62,9 @@ system:
   iplimit-count: 15000
   #  IP限制一个小时
   iplimit-time: 3600
+  #  生产模式,开发模式,测试模式等;判断运行中间件等服务
+  # debug,release,test
+  mode: debug
 
 # captcha configuration
 captcha:
