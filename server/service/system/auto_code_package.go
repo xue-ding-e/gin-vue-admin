@@ -3,6 +3,12 @@ package system
 import (
 	"context"
 	"fmt"
+	"go/token"
+	"os"
+	"path/filepath"
+	"strings"
+	"text/template"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	common "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	model "github.com/flipped-aurora/gin-vue-admin/server/model/system"
@@ -10,12 +16,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/ast"
 	"github.com/pkg/errors"
-	"go/token"
 	"gorm.io/gorm"
-	"os"
-	"path/filepath"
-	"strings"
-	"text/template"
 )
 
 var AutoCodePackage = new(autoCodePackage)
@@ -290,6 +291,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 					}
 					return nil, nil, nil, errors.Errorf("[filpath:%s]非法模版文件!", three)
 				}
+				fmt.Println("secondDirs[j].Name() =>", secondDirs[j].Name())
 				switch secondDirs[j].Name() {
 				case "api", "router", "service":
 					var threeDirs []os.DirEntry
@@ -474,6 +476,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 							continue
 						}
 						four := filepath.Join(three, threeDirs[k].Name())
+						// TODO 暂时不做文件嵌套递归读取等
 						if threeDirs[k].IsDir() {
 							return nil, nil, nil, errors.Errorf("[filpath:%s]非法模版文件夹!", four)
 						}
@@ -490,6 +493,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 						router := strings.Index(threeDirs[k].Name(), "router")
 						hasGorm := strings.Index(threeDirs[k].Name(), "gorm")
 						response := strings.Index(threeDirs[k].Name(), "response")
+						data := strings.Index(threeDirs[k].Name(), "data")
 						if gen != -1 && api != -1 && menu != -1 && viper != -1 && plugin != -1 && config != -1 && router != -1 && hasGorm != -1 && response != -1 {
 							return nil, nil, nil, errors.Errorf("[filpath:%s]非法模版文件!", four)
 						}
@@ -533,7 +537,25 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 								RightRouterGroupName: "private",
 							}
 							asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()] = pluginInitializeRouter
+							fmt.Println("asts=>", asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()])
 							creates[four] = pluginInitializeRouter.Path
+						}
+						if data != -1 {
+							create := filepath.Join(global.GVA_CONFIG.AutoCode.Root, global.GVA_CONFIG.AutoCode.Server, "plugin", entity.PackageName, secondDirs[j].Name(), "data", strings.TrimSuffix(threeDirs[k].Name(), ext))
+							// 创建 initialize/data/data.go 文件的 AST
+							pluginInitializeData := &ast.PluginInitializeData{
+								Type:             ast.TypePluginInitializeData,
+								Path:             create,
+								ImportPath:       fmt.Sprintf(`"%s/plugin/%s/initialize/data"`, global.GVA_CONFIG.AutoCode.Module, entity.PackageName),
+								PackageName:      "data",
+								FunctionName:     "Data",
+								DataFunctionName: "Data",
+							}
+							// 将 AST 添加到 asts 映射中
+							asts[pluginInitializeData.Path+"=>"+pluginInitializeData.Type.String()] = pluginInitializeData
+							fmt.Println("asts=>", asts[pluginInitializeData.Path+"=>"+pluginInitializeData.Type.String()])
+							creates[four] = pluginInitializeData.Path
+							code[four] = create
 						}
 					}
 				case "model":

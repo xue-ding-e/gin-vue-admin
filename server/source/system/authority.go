@@ -45,7 +45,7 @@ func (i *initAuthority) InitializeData(ctx context.Context) (context.Context, er
 	}
 	entities := []sysModel.SysAuthority{
 		{AuthorityId: 888, AuthorityName: "超级管理员", ParentId: utils.Pointer[uint](0), DefaultRouter: "dashboard"},
-		{AuthorityId: 9528, AuthorityName: "测试角色", ParentId: utils.Pointer[uint](0), DefaultRouter: "dashboard"},
+		//{AuthorityId: 9528, AuthorityName: "测试角色", ParentId: utils.Pointer[uint](0), DefaultRouter: "dashboard"},
 		{AuthorityId: 5555, AuthorityName: "普通用户子角色", ParentId: utils.Pointer[uint](888), DefaultRouter: "dashboard"},
 	}
 
@@ -56,7 +56,7 @@ func (i *initAuthority) InitializeData(ctx context.Context) (context.Context, er
 	if err := db.Model(&entities[0]).Association("DataAuthorityId").Replace(
 		[]*sysModel.SysAuthority{
 			{AuthorityId: 888},
-			{AuthorityId: 9528},
+			//{AuthorityId: 9528},
 			{AuthorityId: 5555},
 		}); err != nil {
 		return ctx, errors.Wrapf(err, "%s表数据初始化失败!",
@@ -64,7 +64,7 @@ func (i *initAuthority) InitializeData(ctx context.Context) (context.Context, er
 	}
 	if err := db.Model(&entities[1]).Association("DataAuthorityId").Replace(
 		[]*sysModel.SysAuthority{
-			{AuthorityId: 9528},
+			//{AuthorityId: 9528},
 			{AuthorityId: 5555},
 		}); err != nil {
 		return ctx, errors.Wrapf(err, "%s表数据初始化失败!",

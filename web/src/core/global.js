@@ -56,3 +56,7 @@ export const register = (app) => {
 }
 
 export const requestBaseUrl = import.meta.env.VITE_BASE_URL + import.meta.env.VITE_BASE_API
+
+export const getUrlPath = import.meta.env.VITE_BASE_API
+
+export const getUrlPath = import.meta.env.VITE_BASE_API

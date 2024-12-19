@@ -8,5 +8,5 @@ import (
 
 func Menu(ctx context.Context) {
 	entities := []model.SysBaseMenu{}
-	utils.RegisterMenus(entities...)
+	utils.RegisterMenus(entities)
 }

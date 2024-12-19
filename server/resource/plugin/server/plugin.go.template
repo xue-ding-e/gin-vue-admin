@@ -3,6 +3,7 @@ package {{ .Package }}
 import (
 	"context"
 	"{{.Module}}/plugin/{{ .Package }}/initialize"
+	// _ "{{.Module}}/plugin/{{ .Package }}/initialize/data"
 	interfaces "{{.Module}}/utils/plugin/v2"
 	"github.com/gin-gonic/gin"
 )

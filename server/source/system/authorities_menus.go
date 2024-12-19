@@ -67,17 +67,18 @@ func (i *initMenuAuthority) InitializeData(ctx context.Context) (next context.Co
 }
 
 func (i *initMenuAuthority) DataInserted(ctx context.Context) bool {
-	db, ok := ctx.Value("db").(*gorm.DB)
-	if !ok {
-		return false
-	}
-	auth := &sysModel.SysAuthority{}
-	if ret := db.Model(auth).
-		Where("authority_id = ?", 9528).Preload("SysBaseMenus").Find(auth); ret != nil {
-		if ret.Error != nil {
-			return false
-		}
-		return len(auth.SysBaseMenus) > 0
-	}
-	return false
+	//db, ok := ctx.Value("db").(*gorm.DB)
+	//if !ok {
+	//	return false
+	//}
+	//auth := &sysModel.SysAuthority{}
+	//if ret := db.Model(auth).
+	//	Where("authority_id = ?", 9528).Preload("SysBaseMenus").Find(auth); ret != nil {
+	//	if ret.Error != nil {
+	//		return false
+	//	}
+	//	return len(auth.SysBaseMenus) > 0
+	//}
+	//return false
+	return true
 }

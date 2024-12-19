@@ -50,4 +50,5 @@ const (
 	TypePluginInitializeGorm      = "PluginInitializeGorm"      // server/plugin/{package}/initialize/gorm.go
 	TypePluginInitializeMenu      = "PluginInitializeMenu"      // server/plugin/{package}/initialize/menu.go
 	TypePluginInitializeRouter    = "PluginInitializeRouter"    // server/plugin/{package}/initialize/router.go
+	TypePluginInitializeData      = "PluginInitializeData"      // server/plugin/{package}/initialize/data/data.go
 )
