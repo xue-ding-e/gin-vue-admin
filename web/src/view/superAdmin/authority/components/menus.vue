@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div class="sticky top-0.5 z-10">
+    <div class="sticky top-0.5 z-10 flex space-x-2">
       <el-input v-model="filterText" class="w-3/5" placeholder="筛选" />
+      <el-button type="primary" @click="toggleSelectAll">
+        {{ isAllSelected ? '取消全选' : '一键全选' }}
+      </el-button>
       <el-button class="float-right" type="primary" @click="relation"
         >确 定</el-button
       >
@@ -92,6 +95,32 @@
   })
 
   const emit = defineEmits(['changeRow'])
+  const isAllSelected = ref(false)
+
+  const toggleSelectAll = () => {
+    if (menuTree.value) {
+      if (!isAllSelected.value) {
+        menuTree.value.setCheckedKeys(getAllNodeKeys(menuTreeData.value))
+      } else {
+        menuTree.value.setCheckedKeys([])
+      }
+      isAllSelected.value = !isAllSelected.value
+    }
+  }
+  // 获取所有节点的 key
+  const getAllNodeKeys = (data) => {
+    const keys = []
+    const getKeys = (nodes) => {
+      nodes.forEach((node) => {
+        keys.push(node.ID)
+        if (node.children && node.children.length > 0) {
+          getKeys(node.children)
+        }
+      })
+    }
+    getKeys(data)
+    return keys
+  }
   const filterText = ref('')
   const menuTreeData = ref([])
   const menuTreeIds = ref([])
@@ -138,6 +167,10 @@
   }
   const nodeChange = () => {
     needConfirm.value = true
+    const checkedKeys = menuTree.value.getCheckedKeys()
+    const allKeys = getAllNodeKeys(menuTreeData.value)
+    isAllSelected.value = checkedKeys.length === allKeys.length
+
   }
   // 暴露给外层使用的切换拦截统一方法
   const enterAndNext = () => {
@@ -219,8 +252,9 @@
     return data.meta.title.indexOf(value) !== -1
   }
 
-  watch(filterText, (val) => {
-    menuTree.value.filter(val)
+  watch(filterText, () => {
+    menuTree.value.filter(filterText.value)
+    isAllSelected.value = false
   })
 </script>
 

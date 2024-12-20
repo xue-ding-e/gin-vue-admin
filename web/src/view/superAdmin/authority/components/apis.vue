@@ -1,19 +1,12 @@
 <template>
   <div>
     <div class="sticky top-0.5 z-10 flex space-x-2">
-      <el-input
-        v-model="filterTextName"
-        class="flex-1"
-        placeholder="筛选名字"
-      />
-      <el-input
-        v-model="filterTextPath"
-        class="flex-1"
-        placeholder="筛选路径"
-      />
-      <el-button class="float-right" type="primary" @click="authApiEnter"
-        >确 定</el-button
-      >
+      <el-input v-model="filterTextName" class="flex-1" placeholder="筛选名字" />
+      <el-input v-model="filterTextPath" class="flex-1" placeholder="筛选路径" />
+      <el-button type="primary" @click="toggleSelectAll">
+        {{ isAllSelected ? '取消全选' : '一键全选' }}
+      </el-button>
+      <el-button class="float-right" type="primary" @click="authApiEnter">确 定</el-button>
     </div>
     <div class="tree-content">
       <el-scrollbar>
@@ -33,10 +26,7 @@
             <div class="flex items-center justify-between w-full pr-1">
               <span>{{ data.description }} </span>
               <el-tooltip :content="data.path">
-                <span
-                  class="max-w-[240px] break-all overflow-ellipsis overflow-hidden"
-                  >{{ data.path }}</span
-                >
+                <span class="max-w-[240px] break-all overflow-ellipsis overflow-hidden">{{ data.path }}</span>
               </el-tooltip>
             </div>
           </template>
@@ -69,6 +59,35 @@
     children: 'children',
     label: 'description'
   })
+  const isAllSelected = ref(false)
+  // 切换全选状态的方法
+  const toggleSelectAll = () => {
+    if (apiTree.value) {
+      if (!isAllSelected.value) {
+        apiTree.value.setCheckedKeys(getAllNodeKeys(apiTreeData.value))
+      } else {
+        apiTree.value.setCheckedKeys([])
+      }
+      isAllSelected.value = !isAllSelected.value
+    }
+  }
+
+  // 获取所有节点的 key
+  const getAllNodeKeys = (data) => {
+    const keys = []
+    const getKeys = (nodes) => {
+      nodes.forEach((node) => {
+        if (node.children && node.children.length > 0) {
+          getKeys(node.children)
+        } else {
+          keys.push(node.onlyId)
+        }
+      })
+    }
+    getKeys(data)
+    return keys
+  }
+
   const filterTextName = ref('')
   const filterTextPath = ref('')
   const apiTreeData = ref([])
@@ -93,9 +112,14 @@
   init()
 
   const needConfirm = ref(false)
+  // 当树节点变化时，更新全选状态
   const nodeChange = () => {
     needConfirm.value = true
+    const checkedKeys = apiTree.value.getCheckedKeys()
+    const allKeys = getAllNodeKeys(apiTreeData.value)
+    isAllSelected.value = checkedKeys.length === allKeys.length
   }
+
   // 暴露给外层使用的切换拦截统一方法
   const enterAndNext = () => {
     authApiEnter()
@@ -158,8 +182,7 @@
     if (!filterTextName.value) {
       matchesName = true
     } else {
-      matchesName =
-        data.description && data.description.includes(filterTextName.value)
+      matchesName = data.description && data.description.includes(filterTextName.value)
     }
     if (!filterTextPath.value) {
       matchesPath = true
@@ -168,7 +191,11 @@
     }
     return matchesName && matchesPath
   }
+  // 当过滤条件变化时，更新全选状态
   watch([filterTextName, filterTextPath], () => {
     apiTree.value.filter('')
+    isAllSelected.value = false
   })
+
+
 </script>
