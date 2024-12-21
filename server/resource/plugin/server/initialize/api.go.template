@@ -8,5 +8,5 @@ import (
 
 func Api(ctx context.Context) {
 	entities := []model.SysApi{}
-	utils.RegisterApis(entities)
+	utils.RegisterApis(entities,true)
 }
