@@ -10,6 +10,7 @@
   "proseWrap": "never",
   "singleQuote": true,
   "semi": false,
+  "htmlWhitespaceSensitivity": "ignore",
   "overrides": [
     {
       "printWidth": 80,
