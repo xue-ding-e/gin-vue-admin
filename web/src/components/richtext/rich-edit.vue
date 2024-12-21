@@ -20,7 +20,7 @@
 <script setup>
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
 
-  const basePath = import.meta.env.VITE_BASE_API
+  const basePath = import.meta.env.VITE_APP_PROXY_PREFIX
 
   import { onBeforeUnmount, ref, shallowRef, watch } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'

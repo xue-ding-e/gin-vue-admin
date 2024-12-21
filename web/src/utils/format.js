@@ -127,7 +127,7 @@ export const setBodyPrimaryColor = (primaryColor, darkMode) => {
   )
 }
 
-const baseUrl = ref(import.meta.env.VITE_BASE_API)
+const baseUrl = ref(import.meta.env.VITE_APP_PROXY_PREFIX)
 
 export const getBaseUrl = () => {
   return baseUrl.value === '/' ? '' : baseUrl.value

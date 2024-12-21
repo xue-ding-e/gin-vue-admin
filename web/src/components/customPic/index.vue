@@ -45,7 +45,7 @@
     }
   })
 
-  const path = ref(import.meta.env.VITE_BASE_API + '/')
+  const path = ref(import.meta.env.VITE_APP_PROXY_PREFIX + '/')
   const noAvatar = ref(noAvatarPng)
 
   const userStore = useUserStore()

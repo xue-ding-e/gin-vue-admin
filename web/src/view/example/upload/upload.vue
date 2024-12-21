@@ -112,7 +112,7 @@
     name: 'Upload'
   })
 
-  const path = ref(import.meta.env.VITE_BASE_API)
+  const path = ref(import.meta.env.VITE_APP_PROXY_PREFIX)
 
   const imageUrl = ref('')
   const imageCommon = ref('')

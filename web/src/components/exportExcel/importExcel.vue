@@ -12,7 +12,7 @@
 <script setup>
   import { ElMessage } from 'element-plus'
 
-  let baseUrl = import.meta.env.VITE_BASE_API
+  let baseUrl = import.meta.env.VITE_APP_PROXY_PREFIX
   if (baseUrl === "/"){
     baseUrl = ""
   }
