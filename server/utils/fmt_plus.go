@@ -90,6 +90,10 @@ func ParseStringToUint(s string) (uint, error) {
 	return uint(id64), nil
 }
 
-func UintToString(u uint) string {
-	return strconv.FormatUint(uint64(u), 10)
+func ParseStringToUintSafe(s string) uint {
+	id64, err := strconv.ParseUint(s, 10, strconv.IntSize)
+	if err != nil {
+		return 0
+	}
+	return uint(id64)
 }
