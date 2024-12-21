@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .page-padding {
+    @apply p-10;
+  }
+
+  .border-radius {
+    @apply rounded-[10px];
+  }
+}

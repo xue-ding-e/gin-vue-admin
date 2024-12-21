@@ -8,7 +8,7 @@
       v-model="activeValue"
       :closable="!(historys.length === 1 && $route.name === defaultRouter)"
       type="card"
-      class="bg-white text-slate-700 dark:text-slate-500 dark:bg-slate-900"
+      class="border-radius bg-white text-slate-700 dark:text-slate-500 dark:bg-slate-900"
       @contextmenu.prevent="openContextMenu($event)"
       @tab-click="changeTab"
       @tab-remove="removeTab"

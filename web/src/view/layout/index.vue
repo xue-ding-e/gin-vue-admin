@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-50 text-slate-700 dark:text-slate-500 dark:bg-slate-800 w-screen h-screen"
+    class="bg-gray-100 text-slate-700 dark:text-slate-500 dark:bg-slate-800 w-screen h-screen"
   >
     <el-watermark
       v-if="config.show_watermark"
@@ -16,6 +16,7 @@
         <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal"/>
       <div class="flex-1 p-2 w-0 h-full">
         <gva-tabs v-if="config.showTabs" />
+        <div class="h-2"></div>
         <div
           class="overflow-auto"
           :class="config.showTabs ? 'gva-container2' : 'gva-container pt-1'"
@@ -23,7 +24,7 @@
           <router-view v-if="reloadFlag" v-slot="{ Component,route }">
             <div
               id="gva-base-load-dom"
-              class="gva-body-h bg-gray-50 dark:bg-slate-800"
+              class="gva-body-h border-radius bg-white dark:bg-slate-800"
             >
               <transition mode="out-in" name="el-fade-in-linear">
                 <keep-alive :include="routerStore.keepAliveRouters">
