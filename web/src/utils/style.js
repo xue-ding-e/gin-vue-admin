@@ -1,13 +1,11 @@
-export const flexColumnWidth = (label) => {
+export const headerWidth = (label) => {
   // 获取计算后的样式
   const fontSize = window.getComputedStyle(document.body).fontSize || '14px'
   const fontFamily = window.getComputedStyle(document.body).fontFamily || 'Arial'
   const font = `${fontSize} ${fontFamily}`
-
+ 
   let flexWidth = getTextWidth(label, font)
-
-  // 增加适当的内边距和其他宽度
-
+  flexWidth += 25
   if (flexWidth < 80) {
     flexWidth = 80
   }
