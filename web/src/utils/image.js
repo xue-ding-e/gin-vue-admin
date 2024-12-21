@@ -91,16 +91,16 @@ export default class ImageCompress {
   }
 }
 
-import { getUrlPath } from '@/core/global'
+import { requestBaseUrl } from '@/core/global'
 export const getUrl = (url) => {
   if (url && url.slice(0, 4) !== 'http') {
-    if (getUrlPath === '/') {
+    if (requestBaseUrl === '/') {
       return url
     }
     if (url.slice(0, 1) === '/') {
-      return getUrlPath + url
+      return requestBaseUrl + url
     }
-    return getUrlPath + '/' + url
+    return requestBaseUrl + '/' + url
   } else {
     return url
   }
