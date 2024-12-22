@@ -9,6 +9,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import VueFilePathPlugin from './vitePlugin/componentName/index.js'
 import { svgBuilder } from 'vite-auto-import-svg'
 import { AddSecret } from './vitePlugin/secret'
+import AutoImport from 'unplugin-auto-import/vite'
 // @see https://cn.vitejs.dev/config/
 export default ({ mode }) => {
   AddSecret('')
@@ -29,7 +30,7 @@ export default ({ mode }) => {
 
   const alias = {
     '@': path.resolve(__dirname, './src'),
-    vue$: 'vue/dist/vue.runtime.esm-bundler.js'
+    vue$: 'vue/dist/vue.runtime.esm-bundler.js',
   }
 
   const esbuild = {}
@@ -38,8 +39,8 @@ export default ({ mode }) => {
     output: {
       entryFileNames: 'assets/[name].[hash].js',
       chunkFileNames: 'assets/[name].[hash].js',
-      assetFileNames: 'assets/[name].[hash].[ext]'
-    }
+      assetFileNames: 'assets/[name].[hash].[ext]',
+    },
   }
 
   const config = {
@@ -48,17 +49,17 @@ export default ({ mode }) => {
     root: './', // index.html文件所在位置
     publicDir: 'public', // 静态资源文件夹
     resolve: {
-      alias
+      alias,
     },
     define: {
-      'process.env': {}
+      'process.env': {},
     },
     css: {
       preprocessorOptions: {
         scss: {
-          api: 'modern-compiler' // or "modern"
-        }
-      }
+          api: 'modern-compiler', // or "modern"
+        },
+      },
     },
     server: {
       // 如果使用docker-compose开发模式，设置为false
@@ -67,19 +68,30 @@ export default ({ mode }) => {
       proxy: {
         // 把key的路径代理到target位置
         // detail: https://cli.vuejs.org/config/#devserver-proxy
-        [process.env.VITE_ROUTER_BASE_PREFIX + process.env.VITE_APP_PROXY_PREFIX]: {//富文本图片使用
+        [process.env.VITE_ROUTER_BASE_PREFIX + process.env.VITE_APP_PROXY_PREFIX]: {
+          //富文本图片使用
           // 需要代理的路径   例如 '/api'
-          target: process.env.VITE_SERVER_PORT ? `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/` : `${process.env.VITE_BASE_PATH}/`, // 代理到 目标路径
+          target: process.env.VITE_SERVER_PORT
+            ? `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/`
+            : `${process.env.VITE_BASE_PATH}/`, // 代理到 目标路径
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_ROUTER_BASE_PREFIX + process.env.VITE_APP_PROXY_PREFIX), '')
+          rewrite: (path) =>
+            path.replace(
+              new RegExp(
+                '^' + process.env.VITE_ROUTER_BASE_PREFIX + process.env.VITE_APP_PROXY_PREFIX,
+              ),
+              '',
+            ),
         },
-        [process.env.VITE_APP_PROXY_PREFIX]:{//正常api转发
-          target: process.env.VITE_SERVER_PORT ? `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/` : `${process.env.VITE_APP_PROXY_PREFIX}/`, // 代理到 目标路径
+        [process.env.VITE_APP_PROXY_PREFIX]: {
+          //正常api转发
+          target: process.env.VITE_SERVER_PORT
+            ? `${process.env.VITE_BASE_PATH}:${process.env.VITE_SERVER_PORT}/`
+            : `${process.env.VITE_APP_PROXY_PREFIX}/`, // 代理到 目标路径
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_APP_PROXY_PREFIX), '')
-
-        }
-      }
+          rewrite: (path) => path.replace(new RegExp('^' + process.env.VITE_APP_PROXY_PREFIX), ''),
+        },
+      },
     },
     build: {
       minify: 'terser', // 是否进行压缩,boolean | 'terser' | 'esbuild',默认使用terser
@@ -90,24 +102,40 @@ export default ({ mode }) => {
         compress: {
           //生产环境时移除console
           drop_console: true,
-          drop_debugger: true
-        }
+          drop_debugger: true,
+        },
       },
-      rollupOptions
+      rollupOptions,
     },
     esbuild,
     optimizeDeps,
     plugins: [
-      process.env.VITE_POSITION === 'open' && vueDevTools({ launchEditor: process.env.VITE_EDITOR }),
+      AutoImport({
+        imports: ['vue', 'vue-router', 'pinia'],
+        dts: false,
+        // dirs: ['src/utils/**', 'src/plugin/**'],
+        eslintrc: {
+          enabled: false,
+        },
+      }),
+      process.env.VITE_POSITION === 'open' &&
+        vueDevTools({ launchEditor: process.env.VITE_EDITOR }),
       legacyPlugin({
-        targets: ['Android > 39', 'Chrome >= 60', 'Safari >= 10.1', 'iOS >= 10.3', 'Firefox >= 54', 'Edge >= 15']
+        targets: [
+          'Android > 39',
+          'Chrome >= 60',
+          'Safari >= 10.1',
+          'iOS >= 10.3',
+          'Firefox >= 54',
+          'Edge >= 15',
+        ],
       }),
       vuePlugin(),
       svgBuilder('./src/assets/icons/'),
       svgBuilder('./src/plugin/'),
       [Banner(`\n Build based on gin-vue-admin \n Time : ${timestamp}`)],
-      VueFilePathPlugin('./src/pathInfo.json')
-    ]
+      VueFilePathPlugin('./src/pathInfo.json'),
+    ],
   }
   return config
 }
