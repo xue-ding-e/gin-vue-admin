@@ -1,49 +1,47 @@
 package utils
 
 import (
+	"net"
+	"time"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
-	"github.com/gin-gonic/gin"
-	"net"
-	"time"
+	"github.com/gofiber/fiber/v2"
 )
 
-func ClearToken(c *gin.Context) {
-	// 增加cookie x-token 向来源的web添加
-	host, _, err := net.SplitHostPort(c.Request.Host)
-	if err != nil {
-		host = c.Request.Host
-	}
-
+// 增加cookie x-token 向来源的web添加
+func ClearToken(c *fiber.Ctx) {
+	// 由于 Fiber 不提供直接的 c.Request.Host，需要使用 c.Hostname() 获取域名。
+	// 若包含端口，可自行解析；以下示例假设 c.Hostname() 返回的已去除端口，或无需区分端口。
+	host := c.Hostname()
 	if net.ParseIP(host) != nil {
-		c.SetCookie("x-token", "", -1, "/", "", false, false)
+		// IP请求,设置为空域名
+		c.Cookie(&fiber.Cookie{Name: "x-token", Value: "", Path: "/", MaxAge: -1, HTTPOnly: false})
 	} else {
-		c.SetCookie("x-token", "", -1, "/", host, false, false)
+		//域名请求 Cookie 域设置为 host
+		c.Cookie(&fiber.Cookie{Name: "x-token", Value: "", Path: "/", Domain: host, MaxAge: -1, HTTPOnly: false})
 	}
 }
 
-func SetToken(c *gin.Context, token string, maxAge int) {
+func SetToken(c *fiber.Ctx, token string, maxAge int) {
 	// 增加cookie x-token 向来源的web添加
-	host, _, err := net.SplitHostPort(c.Request.Host)
-	if err != nil {
-		host = c.Request.Host
-	}
-
+	host := c.Hostname()
 	if net.ParseIP(host) != nil {
-		c.SetCookie("x-token", token, maxAge, "/", "", false, false)
+		c.Cookie(&fiber.Cookie{Name: "x-token", Value: token, Path: "/", MaxAge: maxAge, HTTPOnly: false})
 	} else {
-		c.SetCookie("x-token", token, maxAge, "/", host, false, false)
+		c.Cookie(&fiber.Cookie{Name: "x-token", Value: token, Path: "/", Domain: host, MaxAge: maxAge, HTTPOnly: false})
 	}
 }
 
-func GetToken(c *gin.Context) string {
-	token, _ := c.Cookie("x-token")
+func GetToken(c *fiber.Ctx) string {
+	token := c.Cookies("x-token")
 	if token == "" {
 		j := NewJWT()
-		token = c.Request.Header.Get("x-token")
+		token = c.Get("x-token")
 		claims, err := j.ParseToken(token)
 		if err != nil {
+			// 不建议采用error级别,线上环境会被恶意增加日志
 			global.GVA_LOG.Error("重新写入cookie token失败,未能成功解析token,请检查请求头是否存在x-token且claims是否为规定结构")
 			return token
 		}
@@ -52,7 +50,7 @@ func GetToken(c *gin.Context) string {
 	return token
 }
 
-func GetClaims(c *gin.Context) (*systemReq.CustomClaims, error) {
+func GetClaims(c *fiber.Ctx) (*systemReq.CustomClaims, error) {
 	token := GetToken(c)
 	j := NewJWT()
 	claims, err := j.ParseToken(token)
@@ -63,8 +61,8 @@ func GetClaims(c *gin.Context) (*systemReq.CustomClaims, error) {
 }
 
 // GetUserID 从Gin的Context中获取从jwt解析出来的用户ID
-func GetUserID(c *gin.Context) uint {
-	if claims, exists := c.Get("claims"); !exists {
+func GetUserID(c *fiber.Ctx) uint {
+	if claims := c.Locals("claims"); claims == nil {
 		if cl, err := GetClaims(c); err != nil {
 			return 0
 		} else {
@@ -77,8 +75,8 @@ func GetUserID(c *gin.Context) uint {
 }
 
 // GetUserAuthorityId 从Gin的Context中获取从jwt解析出来的用户角色id
-func GetUserAuthorityId(c *gin.Context) uint {
-	if claims, exists := c.Get("claims"); !exists {
+func GetUserAuthorityId(c *fiber.Ctx) uint {
+	if claims := c.Locals("claims"); claims == nil {
 		if cl, err := GetClaims(c); err != nil {
 			return 0
 		} else {
@@ -91,8 +89,8 @@ func GetUserAuthorityId(c *gin.Context) uint {
 }
 
 // GetUserInfo 从Gin的Context中获取从jwt解析出来的用户角色id
-func GetUserInfo(c *gin.Context) *systemReq.CustomClaims {
-	if claims, exists := c.Get("claims"); !exists {
+func GetUserInfo(c *fiber.Ctx) *systemReq.CustomClaims {
+	if claims := c.Locals("claims"); claims == nil {
 		if cl, err := GetClaims(c); err != nil {
 			return nil
 		} else {
@@ -105,8 +103,8 @@ func GetUserInfo(c *gin.Context) *systemReq.CustomClaims {
 }
 
 // GetUserName 从Gin的Context中获取从jwt解析出来的用户名
-func GetUserName(c *gin.Context) string {
-	if claims, exists := c.Get("claims"); !exists {
+func GetUserName(c *fiber.Ctx) string {
+	if claims := c.Locals("claims"); claims == nil {
 		if cl, err := GetClaims(c); err != nil {
 			return ""
 		} else {

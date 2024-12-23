@@ -23,9 +23,9 @@ type AddressApi struct{}
 // @Param data body model.Address true "创建地址"
 // @Success 200 {object} response.Response{msg=string} "创建成功"
 // @Router /address/createAddress [post]
-func (self *AddressApi) CreateAddress(c *gin.Context) {
+func (self *AddressApi) CreateAddress(c *fiber.Ctx) {
 	var address model.Address
-	err := c.ShouldBindJSON(&address)
+	err := c.BodyParser(&address)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -52,7 +52,7 @@ func (self *AddressApi) CreateAddress(c *gin.Context) {
 // @Param data body model.Address true "删除地址"
 // @Success 200 {object} response.Response{msg=string} "删除成功"
 // @Router /address/deleteAddress [delete]
-func (self *AddressApi) DeleteAddress(c *gin.Context) {
+func (self *AddressApi) DeleteAddress(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	var UserID uint
 	authID := utils.GetUserAuthorityId(c)
@@ -76,7 +76,7 @@ func (self *AddressApi) DeleteAddress(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{msg=string} "批量删除成功"
 // @Router /address/deleteAddressByIds [delete]
-func (self *AddressApi) DeleteAddressByIds(c *gin.Context) {
+func (self *AddressApi) DeleteAddressByIds(c *fiber.Ctx) {
 	IDs := c.QueryArray("ID")
 	var UserID uint
 	authID := utils.GetUserAuthorityId(c)
@@ -100,9 +100,9 @@ func (self *AddressApi) DeleteAddressByIds(c *gin.Context) {
 // @Param data body model.Address true "更新地址"
 // @Success 200 {object} response.Response{msg=string} "更新成功"
 // @Router /address/updateAddress [put]
-func (self *AddressApi) UpdateAddress(c *gin.Context) {
+func (self *AddressApi) UpdateAddress(c *fiber.Ctx) {
 	var address model.Address
-	err := c.ShouldBindJSON(&address)
+	err := c.BodyParser(&address)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -129,7 +129,7 @@ func (self *AddressApi) UpdateAddress(c *gin.Context) {
 // @Param data query model.Address true "用id查询地址"
 // @Success 200 {object} response.Response{data=model.Address,msg=string} "查询成功"
 // @Router /address/findAddress [get]
-func (self *AddressApi) FindAddress(c *gin.Context) {
+func (self *AddressApi) FindAddress(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	var UserID uint
 	authID := utils.GetUserAuthorityId(c)
@@ -152,7 +152,7 @@ func (self *AddressApi) FindAddress(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /address/getDefaultAddress [get]
-func (self *AddressApi) GetDefaultAddress(c *gin.Context) {
+func (self *AddressApi) GetDefaultAddress(c *fiber.Ctx) {
 	var UserID uint
 	authID := utils.GetUserAuthorityId(c)
 	if authID != 888 {
@@ -177,7 +177,7 @@ func (self *AddressApi) GetDefaultAddress(c *gin.Context) {
 // @Param data query userReq.AddressSearch true "分页获取地址列表"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "获取成功"
 // @Router /address/getAddressList [get]
-func (self *AddressApi) GetAddressList(c *gin.Context) {
+func (self *AddressApi) GetAddressList(c *fiber.Ctx) {
 	var pageInfo request.AddressSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
@@ -209,7 +209,7 @@ func (self *AddressApi) GetAddressList(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /address/getAddressDataSource [get]
-func (self *AddressApi) GetAddressDataSource(c *gin.Context) {
+func (self *AddressApi) GetAddressDataSource(c *fiber.Ctx) {
 	// 此接口为获取数据源定义的数据
 	if dataSource, err := addressService.GetAddressDataSource(); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))

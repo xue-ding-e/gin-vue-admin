@@ -9,13 +9,12 @@ import (
 	"strings"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 // GinRecovery recover掉项目可能出现的panic，并使用zap记录相关日志
-func GinRecovery(stack bool) gin.HandlerFunc {
-	return func(c *gin.Context) {
+func GinRecovery(stack bool) fiber.Handler {
+	return func(c *fiber.Ctx) {
 		defer func() {
 			if err := recover(); err != nil {
 				// Check for a broken connection, as it is not really a
@@ -31,7 +30,7 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
-					global.GVA_LOG.Error(c.Request.URL.Path,
+					global.GVA_LOG.Error(c.Path,
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

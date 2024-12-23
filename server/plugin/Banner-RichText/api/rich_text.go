@@ -5,7 +5,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Banner-RichText/model"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Banner-RichText/model/request"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -22,9 +21,9 @@ type richText struct{}
 // @Param data body model.RichText true "创建富文本"
 // @Success 200 {object} response.Response{msg=string} "创建成功"
 // @Router /richText/createRichText [post]
-func (a *richText) CreateRichText(c *gin.Context) {
+func (a *richText) CreateRichText(c *fiber.Ctx) {
 	var info model.RichText
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -47,7 +46,7 @@ func (a *richText) CreateRichText(c *gin.Context) {
 // @Param data body model.RichText true "删除富文本"
 // @Success 200 {object} response.Response{msg=string} "删除成功"
 // @Router /richText/deleteRichText [delete]
-func (a *richText) DeleteRichText(c *gin.Context) {
+func (a *richText) DeleteRichText(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	err := serviceRichText.DeleteRichText(ID)
 	if err != nil {
@@ -66,7 +65,7 @@ func (a *richText) DeleteRichText(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{msg=string} "批量删除成功"
 // @Router /richText/deleteRichTextByIds [delete]
-func (a *richText) DeleteRichTextByIds(c *gin.Context) {
+func (a *richText) DeleteRichTextByIds(c *fiber.Ctx) {
 	IDs := c.QueryArray("IDs[]")
 	err := serviceRichText.DeleteRichTextByIds(IDs)
 	if err != nil {
@@ -86,9 +85,9 @@ func (a *richText) DeleteRichTextByIds(c *gin.Context) {
 // @Param data body model.RichText true "更新富文本"
 // @Success 200 {object} response.Response{msg=string} "更新成功"
 // @Router /richText/updateRichText [put]
-func (a *richText) UpdateRichText(c *gin.Context) {
+func (a *richText) UpdateRichText(c *fiber.Ctx) {
 	var info model.RichText
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -111,7 +110,7 @@ func (a *richText) UpdateRichText(c *gin.Context) {
 // @Param data query model.RichText true "用id查询富文本"
 // @Success 200 {object} response.Response{data=model.RichText,msg=string} "查询成功"
 // @Router /richText/findRichText [get]
-func (a *richText) FindRichText(c *gin.Context) {
+func (a *richText) FindRichText(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	rerichText, err := serviceRichText.GetRichText(ID)
 	if err != nil {
@@ -131,7 +130,7 @@ func (a *richText) FindRichText(c *gin.Context) {
 // @Param data query request.RichTextSearch true "分页获取富文本列表"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "获取成功"
 // @Router /richText/getRichTextList [get]
-func (a *richText) GetRichTextList(c *gin.Context) {
+func (a *richText) GetRichTextList(c *fiber.Ctx) {
 	var pageInfo request.RichTextSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
@@ -160,7 +159,7 @@ func (a *richText) GetRichTextList(c *gin.Context) {
 // @Param data query request.RichTextSearch true "分页获取富文本列表"
 // @Success 200 {object} response.Response{data=object,msg=string} "获取成功"
 // @Router /richText/getRichTextPublic [get]
-func (a *richText) FindRichTextByName(c *gin.Context) {
+func (a *richText) FindRichTextByName(c *fiber.Ctx) {
 	name := c.Query("name")
 	richText, err := serviceRichText.FindRichTextByName(name)
 	if err != nil {

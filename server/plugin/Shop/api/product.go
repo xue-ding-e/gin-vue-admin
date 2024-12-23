@@ -7,7 +7,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Shop/model"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Shop/model/request"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -24,9 +23,9 @@ type product struct{}
 // @Param data body model.Product true "创建产品"
 // @Success 200 {object} response.Response{msg=string} "创建成功"
 // @Router /product/createProduct [post]
-func (self *product) CreateProduct(c *gin.Context) {
+func (self *product) CreateProduct(c *fiber.Ctx) {
 	var info model.Product
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -49,7 +48,7 @@ func (self *product) CreateProduct(c *gin.Context) {
 // @Param data body model.Product true "删除产品"
 // @Success 200 {object} response.Response{msg=string} "删除成功"
 // @Router /product/deleteProduct [delete]
-func (self *product) DeleteProduct(c *gin.Context) {
+func (self *product) DeleteProduct(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	err := serviceProduct.DeleteProduct(ID)
 	if err != nil {
@@ -68,7 +67,7 @@ func (self *product) DeleteProduct(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{msg=string} "批量删除成功"
 // @Router /product/deleteProductByIds [delete]
-func (self *product) DeleteProductByIds(c *gin.Context) {
+func (self *product) DeleteProductByIds(c *fiber.Ctx) {
 	IDs := c.QueryArray("ID")
 	err := serviceProduct.DeleteProductByIds(IDs)
 	if err != nil {
@@ -88,9 +87,9 @@ func (self *product) DeleteProductByIds(c *gin.Context) {
 // @Param data body model.Product true "更新产品"
 // @Success 200 {object} response.Response{msg=string} "更新成功"
 // @Router /product/updateProduct [put]
-func (self *product) UpdateProduct(c *gin.Context) {
+func (self *product) UpdateProduct(c *fiber.Ctx) {
 	var info model.Product
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -113,7 +112,7 @@ func (self *product) UpdateProduct(c *gin.Context) {
 // @Param data query model.Product true "用id查询产品"
 // @Success 200 {object} response.Response{data=model.Product,msg=string} "查询成功"
 // @Router /product/findProduct [get]
-func (self *product) FindProduct(c *gin.Context) {
+func (self *product) FindProduct(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	reproduct, err := serviceProduct.GetProduct(ID)
 	if err != nil {
@@ -133,7 +132,7 @@ func (self *product) FindProduct(c *gin.Context) {
 // @Param data query request.ProductSearch true "分页获取产品列表"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "获取成功"
 // @Router /product/getProductList [get]
-func (self *product) GetProductList(c *gin.Context) {
+func (self *product) GetProductList(c *fiber.Ctx) {
 	var pageInfo request.ProductSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
@@ -155,7 +154,7 @@ func (self *product) GetProductList(c *gin.Context) {
 }
 
 // 根据分类 ID 获取商品列表
-func (self *product) GetProductsByCategoryID(c *gin.Context) {
+func (self *product) GetProductsByCategoryID(c *fiber.Ctx) {
 	categoryIDStr := c.Query("categoryId")
 	pageStr := c.DefaultQuery("page", "1")
 	sizeStr := c.DefaultQuery("size", "10")
@@ -177,7 +176,7 @@ func (self *product) GetProductsByCategoryID(c *gin.Context) {
 }
 
 // 根据商品 ID 获取商品详情
-func (self *product) GetProductInfo(c *gin.Context) {
+func (self *product) GetProductInfo(c *fiber.Ctx) {
 	prodIDStr := c.Query("prodId")
 	prodID, err := strconv.ParseUint(prodIDStr, 10, 64)
 	if err != nil {

@@ -14,14 +14,14 @@ import (
 var casbinService = service.ServiceGroupApp.SystemServiceGroup.CasbinService
 
 // CasbinHandler 拦截器
-func CasbinHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func CasbinHandler() fiber.Handler {
+	return func(c *fiber.Ctx) {
 		waitUse, _ := utils.GetClaims(c)
 		//获取请求的PATH
-		path := c.Request.URL.Path
+		path := c.Path
 		obj := strings.TrimPrefix(path, global.GVA_CONFIG.System.RouterPrefix)
 		// 获取请求方法
-		act := c.Request.Method
+		act := c.Method()
 		// 获取用户的角色
 		sub := strconv.Itoa(int(waitUse.AuthorityId))
 		e := casbinService.Casbin() // 判断策略中是否存在

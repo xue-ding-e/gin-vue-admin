@@ -24,7 +24,7 @@ type AutoCodeApi struct{}
 // @Produce   application/json
 // @Success   200  {object}  response.Response{data=map[string]interface{},msg=string}  "获取当前所有数据库"
 // @Router    /autoCode/getDB [get]
-func (autoApi *AutoCodeApi) GetDB(c *gin.Context) {
+func (autoApi *AutoCodeApi) GetDB(c *fiber.Ctx) {
 	businessDB := c.Query("businessDB")
 	dbs, err := autoCodeService.Database(businessDB).GetDB(businessDB)
 	var dbList []map[string]interface{}
@@ -52,7 +52,7 @@ func (autoApi *AutoCodeApi) GetDB(c *gin.Context) {
 // @Produce   application/json
 // @Success   200  {object}  response.Response{data=map[string]interface{},msg=string}  "获取当前数据库所有表"
 // @Router    /autoCode/getTables [get]
-func (autoApi *AutoCodeApi) GetTables(c *gin.Context) {
+func (autoApi *AutoCodeApi) GetTables(c *fiber.Ctx) {
 	dbName := c.Query("dbName")
 	businessDB := c.Query("businessDB")
 	if dbName == "" {
@@ -83,7 +83,7 @@ func (autoApi *AutoCodeApi) GetTables(c *gin.Context) {
 // @Produce   application/json
 // @Success   200  {object}  response.Response{data=map[string]interface{},msg=string}  "获取当前表所有字段"
 // @Router    /autoCode/getColumn [get]
-func (autoApi *AutoCodeApi) GetColumn(c *gin.Context) {
+func (autoApi *AutoCodeApi) GetColumn(c *fiber.Ctx) {
 	businessDB := c.Query("businessDB")
 	dbName := c.Query("dbName")
 	if dbName == "" {
@@ -106,9 +106,9 @@ func (autoApi *AutoCodeApi) GetColumn(c *gin.Context) {
 	}
 }
 
-func (autoApi *AutoCodeApi) LLMAuto(c *gin.Context) {
+func (autoApi *AutoCodeApi) LLMAuto(c *fiber.Ctx) {
 	var llm common.JSONMap
-	err := c.ShouldBindJSON(&llm)
+	err := c.BodyParser(&llm)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return

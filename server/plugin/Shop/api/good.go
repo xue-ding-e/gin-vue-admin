@@ -22,9 +22,9 @@ type good struct{}
 // @Param data body model.Good true "创建商品"
 // @Success 200 {object} response.Response{msg=string} "创建成功"
 // @Router /good/createGood [post]
-func (a *good) CreateGood(c *gin.Context) {
+func (a *good) CreateGood(c *fiber.Ctx) {
 	var info shop.Good
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -47,7 +47,7 @@ func (a *good) CreateGood(c *gin.Context) {
 // @Param data body model.Good true "删除商品"
 // @Success 200 {object} response.Response{msg=string} "删除成功"
 // @Router /good/deleteGood [delete]
-func (a *good) DeleteGood(c *gin.Context) {
+func (a *good) DeleteGood(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	err := goodService.DeleteGood(ID)
 	if err != nil {
@@ -66,7 +66,7 @@ func (a *good) DeleteGood(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{msg=string} "批量删除成功"
 // @Router /good/deleteGoodByIds [delete]
-func (a *good) DeleteGoodByIds(c *gin.Context) {
+func (a *good) DeleteGoodByIds(c *fiber.Ctx) {
 	IDs := c.QueryArray("IDs[]")
 	err := goodService.DeleteGoodByIds(IDs)
 	if err != nil {
@@ -86,9 +86,9 @@ func (a *good) DeleteGoodByIds(c *gin.Context) {
 // @Param data body model.Good true "更新商品"
 // @Success 200 {object} response.Response{msg=string} "更新成功"
 // @Router /good/updateGood [put]
-func (a *good) UpdateGood(c *gin.Context) {
+func (a *good) UpdateGood(c *fiber.Ctx) {
 	var info shop.Good
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -111,7 +111,7 @@ func (a *good) UpdateGood(c *gin.Context) {
 // @Param data query model.Good true "用id查询商品"
 // @Success 200 {object} response.Response{data=model.Good,msg=string} "查询成功"
 // @Router /good/findGood [get]
-func (a *good) FindGood(c *gin.Context) {
+func (a *good) FindGood(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	regood, err := goodService.GetGood(ID)
 	if err != nil {
@@ -131,7 +131,7 @@ func (a *good) FindGood(c *gin.Context) {
 // @Param data query request.GoodSearch true "分页获取商品列表"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "获取成功"
 // @Router /good/getGoodList [get]
-func (a *good) GetGoodList(c *gin.Context) {
+func (a *good) GetGoodList(c *fiber.Ctx) {
 	var pageInfo request.GoodSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
@@ -160,7 +160,7 @@ func (a *good) GetGoodList(c *gin.Context) {
 // @Param data query request.GoodSearch true "分页获取商品列表"
 // @Success 200 {object} response.Response{data=object,msg=string} "获取成功"
 // @Router /good/getGoodPublic [get]
-func (a *good) GetGoodPublic(c *gin.Context) {
+func (a *good) GetGoodPublic(c *fiber.Ctx) {
 	// 此接口不需要鉴权 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
 	goodService.GetGoodPublic()
 	response.OkWithDetailed(gin.H{"info": "不需要鉴权的商品接口信息"}, "获取成功", c)

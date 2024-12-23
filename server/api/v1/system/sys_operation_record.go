@@ -22,9 +22,9 @@ type OperationRecordApi struct{}
 // @Param     data  body      system.SysOperationRecord      true  "创建SysOperationRecord"
 // @Success   200   {object}  response.Response{msg=string}  "创建SysOperationRecord"
 // @Router    /sysOperationRecord/createSysOperationRecord [post]
-func (s *OperationRecordApi) CreateSysOperationRecord(c *gin.Context) {
+func (s *OperationRecordApi) CreateSysOperationRecord(c *fiber.Ctx) {
 	var sysOperationRecord system.SysOperationRecord
-	err := c.ShouldBindJSON(&sysOperationRecord)
+	err := c.BodyParser(&sysOperationRecord)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -47,9 +47,9 @@ func (s *OperationRecordApi) CreateSysOperationRecord(c *gin.Context) {
 // @Param     data  body      system.SysOperationRecord      true  "SysOperationRecord模型"
 // @Success   200   {object}  response.Response{msg=string}  "删除SysOperationRecord"
 // @Router    /sysOperationRecord/deleteSysOperationRecord [delete]
-func (s *OperationRecordApi) DeleteSysOperationRecord(c *gin.Context) {
+func (s *OperationRecordApi) DeleteSysOperationRecord(c *fiber.Ctx) {
 	var sysOperationRecord system.SysOperationRecord
-	err := c.ShouldBindJSON(&sysOperationRecord)
+	err := c.BodyParser(&sysOperationRecord)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -72,9 +72,9 @@ func (s *OperationRecordApi) DeleteSysOperationRecord(c *gin.Context) {
 // @Param     data  body      request.IdsReq                 true  "批量删除SysOperationRecord"
 // @Success   200   {object}  response.Response{msg=string}  "批量删除SysOperationRecord"
 // @Router    /sysOperationRecord/deleteSysOperationRecordByIds [delete]
-func (s *OperationRecordApi) DeleteSysOperationRecordByIds(c *gin.Context) {
+func (s *OperationRecordApi) DeleteSysOperationRecordByIds(c *fiber.Ctx) {
 	var IDS request.IdsReq
-	err := c.ShouldBindJSON(&IDS)
+	err := c.BodyParser(&IDS)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -97,7 +97,7 @@ func (s *OperationRecordApi) DeleteSysOperationRecordByIds(c *gin.Context) {
 // @Param     data  query     system.SysOperationRecord                                  true  "Id"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "用id查询SysOperationRecord"
 // @Router    /sysOperationRecord/findSysOperationRecord [get]
-func (s *OperationRecordApi) FindSysOperationRecord(c *gin.Context) {
+func (s *OperationRecordApi) FindSysOperationRecord(c *fiber.Ctx) {
 	var sysOperationRecord system.SysOperationRecord
 	err := c.ShouldBindQuery(&sysOperationRecord)
 	if err != nil {
@@ -127,7 +127,7 @@ func (s *OperationRecordApi) FindSysOperationRecord(c *gin.Context) {
 // @Param     data  query     request.SysOperationRecordSearch                        true  "页码, 每页大小, 搜索条件"
 // @Success   200   {object}  response.Response{data=response.PageResult,msg=string}  "分页获取SysOperationRecord列表,返回包括列表,总数,页码,每页数量"
 // @Router    /sysOperationRecord/getSysOperationRecordList [get]
-func (s *OperationRecordApi) GetSysOperationRecordList(c *gin.Context) {
+func (s *OperationRecordApi) GetSysOperationRecordList(c *fiber.Ctx) {
 	var pageInfo systemReq.SysOperationRecordSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {

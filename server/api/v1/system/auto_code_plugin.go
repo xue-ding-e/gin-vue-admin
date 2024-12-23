@@ -20,7 +20,7 @@ type AutoCodePluginApi struct{}
 // @Param     plug  formData  file                                              true  "this is a test file"
 // @Success   200   {object}  response.Response{data=[]interface{},msg=string}  "安装插件成功"
 // @Router    /autoCode/installPlugin [post]
-func (a *AutoCodePluginApi) Install(c *gin.Context) {
+func (a *AutoCodePluginApi) Install(c *fiber.Ctx) {
 	header, err := c.FormFile("plug")
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
@@ -59,7 +59,7 @@ func (a *AutoCodePluginApi) Install(c *gin.Context) {
 // @Param     plugName  query    string  true  "插件名称"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "打包插件成功"
 // @Router    /autoCode/pubPlug [post]
-func (a *AutoCodePluginApi) Packaged(c *gin.Context) {
+func (a *AutoCodePluginApi) Packaged(c *fiber.Ctx) {
 	plugName := c.Query("plugName")
 	zipPath, err := autoCodePluginService.PubPlug(plugName)
 	if err != nil {
@@ -78,9 +78,9 @@ func (a *AutoCodePluginApi) Packaged(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "打包插件成功"
 // @Router    /autoCode/initMenu [post]
-func (a *AutoCodePluginApi) InitMenu(c *gin.Context) {
+func (a *AutoCodePluginApi) InitMenu(c *fiber.Ctx) {
 	var menuInfo request.InitMenu
-	err := c.ShouldBindJSON(&menuInfo)
+	err := c.BodyParser(&menuInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -102,9 +102,9 @@ func (a *AutoCodePluginApi) InitMenu(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "打包插件成功"
 // @Router    /autoCode/initAPI [post]
-func (a *AutoCodePluginApi) InitAPI(c *gin.Context) {
+func (a *AutoCodePluginApi) InitAPI(c *fiber.Ctx) {
 	var apiInfo request.InitApi
-	err := c.ShouldBindJSON(&apiInfo)
+	err := c.BodyParser(&apiInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return

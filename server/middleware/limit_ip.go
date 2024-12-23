@@ -15,7 +15,7 @@ import (
 
 type LimitConfig struct {
 	// GenerationKey 根据业务生成key 下面CheckOrMark查询生成
-	GenerationKey func(c *gin.Context) string
+	GenerationKey func(c *fiber.Ctx) string
 	// 检查函数,用户可修改具体逻辑,更加灵活
 	CheckOrMark func(key string, expire int, limit int) error
 	// Expire key 过期时间
@@ -24,8 +24,8 @@ type LimitConfig struct {
 	Limit int
 }
 
-func (l LimitConfig) LimitWithTime() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (l LimitConfig) LimitWithTime() fiber.Handler {
+	return func(c *fiber.Ctx) {
 		if err := l.CheckOrMark(l.GenerationKey(c), l.Expire, l.Limit); err != nil {
 			c.JSON(http.StatusOK, gin.H{"code": response.ERROR, "msg": err})
 			c.Abort()
@@ -37,8 +37,8 @@ func (l LimitConfig) LimitWithTime() gin.HandlerFunc {
 }
 
 // DefaultGenerationKey 默认生成key
-func DefaultGenerationKey(c *gin.Context) string {
-	return "GVA_Limit" + c.ClientIP()
+func DefaultGenerationKey(c *fiber.Ctx) string {
+	return "GVA_Limit" + c.IP()
 }
 
 func DefaultCheckOrMark(key string, expire int, limit int) (err error) {
@@ -52,7 +52,7 @@ func DefaultCheckOrMark(key string, expire int, limit int) (err error) {
 	return err
 }
 
-func DefaultLimit() gin.HandlerFunc {
+func DefaultLimit() fiber.Handler {
 	return LimitConfig{
 		GenerationKey: DefaultGenerationKey,
 		CheckOrMark:   DefaultCheckOrMark,

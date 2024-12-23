@@ -5,7 +5,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	email_response "github.com/flipped-aurora/gin-vue-admin/server/plugin/email/model/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/email/service"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -18,7 +17,7 @@ type EmailApi struct{}
 // @Produce   application/json
 // @Success   200  {string}  string  "{"success":true,"data":{},"msg":"发送成功"}"
 // @Router    /email/emailTest [post]
-func (s *EmailApi) EmailTest(c *gin.Context) {
+func (s *EmailApi) EmailTest(c *fiber.Ctx) {
 	err := service.ServiceGroupApp.EmailTest()
 	if err != nil {
 		global.GVA_LOG.Error("发送失败!", zap.Error(err))
@@ -36,9 +35,9 @@ func (s *EmailApi) EmailTest(c *gin.Context) {
 // @Param     data  body      email_response.Email  true  "发送邮件必须的参数"
 // @Success   200   {string}  string                "{"success":true,"data":{},"msg":"发送成功"}"
 // @Router    /email/sendEmail [post]
-func (s *EmailApi) SendEmail(c *gin.Context) {
+func (s *EmailApi) SendEmail(c *fiber.Ctx) {
 	var email email_response.Email
-	err := c.ShouldBindJSON(&email)
+	err := c.BodyParser(&email)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return

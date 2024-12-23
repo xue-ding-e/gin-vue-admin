@@ -11,4 +11,5 @@ type System struct {
 	UseRedis      bool   `mapstructure:"use-redis" json:"use-redis" yaml:"use-redis"`                   // 使用redis
 	UseMongo      bool   `mapstructure:"use-mongo" json:"use-mongo" yaml:"use-mongo"`                   // 使用mongo
 	UseStrictAuth bool   `mapstructure:"use-strict-auth" json:"use-strict-auth" yaml:"use-strict-auth"` // 使用树形角色分配模式
+	Mode          string `mapstructure:"mode" json:"mode" yaml:"mode"`                                  // 生产模式,开发模式,测试模式等;gofiber判断运行中间件等服务
 }

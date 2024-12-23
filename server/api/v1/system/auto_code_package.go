@@ -8,6 +8,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"go.uber.org/zap"
 	"strings"
 )
@@ -23,9 +24,9 @@ type AutoCodePackageApi struct{}
 // @Param     data  body      request.SysAutoCodePackageCreate                                         true  "创建package"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "创建package成功"
 // @Router    /autoCode/createPackage [post]
-func (a *AutoCodePackageApi) Create(c *gin.Context) {
+func (a *AutoCodePackageApi) Create(c *fiber.Ctx) {
 	var info request.SysAutoCodePackageCreate
-	_ = c.ShouldBindJSON(&info)
+	_ = c.BodyParser(&info)
 	if err := utils.Verify(info, utils.AutoPackageVerify); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -34,7 +35,7 @@ func (a *AutoCodePackageApi) Create(c *gin.Context) {
 		response.FailWithMessage("包名不合法", c)
 		return
 	} // PackageName可能导致路径穿越的问题 / 和 \ 都要防止
-	err := autoCodePackageService.Create(c.Request.Context(), &info)
+	err := autoCodePackageService.Create(c.UserContext(), &info)
 	if err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
@@ -52,10 +53,10 @@ func (a *AutoCodePackageApi) Create(c *gin.Context) {
 // @Param     data  body      system.SysAutoCode                                         true  "更新package"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "更新package成功"
 // @Router    /autoCode/updatePackageDetail [post]
-func (a *AutoCodePackageApi) UpdatePackageDetail(c *gin.Context) {
+func (a *AutoCodePackageApi) UpdatePackageDetail(c *fiber.Ctx) {
 	var info request.SysAutoCodePackageCreate
 	var save model.SysAutoCodePackage
-	_ = c.ShouldBindJSON(&info)
+	_ = c.BodyParser(&info)
 	if err := utils.Verify(info, utils.AutoPackageVerify); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -84,10 +85,10 @@ func (a *AutoCodePackageApi) UpdatePackageDetail(c *gin.Context) {
 // @Param     data  body      common.GetById                                         true  "创建package"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "删除package成功"
 // @Router    /autoCode/delPackage [post]
-func (a *AutoCodePackageApi) Delete(c *gin.Context) {
+func (a *AutoCodePackageApi) Delete(c *fiber.Ctx) {
 	var info common.GetById
-	_ = c.ShouldBindJSON(&info)
-	err := autoCodePackageService.Delete(c.Request.Context(), info)
+	_ = c.BodyParser(&info)
+	err := autoCodePackageService.Delete(c.UserContext(), info)
 	if err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
@@ -105,10 +106,10 @@ func (a *AutoCodePackageApi) Delete(c *gin.Context) {
 // @Param     id  body      int                                                true  "package ID"
 // @Success   200  {object}  response.Response{data=system.SysAutoCode,msg=string}  "根据ID获取package成功"
 // @Router    /autoCode/getPackageByID [post]
-func (a *AutoCodePackageApi) GetPackageById(c *gin.Context) {
+func (a *AutoCodePackageApi) GetPackageById(c *fiber.Ctx) {
 	var info common.GetById
-	_ = c.ShouldBindJSON(&info)
-	data, err := autoCodePackageService.GetByID(c.Request.Context(), info)
+	_ = c.BodyParser(&info)
+	data, err := autoCodePackageService.GetByID(c.UserContext(), info)
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
@@ -126,7 +127,7 @@ func (a *AutoCodePackageApi) GetPackageById(c *gin.Context) {
 // @Produce   application/json
 // @Success   200  {object}  response.Response{data=map[string]interface{},msg=string}  "创建package成功"
 // @Router    /autoCode/getPackage [post]
-func (a *AutoCodePackageApi) All(c *gin.Context) {
+func (a *AutoCodePackageApi) All(c *fiber.Ctx) {
 	data, err := autoCodePackageService.All(c.Request.Context())
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
@@ -144,7 +145,7 @@ func (a *AutoCodePackageApi) All(c *gin.Context) {
 // @Produce   application/json
 // @Success   200  {object}  response.Response{data=map[string]interface{},msg=string}  "创建package成功"
 // @Router    /autoCode/getTemplates [get]
-func (a *AutoCodePackageApi) Templates(c *gin.Context) {
+func (a *AutoCodePackageApi) Templates(c *fiber.Ctx) {
 	data, err := autoCodePackageService.Templates(c.Request.Context())
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))

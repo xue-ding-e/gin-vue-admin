@@ -6,7 +6,7 @@
 // @Produce application/json
 // @Success 200 {object} response.Response{data=object,msg=string} "获取成功"
 // @Router /{{.Abbreviation}}/{{.Router}} [{{.Method}}]
-func (a *{{.Abbreviation}}) {{.FuncName}}(c *gin.Context) {
+func (a *{{.Abbreviation}}) {{.FuncName}}(c *fiber.Ctx) {
     // 请添加自己的业务逻辑
     err := service{{ .StructName }}.{{.FuncName}}()
        if err != nil {
@@ -27,7 +27,7 @@ func (a *{{.Abbreviation}}) {{.FuncName}}(c *gin.Context) {
 // @Param data query {{.Package}}Req.{{.StructName}}Search true "成功"
 // @Success 200 {object} response.Response{data=object,msg=string} "成功"
 // @Router /{{.Abbreviation}}/{{.Router}} [{{.Method}}]
-func ({{.Abbreviation}}Api *{{.StructName}}Api){{.FuncName}}(c *gin.Context) {
+func ({{.Abbreviation}}Api *{{.StructName}}Api){{.FuncName}}(c *fiber.Ctx) {
     // 请添加自己的业务逻辑
     err := {{.Abbreviation}}Service.{{.FuncName}}()
     if err != nil {

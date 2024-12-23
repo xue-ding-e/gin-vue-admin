@@ -14,7 +14,7 @@ var Minio = new(MinioApi)
 
 type MinioApi struct{}
 
-func (self *MinioApi) GetMinioSts(c *gin.Context) {
+func (self *MinioApi) GetMinioSts(c *fiber.Ctx) {
 	ids := []string{"1", "2", "3", "4", "5", "6"}
 	var resources []string
 	for _, id := range ids {

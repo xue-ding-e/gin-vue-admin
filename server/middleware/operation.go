@@ -1,9 +1,8 @@
 package middleware
 
 import (
-	"bytes"
 	"encoding/json"
-	"io"
+	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -16,7 +15,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -31,20 +29,18 @@ func init() {
 	}
 }
 
-func OperationRecord() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func OperationRecord() fiber.Handler {
+	return func(c *fiber.Ctx) error {
 		var body []byte
 		var userId int
-		if c.Request.Method != http.MethodGet {
-			var err error
-			body, err = io.ReadAll(c.Request.Body)
-			if err != nil {
-				global.GVA_LOG.Error("read body from request error:", zap.Error(err))
-			} else {
-				c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
-			}
+
+		// 如果不是 GET 请求，则读取 Body 并重置，便于后续逻辑或其他中间件可再次读取
+		if c.Method() != http.MethodGet {
+			body = c.Body()
+			_ = c.Request().SetBody(body)
 		} else {
-			query := c.Request.URL.RawQuery
+			// 这里模拟在原 Gin 中获取并序列化查询参数的做法
+			query := c.Context().QueryArgs().String()
 			query, _ = url.QueryUnescape(query)
 			split := strings.Split(query, "&")
 			m := make(map[string]string)
@@ -55,28 +51,34 @@ func OperationRecord() gin.HandlerFunc {
 				}
 			}
 			body, _ = json.Marshal(&m)
+			_ = c.Request().SetBody(body)
 		}
-		claims, _ := utils.GetClaims(c)
+
+		// 读取用户 ID
+		claims, _ := utils.GetClaims(c) // 需修改 utils.GetClaims 以兼容 Fiber
 		if claims != nil && claims.BaseClaims.ID != 0 {
 			userId = int(claims.BaseClaims.ID)
 		} else {
-			id, err := strconv.Atoi(c.Request.Header.Get("x-user-id"))
+			id, err := strconv.Atoi(c.Get("x-user-id"))
 			if err != nil {
 				userId = 0
+			} else {
+				userId = id
 			}
-			userId = id
 		}
+
+		// 构造操作记录
 		record := system.SysOperationRecord{
-			Ip:     c.ClientIP(),
-			Method: c.Request.Method,
-			Path:   c.Request.URL.Path,
-			Agent:  c.Request.UserAgent(),
+			Ip:     c.IP(),
+			Method: c.Method(),
+			Path:   c.Path(),
+			Agent:  c.Get("User-Agent"),
 			Body:   "",
 			UserID: userId,
 		}
 
-		// 上传文件时候 中间件日志进行裁断操作
-		if strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {
+		// 判断是否上传文件
+		if strings.Contains(c.Get("Content-Type"), "multipart/form-data") {
 			record.Body = "[文件]"
 		} else {
 			if len(body) > bufferSize {
@@ -86,48 +88,53 @@ func OperationRecord() gin.HandlerFunc {
 			}
 		}
 
-		writer := responseBodyWriter{
-			ResponseWriter: c.Writer,
-			body:           &bytes.Buffer{},
+		// 开始计时，执行下一个处理
+		startTime := time.Now()
+		if err := c.Next(); err != nil {
+			// Fiber 默认错误处理可在 app.Use(recover.New()) 或自定义错误处理中
+			// 这里可自行决定如何记录错误信息
+			global.GVA_LOG.Error("fiber next error:", zap.Error(err))
 		}
-		c.Writer = writer
-		now := time.Now()
+		latency := time.Since(startTime)
 
-		c.Next()
-
-		latency := time.Since(now)
-		record.ErrorMessage = c.Errors.ByType(gin.ErrorTypePrivate).String()
-		record.Status = c.Writer.Status()
+		// 记录响应
+		// 在 Fiber 中可直接通过 c.Response().Body() 获取响应内容
+		record.Status = c.Response().StatusCode()
+		record.ErrorMessage = "" // Fiber 并没有像 Gin 那样的 c.Errors，可自定义错误记录机制
 		record.Latency = latency
-		record.Resp = writer.body.String()
+		record.Resp = string(c.Response().Body())
 
-		if strings.Contains(c.Writer.Header().Get("Pragma"), "public") ||
-			strings.Contains(c.Writer.Header().Get("Expires"), "0") ||
-			strings.Contains(c.Writer.Header().Get("Cache-Control"), "must-revalidate, post-check=0, pre-check=0") ||
-			strings.Contains(c.Writer.Header().Get("Content-Type"), "application/force-download") ||
-			strings.Contains(c.Writer.Header().Get("Content-Type"), "application/octet-stream") ||
-			strings.Contains(c.Writer.Header().Get("Content-Type"), "application/vnd.ms-excel") ||
-			strings.Contains(c.Writer.Header().Get("Content-Type"), "application/download") ||
-			strings.Contains(c.Writer.Header().Get("Content-Disposition"), "attachment") ||
-			strings.Contains(c.Writer.Header().Get("Content-Transfer-Encoding"), "binary") {
-			if len(record.Resp) > bufferSize {
-				// 截断
-				record.Body = "超出记录长度"
+		// 检查特定响应头
+		respHeaders := []string{
+			c.GetRespHeader("Pragma"),
+			c.GetRespHeader("Expires"),
+			c.GetRespHeader("Cache-Control"),
+			c.GetRespHeader("Content-Type"),
+			c.GetRespHeader("Content-Disposition"),
+			c.GetRespHeader("Content-Transfer-Encoding"),
+		}
+		for _, h := range respHeaders {
+			if strings.Contains(h, "public") ||
+				strings.Contains(h, "0") ||
+				strings.Contains(h, "must-revalidate") ||
+				strings.Contains(h, "application/force-download") ||
+				strings.Contains(h, "application/octet-stream") ||
+				strings.Contains(h, "application/vnd.ms-excel") ||
+				strings.Contains(h, "application/download") ||
+				strings.Contains(h, "attachment") ||
+				strings.Contains(h, "binary") {
+				if len(record.Resp) > bufferSize {
+					record.Body = "超出记录长度"
+				}
+				break
 			}
 		}
 
+		// 写入操作记录
 		if err := operationRecordService.CreateSysOperationRecord(record); err != nil {
 			global.GVA_LOG.Error("create operation record error:", zap.Error(err))
 		}
+
+		return nil
 	}
-}
-
-type responseBodyWriter struct {
-	gin.ResponseWriter
-	body *bytes.Buffer
-}
-
-func (r responseBodyWriter) Write(b []byte) (int, error) {
-	r.body.Write(b)
-	return r.ResponseWriter.Write(b)
 }

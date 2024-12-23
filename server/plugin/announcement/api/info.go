@@ -22,9 +22,9 @@ type info struct{}
 // @Param data body model.Info true "创建公告"
 // @Success 200 {object} response.Response{msg=string} "创建成功"
 // @Router /info/createInfo [post]
-func (a *info) CreateInfo(c *gin.Context) {
+func (a *info) CreateInfo(c *fiber.Ctx) {
 	var info model.Info
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -47,7 +47,7 @@ func (a *info) CreateInfo(c *gin.Context) {
 // @Param data body model.Info true "删除公告"
 // @Success 200 {object} response.Response{msg=string} "删除成功"
 // @Router /info/deleteInfo [delete]
-func (a *info) DeleteInfo(c *gin.Context) {
+func (a *info) DeleteInfo(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	err := serviceInfo.DeleteInfo(ID)
 	if err != nil {
@@ -66,7 +66,7 @@ func (a *info) DeleteInfo(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{msg=string} "批量删除成功"
 // @Router /info/deleteInfoByIds [delete]
-func (a *info) DeleteInfoByIds(c *gin.Context) {
+func (a *info) DeleteInfoByIds(c *fiber.Ctx) {
 	IDs := c.QueryArray("IDs[]")
 	if err := serviceInfo.DeleteInfoByIds(IDs); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
@@ -85,9 +85,9 @@ func (a *info) DeleteInfoByIds(c *gin.Context) {
 // @Param data body model.Info true "更新公告"
 // @Success 200 {object} response.Response{msg=string} "更新成功"
 // @Router /info/updateInfo [put]
-func (a *info) UpdateInfo(c *gin.Context) {
+func (a *info) UpdateInfo(c *fiber.Ctx) {
 	var info model.Info
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -110,7 +110,7 @@ func (a *info) UpdateInfo(c *gin.Context) {
 // @Param data query model.Info true "用id查询公告"
 // @Success 200 {object} response.Response{data=model.Info,msg=string} "查询成功"
 // @Router /info/findInfo [get]
-func (a *info) FindInfo(c *gin.Context) {
+func (a *info) FindInfo(c *fiber.Ctx) {
 	ID := c.Query("ID")
 	reinfo, err := serviceInfo.GetInfo(ID)
 	if err != nil {
@@ -130,7 +130,7 @@ func (a *info) FindInfo(c *gin.Context) {
 // @Param data query request.InfoSearch true "分页获取公告列表"
 // @Success 200 {object} response.Response{data=response.PageResult,msg=string} "获取成功"
 // @Router /info/getInfoList [get]
-func (a *info) GetInfoList(c *gin.Context) {
+func (a *info) GetInfoList(c *fiber.Ctx) {
 	var pageInfo request.InfoSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
@@ -158,7 +158,7 @@ func (a *info) GetInfoList(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {object} response.Response{data=object,msg=string} "查询成功"
 // @Router /info/getInfoDataSource [get]
-func (a *info) GetInfoDataSource(c *gin.Context) {
+func (a *info) GetInfoDataSource(c *fiber.Ctx) {
 	// 此接口为获取数据源定义的数据
 	dataSource, err := serviceInfo.GetInfoDataSource()
 	if err != nil {
@@ -177,7 +177,7 @@ func (a *info) GetInfoDataSource(c *gin.Context) {
 // @Param data query request.InfoSearch true "分页获取公告列表"
 // @Success 200 {object} response.Response{data=object,msg=string} "获取成功"
 // @Router /info/getInfoPublic [get]
-func (a *info) GetInfoPublic(c *gin.Context) {
+func (a *info) GetInfoPublic(c *fiber.Ctx) {
 	// 此接口不需要鉴权 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
 	response.OkWithDetailed(gin.H{"info": "不需要鉴权的公告接口信息"}, "获取成功", c)
 }

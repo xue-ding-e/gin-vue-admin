@@ -5,20 +5,19 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/BusinessConfig/service"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-	"github.com/gin-gonic/gin"
 )
 
 var BusinessConfig = new(businessConfig)
 
 type businessConfig struct{}
 
-func (self *businessConfig) GetBusinessConfig(c *gin.Context) {
+func (self *businessConfig) GetBusinessConfig(c *fiber.Ctx) {
 	response.OkWithData(config.GLOBAL_CONFIG, c)
 }
 
-func (self *businessConfig) UpdateBusinessConfig(c *gin.Context) {
+func (self *businessConfig) UpdateBusinessConfig(c *fiber.Ctx) {
 	var reqrest config.GLOBAL_CONFIG_TYPE
-	if err := c.ShouldBindJSON(&reqrest); err != nil {
+	if err := c.BodyParser(&reqrest); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
@@ -35,7 +34,7 @@ func (self *businessConfig) UpdateBusinessConfig(c *gin.Context) {
 	response.OkWithDetailed(reqrest, "更新成功", c)
 }
 
-func (self *businessConfig) RefeshConfigCacheToDB(c *gin.Context) {
+func (self *businessConfig) RefeshConfigCacheToDB(c *fiber.Ctx) {
 	if err := service.BusinessConfig.RefeshConfigCacheToDB(); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -43,7 +42,7 @@ func (self *businessConfig) RefeshConfigCacheToDB(c *gin.Context) {
 	response.OkWithMessage("保存成功", c)
 }
 
-//func (self *businessConfig) RefeshConfigCacheToEtcd(c *gin.Context) {
+//func (self *businessConfig) RefeshConfigCacheToEtcd(c *fiber.Ctx) {
 //	configBytes, err := json.Marshal(config.GLOBAL_CONFIG)
 //	if err != nil {
 //		response.FailWithMessage(err.Error(), c)

@@ -24,9 +24,9 @@ type SystemApiApi struct{}
 // @Param     data  body      system.SysApi                  true  "api路径, api中文描述, api组, 方法"
 // @Success   200   {object}  response.Response{msg=string}  "创建基础api"
 // @Router    /api/createApi [post]
-func (s *SystemApiApi) CreateApi(c *gin.Context) {
+func (s *SystemApiApi) CreateApi(c *fiber.Ctx) {
 	var api system.SysApi
-	err := c.ShouldBindJSON(&api)
+	err := c.BodyParser(&api)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -53,7 +53,7 @@ func (s *SystemApiApi) CreateApi(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{msg=string}  "同步API"
 // @Router    /api/syncApi [get]
-func (s *SystemApiApi) SyncApi(c *gin.Context) {
+func (s *SystemApiApi) SyncApi(c *fiber.Ctx) {
 	newApis, deleteApis, ignoreApis, err := apiService.SyncApi()
 	if err != nil {
 		global.GVA_LOG.Error("同步失败!", zap.Error(err))
@@ -75,7 +75,7 @@ func (s *SystemApiApi) SyncApi(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{msg=string}  "获取API分组"
 // @Router    /api/getApiGroups [get]
-func (s *SystemApiApi) GetApiGroups(c *gin.Context) {
+func (s *SystemApiApi) GetApiGroups(c *fiber.Ctx) {
 	groups, apiGroupMap, err := apiService.GetApiGroups()
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
@@ -96,9 +96,9 @@ func (s *SystemApiApi) GetApiGroups(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{msg=string}  "同步API"
 // @Router    /api/ignoreApi [post]
-func (s *SystemApiApi) IgnoreApi(c *gin.Context) {
+func (s *SystemApiApi) IgnoreApi(c *fiber.Ctx) {
 	var ignoreApi system.SysIgnoreApi
-	err := c.ShouldBindJSON(&ignoreApi)
+	err := c.BodyParser(&ignoreApi)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -120,9 +120,9 @@ func (s *SystemApiApi) IgnoreApi(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{msg=string}  "确认同步API"
 // @Router    /api/enterSyncApi [post]
-func (s *SystemApiApi) EnterSyncApi(c *gin.Context) {
+func (s *SystemApiApi) EnterSyncApi(c *fiber.Ctx) {
 	var syncApi systemRes.SysSyncApis
-	err := c.ShouldBindJSON(&syncApi)
+	err := c.BodyParser(&syncApi)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -145,9 +145,9 @@ func (s *SystemApiApi) EnterSyncApi(c *gin.Context) {
 // @Param     data  body      system.SysApi                  true  "ID"
 // @Success   200   {object}  response.Response{msg=string}  "删除api"
 // @Router    /api/deleteApi [post]
-func (s *SystemApiApi) DeleteApi(c *gin.Context) {
+func (s *SystemApiApi) DeleteApi(c *fiber.Ctx) {
 	var api system.SysApi
-	err := c.ShouldBindJSON(&api)
+	err := c.BodyParser(&api)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -175,9 +175,9 @@ func (s *SystemApiApi) DeleteApi(c *gin.Context) {
 // @Param     data  body      systemReq.SearchApiParams                               true  "分页获取API列表"
 // @Success   200   {object}  response.Response{data=response.PageResult,msg=string}  "分页获取API列表,返回包括列表,总数,页码,每页数量"
 // @Router    /api/getApiList [post]
-func (s *SystemApiApi) GetApiList(c *gin.Context) {
+func (s *SystemApiApi) GetApiList(c *fiber.Ctx) {
 	var pageInfo systemReq.SearchApiParams
-	err := c.ShouldBindJSON(&pageInfo)
+	err := c.BodyParser(&pageInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -210,9 +210,9 @@ func (s *SystemApiApi) GetApiList(c *gin.Context) {
 // @Param     data  body      request.GetById                                   true  "根据id获取api"
 // @Success   200   {object}  response.Response{data=systemRes.SysAPIResponse}  "根据id获取api,返回包括api详情"
 // @Router    /api/getApiById [post]
-func (s *SystemApiApi) GetApiById(c *gin.Context) {
+func (s *SystemApiApi) GetApiById(c *fiber.Ctx) {
 	var idInfo request.GetById
-	err := c.ShouldBindJSON(&idInfo)
+	err := c.BodyParser(&idInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -240,9 +240,9 @@ func (s *SystemApiApi) GetApiById(c *gin.Context) {
 // @Param     data  body      system.SysApi                  true  "api路径, api中文描述, api组, 方法"
 // @Success   200   {object}  response.Response{msg=string}  "修改基础api"
 // @Router    /api/updateApi [post]
-func (s *SystemApiApi) UpdateApi(c *gin.Context) {
+func (s *SystemApiApi) UpdateApi(c *fiber.Ctx) {
 	var api system.SysApi
-	err := c.ShouldBindJSON(&api)
+	err := c.BodyParser(&api)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -269,7 +269,7 @@ func (s *SystemApiApi) UpdateApi(c *gin.Context) {
 // @Produce   application/json
 // @Success   200  {object}  response.Response{data=systemRes.SysAPIListResponse,msg=string}  "获取所有的Api 不分页,返回包括api列表"
 // @Router    /api/getAllApis [post]
-func (s *SystemApiApi) GetAllApis(c *gin.Context) {
+func (s *SystemApiApi) GetAllApis(c *fiber.Ctx) {
 	authorityID := utils.GetUserAuthorityId(c)
 	apis, err := apiService.GetAllApis(authorityID)
 	if err != nil {
@@ -289,9 +289,9 @@ func (s *SystemApiApi) GetAllApis(c *gin.Context) {
 // @Param     data  body      request.IdsReq                 true  "ID"
 // @Success   200   {object}  response.Response{msg=string}  "删除选中Api"
 // @Router    /api/deleteApisByIds [delete]
-func (s *SystemApiApi) DeleteApisByIds(c *gin.Context) {
+func (s *SystemApiApi) DeleteApisByIds(c *fiber.Ctx) {
 	var ids request.IdsReq
-	err := c.ShouldBindJSON(&ids)
+	err := c.BodyParser(&ids)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -312,7 +312,7 @@ func (s *SystemApiApi) DeleteApisByIds(c *gin.Context) {
 // @Produce   application/json
 // @Success   200   {object}  response.Response{msg=string}  "刷新成功"
 // @Router    /api/freshCasbin [get]
-func (s *SystemApiApi) FreshCasbin(c *gin.Context) {
+func (s *SystemApiApi) FreshCasbin(c *fiber.Ctx) {
 	err := casbinService.FreshCasbin()
 	if err != nil {
 		global.GVA_LOG.Error("刷新失败!", zap.Error(err))

@@ -79,7 +79,7 @@ func getTemporaryCredentials(policy string) (map[string]string, error) {
 }
 
 // 预签名
-//func (a *MI) GetPresignedUrl(c *gin.Context) {
+//func (a *MI) GetPresignedUrl(c *fiber.Ctx) {
 //	// 获取上传对象名称，可以从请求参数中获取
 //	filename := c.Query("filename")
 //	if filename == "" {
@@ -138,7 +138,7 @@ func getTemporaryCredentials(policy string) (map[string]string, error) {
 //
 //// TODO 文件名字逻辑做后端生成
 //// 获取查看（下载）预签名 URL（有效期 1 小时）
-//func (a *MI) GetDownloadPresignedUrl(c *gin.Context) {
+//func (a *MI) GetDownloadPresignedUrl(c *fiber.Ctx) {
 //	// 获取参数
 //	objectName := c.Query("filename")
 //	if objectName == "" {

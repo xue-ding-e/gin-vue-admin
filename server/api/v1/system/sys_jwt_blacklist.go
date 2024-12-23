@@ -19,7 +19,7 @@ type JwtApi struct{}
 // @Produce   application/json
 // @Success   200  {object}  response.Response{msg=string}  "jwt加入黑名单"
 // @Router    /jwt/jsonInBlacklist [post]
-func (j *JwtApi) JsonInBlacklist(c *gin.Context) {
+func (j *JwtApi) JsonInBlacklist(c *fiber.Ctx) {
 	token := utils.GetToken(c)
 	jwt := system.JwtBlacklist{Jwt: token}
 	err := jwtService.JsonInBlacklist(jwt)

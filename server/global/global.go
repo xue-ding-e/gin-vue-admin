@@ -2,9 +2,9 @@ package global
 
 import (
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"sync"
 
-	"github.com/gin-gonic/gin"
 	"github.com/qiniu/qmgo"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/timer"
@@ -33,7 +33,7 @@ var (
 	GVA_LOG                 *zap.Logger
 	GVA_Timer               timer.Timer = timer.NewTimerTask()
 	GVA_Concurrency_Control             = &singleflight.Group{}
-	GVA_ROUTERS             gin.RoutesInfo
+	GVA_ROUTERS             [][]*fiber.Route
 	GVA_ACTIVE_DBNAME       *string
 	BlackCache              local_cache.Cache
 	lock                    sync.RWMutex

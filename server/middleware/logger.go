@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"io"
 	"strings"
 	"time"
@@ -27,22 +27,22 @@ type LogLayout struct {
 
 type Logger struct {
 	// Filter 用户自定义过滤
-	Filter func(c *gin.Context) bool
+	Filter func(c *fiber.Ctx) bool
 	// FilterKeyword 关键字过滤(key)
 	FilterKeyword func(layout *LogLayout) bool
 	// AuthProcess 鉴权处理
-	AuthProcess func(c *gin.Context, layout *LogLayout)
+	AuthProcess func(c *fiber.Ctx, layout *LogLayout)
 	// 日志处理
 	Print func(LogLayout)
 	// Source 服务唯一标识
 	Source string
 }
 
-func (l Logger) SetLoggerMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (l Logger) SetLoggerMiddleware() fiber.Handler {
+	return func(c *fiber.Ctx) {
 		start := time.Now()
-		path := c.Request.URL.Path
-		query := c.Request.URL.RawQuery
+		path := c.Path
+		query := c.Context().QueryArgs().String()
 		var body []byte
 		if l.Filter != nil && !l.Filter(c) {
 			body, _ = c.GetRawData()
@@ -55,7 +55,7 @@ func (l Logger) SetLoggerMiddleware() gin.HandlerFunc {
 			Time:      time.Now(),
 			Path:      path,
 			Query:     query,
-			IP:        c.ClientIP(),
+			IP:        c.IP(),
 			UserAgent: c.Request.UserAgent(),
 			Error:     strings.TrimRight(c.Errors.ByType(gin.ErrorTypePrivate).String(), "\n"),
 			Cost:      cost,

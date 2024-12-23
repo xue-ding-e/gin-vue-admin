@@ -17,8 +17,8 @@ import (
 
 var userService = service.ServiceGroupApp.SystemServiceGroup.UserService
 
-func ErrorToEmail() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func ErrorToEmail() fiber.Handler {
+	return func(c *fiber.Ctx) {
 		var username string
 		claims, _ := utils2.GetClaims(c)
 		if claims.Username != "" {
@@ -41,9 +41,9 @@ func ErrorToEmail() gin.HandlerFunc {
 		// 再重新写回请求体body中，ioutil.ReadAll会清空c.Request.Body中的数据
 		c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
 		record := system.SysOperationRecord{
-			Ip:     c.ClientIP(),
-			Method: c.Request.Method,
-			Path:   c.Request.URL.Path,
+			Ip:     c.IP(),
+			Method: c.Method(),
+			Path:   c.Path,
 			Agent:  c.Request.UserAgent(),
 			Body:   string(body),
 		}

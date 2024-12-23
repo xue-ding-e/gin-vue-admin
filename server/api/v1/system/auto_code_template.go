@@ -20,9 +20,9 @@ type AutoCodeTemplateApi struct{}
 // @Param     data  body      request.AutoCode                                      true  "预览创建代码"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "预览创建后的代码"
 // @Router    /autoCode/preview [post]
-func (a *AutoCodeTemplateApi) Preview(c *gin.Context) {
+func (a *AutoCodeTemplateApi) Preview(c *fiber.Ctx) {
 	var info request.AutoCode
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -38,7 +38,7 @@ func (a *AutoCodeTemplateApi) Preview(c *gin.Context) {
 		return
 	}
 	info.PackageT = utils.FirstUpper(info.Package)
-	autoCode, err := autoCodeTemplateService.Preview(c.Request.Context(), info)
+	autoCode, err := autoCodeTemplateService.Preview(c.UserContext(), info)
 	if err != nil {
 		global.GVA_LOG.Error(err.Error(), zap.Error(err))
 		response.FailWithMessage("预览失败:"+err.Error(), c)
@@ -56,9 +56,9 @@ func (a *AutoCodeTemplateApi) Preview(c *gin.Context) {
 // @Param     data  body      request.AutoCode  true  "创建自动代码"
 // @Success   200   {string}  string                 "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router    /autoCode/createTemp [post]
-func (a *AutoCodeTemplateApi) Create(c *gin.Context) {
+func (a *AutoCodeTemplateApi) Create(c *fiber.Ctx) {
 	var info request.AutoCode
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -73,7 +73,7 @@ func (a *AutoCodeTemplateApi) Create(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	err = autoCodeTemplateService.Create(c.Request.Context(), info)
+	err = autoCodeTemplateService.Create(c.UserContext(), info)
 	if err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage(err.Error(), c)
@@ -91,9 +91,9 @@ func (a *AutoCodeTemplateApi) Create(c *gin.Context) {
 // @Param     data  body      request.AutoCode  true  "增加方法"
 // @Success   200   {string}  string                 "{"success":true,"data":{},"msg":"创建成功"}"
 // @Router    /autoCode/addFunc [post]
-func (a *AutoCodeTemplateApi) AddFunc(c *gin.Context) {
+func (a *AutoCodeTemplateApi) AddFunc(c *fiber.Ctx) {
 	var info request.AutoFunc
-	err := c.ShouldBindJSON(&info)
+	err := c.BodyParser(&info)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return

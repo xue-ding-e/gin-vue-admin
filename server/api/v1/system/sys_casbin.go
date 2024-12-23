@@ -6,7 +6,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	systemRes "github.com/flipped-aurora/gin-vue-admin/server/model/system/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -21,9 +20,9 @@ type CasbinApi struct{}
 // @Param     data  body      request.CasbinInReceive        true  "权限id, 权限模型列表"
 // @Success   200   {object}  response.Response{msg=string}  "更新角色api权限"
 // @Router    /casbin/UpdateCasbin [post]
-func (cas *CasbinApi) UpdateCasbin(c *gin.Context) {
+func (cas *CasbinApi) UpdateCasbin(c *fiber.Ctx) {
 	var cmr request.CasbinInReceive
-	err := c.ShouldBindJSON(&cmr)
+	err := c.BodyParser(&cmr)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -52,9 +51,9 @@ func (cas *CasbinApi) UpdateCasbin(c *gin.Context) {
 // @Param     data  body      request.CasbinInReceive                                          true  "权限id, 权限模型列表"
 // @Success   200   {object}  response.Response{data=systemRes.PolicyPathResponse,msg=string}  "获取权限列表,返回包括casbin详情列表"
 // @Router    /casbin/getPolicyPathByAuthorityId [post]
-func (cas *CasbinApi) GetPolicyPathByAuthorityId(c *gin.Context) {
+func (cas *CasbinApi) GetPolicyPathByAuthorityId(c *fiber.Ctx) {
 	var casbin request.CasbinInReceive
-	err := c.ShouldBindJSON(&casbin)
+	err := c.BodyParser(&casbin)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
