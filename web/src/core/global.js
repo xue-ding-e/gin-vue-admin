@@ -56,3 +56,5 @@ export const register = (app) => {
 }
 
 export const getUrlPath = import.meta.env.VITE_BASE_API
+
+export const requestBaseUrl = import.meta.env.VITE_APP_PROXY_PREFIX
