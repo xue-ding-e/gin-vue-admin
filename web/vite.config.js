@@ -113,7 +113,8 @@ export default ({ mode }) => {
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia'],
         dts: false,
-        // dirs: ['src/utils/**', 'src/plugin/**'],
+        vueTemplate: true, // 允许在template模板内使用自动导入的函数
+        dirs: ['src/utils/**'], //'src/plugin/**'
         eslintrc: {
           enabled: false,
         },
