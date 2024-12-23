@@ -61,20 +61,11 @@
   "/src/view/systemTools/installPlugin/index.vue": "Index",
   "/src/view/systemTools/pubPlug/pubPlug.vue": "PubPlug",
   "/src/view/systemTools/system/system.vue": "Config",
-  "/src/plugin/Address/form/address.vue": "AddressForm",
-  "/src/plugin/Address/view/address.vue": "Address",
   "/src/plugin/announcement/form/info.vue": "InfoForm",
   "/src/plugin/announcement/view/info.vue": "Info",
   "/src/plugin/BusinessConfig/form/businessConfig.vue": "BusinessConfig",
   "/src/plugin/BusinessConfig/view/businessConfig.vue": "BusinessConfig",
   "/src/plugin/email/view/index.vue": "Email",
   "/src/plugin/minio/form/minio.vue": "MinioForm",
-  "/src/plugin/minio/view/minio.vue": "Minio",
-  "/src/plugin/Shop/form/good.vue": "GoodForm",
-  "/src/plugin/Shop/view/cart.vue": "Cart",
-  "/src/plugin/Shop/view/category.vue": "Category",
-  "/src/plugin/Shop/view/comment.vue": "Comment",
-  "/src/plugin/Shop/view/good.vue": "Good",
-  "/src/plugin/Shop/view/order.vue": "Order",
-  "/src/plugin/Shop/view/sku.vue": "Sku"
+  "/src/plugin/minio/view/minio.vue": "Minio"
 }
