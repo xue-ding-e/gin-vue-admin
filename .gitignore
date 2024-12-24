@@ -1,3 +1,6 @@
+/web/node_modules
+/web/dist
+
 rm_file/
 .DS_Store
 *.zip
@@ -45,3 +48,10 @@ uni
 unibest
 
 temp
+# binary files
+*.exe
+
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3

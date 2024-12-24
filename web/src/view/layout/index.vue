@@ -41,20 +41,20 @@
 </template>
 
 <script setup>
-import GvaAside from "@/view/layout/aside/index.vue";
-import GvaHeader from "@/view/layout/header/index.vue";
-import useResponsive from "@/hooks/responsive";
-import GvaTabs from "./tabs/index.vue";
-import BottomInfo from "@/components/bottomInfo/bottomInfo.vue";
-import { emitter } from "@/utils/bus.js";
-import { ref, onMounted, nextTick, reactive, watchEffect } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useRouterStore } from "@/pinia/modules/router";
-import { useUserStore } from "@/pinia/modules/user";
-import { useAppStore } from "@/pinia";
-import { storeToRefs } from "pinia";
-const appStore = useAppStore();
-const { config, theme, device } = storeToRefs(appStore);
+  import GvaAside from '@/view/layout/aside/index.vue'
+  import GvaHeader from '@/view/layout/header/index.vue'
+  import useResponsive from '@/hooks/responsive'
+  import GvaTabs from './tabs/index.vue'
+  import BottomInfo from '@/components/bottomInfo/bottomInfo.vue'
+  import { emitter } from '@/utils/bus.js'
+  import { ref, onMounted, nextTick, reactive, watchEffect } from 'vue'
+  import { useRouter, useRoute } from 'vue-router'
+  import { useRouterStore } from '@/pinia/modules/router'
+  import { useUserStore } from '@/pinia/modules/user'
+  import { useAppStore } from '@/pinia'
+  import { storeToRefs } from 'pinia'
+  const appStore = useAppStore()
+  const { config, isDark, device } = storeToRefs(appStore)
 
 defineOptions({
   name: "GvaLayout",
@@ -65,10 +65,10 @@ const font = reactive({
   color: "rgba(0, 0, 0, .15)",
 });
 
-watchEffect(() => {
-  font.color =
-    theme.value === "dark" ? "rgba(255,255,255, .15)" : "rgba(0, 0, 0, .15)";
-});
+  watchEffect(() => {
+    font.color =
+      isDark.value ? 'rgba(255,255,255, .15)' : 'rgba(0, 0, 0, .15)'
+  })
 
 const router = useRouter();
 const route = useRoute();

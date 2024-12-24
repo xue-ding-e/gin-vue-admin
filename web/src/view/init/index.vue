@@ -111,16 +111,10 @@
               placeholder="请输入sqlite数据库文件存放路径"
             />
           </el-form-item>
-          <el-form-item v-if="form.dbType === 'sqlite'" label="dbPath">
-            <el-input
-              v-model="form.dbPath"
-              placeholder="请输入sqlite数据库文件存放路径"
-            />
-          </el-form-item>
           <el-form-item v-if="form.dbType === 'pgsql'" label="template">
             <el-input
               v-model="form.template"
-              placeholder="请输入sqlite数据库文件存放路径"
+              placeholder="请输入postgresql指定template"
             />
           </el-form-item>
           <el-form-item>
@@ -205,7 +199,8 @@
           userName: 'postgres',
           password: '',
           dbName: 'gva',
-          dbPath: ''
+          dbPath: '',
+          template: 'template0'
         })
         break
       case 'oracle':

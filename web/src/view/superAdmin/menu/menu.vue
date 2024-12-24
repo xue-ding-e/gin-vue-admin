@@ -45,7 +45,12 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-drawer v-model="dialogFormVisible" size="60%" :before-close="handleClose" :show-close="false">
+    <el-drawer
+      v-model="dialogFormVisible"
+      :size="appStore.drawerSize"
+      :before-close="handleClose"
+      :show-close="false"
+    >
       <template #header>
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ dialogTitle }}</span>
@@ -269,10 +274,13 @@
   import ComponentsCascader from '@/view/superAdmin/menu/components/components-cascader.vue'
 
   import pathInfo from '@/pathInfo.json'
+  import { useAppStore } from "@/pinia";
 
   defineOptions({
     name: 'Menus'
   })
+
+  const appStore = useAppStore()
 
   const menuTable = ref(null)
   const isExpandAll = ref(false)

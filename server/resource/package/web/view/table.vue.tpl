@@ -19,7 +19,7 @@
 </el-form-item>
            {{- else if .DictType}}
 <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">
-    <el-select v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择" @clear="()=>{searchInfo.{{.FieldJson}}=undefined}">
+    <el-select {{if eq .FieldType "array"}}multiple {{end}}v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择" @clear="()=>{searchInfo.{{.FieldJson}}=undefined}">
         <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
     </el-select>
 </el-form-item>
@@ -37,13 +37,7 @@
 —
 <el-input v-model.number="searchInfo.end{{.FieldName}}" placeholder="最大值" />
            {{- else}}
-             {{- if .DictType}}
-<el-select v-model="searchInfo.{{.FieldJson}}" placeholder="请选择" style="width:100%" :clearable="true" >
-    <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
-</el-select>
-                    {{- else}}
 <el-input v-model.number="searchInfo.{{.FieldJson}}" placeholder="搜索条件" />
-                    {{- end }}
           {{- end}}
         {{- else if eq .FieldType "time.Time"}}
             {{if eq .FieldSearchType "BETWEEN" "NOT BETWEEN"}}
@@ -86,7 +80,11 @@
         {{- else if .DictType}}
 <el-table-column {{- if .Sort}} sortable{{- end}} align="center" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
     <template #default="scope">
+    {{if eq .FieldType "array"}}
+    <el-tag class="mr-1" v-for="item in scope.row.{{.FieldJson}}" :key="item"> {{"{{"}} filterDict(item,{{.DictType}}Options) {{"}}"}}</el-tag>
+    {{- else }}
     {{"{{"}} filterDict(scope.row.{{.FieldJson}},{{.DictType}}Options) {{"}}"}}
+    {{end}}
     </template>
 </el-table-column>
         {{- else if eq .FieldType "bool" }}
@@ -183,8 +181,14 @@
     // 此字段为json结构，可以前端自行控制展示和数据绑定模式 需绑定json的key为 formData.{{.FieldJson}} 后端会按照json的类型进行存取
     {{"{{"}} formData.{{.FieldJson}} {{"}}"}}
           {{- end }}
-           {{- if eq .FieldType "array" }}
+          {{- if eq .FieldType "array" }}
+            {{- if .DictType}}
+    <el-select {{if eq .FieldType "array"}}multiple {{end}}v-model="formData.{{ .FieldJson }}" placeholder="请选择{{.FieldDesc}}" style="width:100%" :clearable="{{.Clearable}}" >
+        <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
+    </el-select>
+            {{- else }}
     <ArrayCtrl v-model="formData.{{ .FieldJson }}" editable/>
+             {{- end }}
            {{- end }}
           {{- if eq .FieldType "int" }}
     <el-input v-model.number="formData.{{ .FieldJson }}" :clearable="{{.Clearable}}" placeholder="请输入{{.FieldDesc}}" />
@@ -254,6 +258,9 @@
                     {{- if eq .FieldType "pictures" }}
     <el-image style="width: 50px; height: 50px; margin-right: 10px" :preview-src-list="returnArrImg(detailFrom.{{ .FieldJson }})" :initial-index="index" v-for="(item,index) in detailFrom.{{ .FieldJson }}" :key="index" :src="getUrl(item)" fit="cover" />
                     {{- end }}
+                    {{- if eq .FieldType "richtext" }}
+    <RichView v-model="detailFrom.{{.FieldJson}}" />
+                     {{- end }}
                     {{- if eq .FieldType "file" }}
     <div class="fileBtn" v-for="(item,index) in detailFrom.{{ .FieldJson }}" :key="index">
         <el-button type="primary" text bg @click="onDownloadFile(item.url)">
@@ -291,7 +298,7 @@ const {{ $element }}Options = ref([])
 {{.FieldJson}}: '',
             {{- end }}
             {{- if eq .FieldType "int" }}
-{{.FieldJson}}: {{- if or .DictType .DataSource}} undefined{{ else }} 0{{- end }},
+{{.FieldJson}}: {{- if .DataSource}} undefined{{ else }} 0{{- end }},
             {{- end }}
             {{- if eq .FieldType "time.Time" }}
 {{.FieldJson}}: new Date(),
@@ -363,6 +370,7 @@ getDataSourceFunc()
 {{- if not .OnlyTemplate}}
 <template>
   <div>
+  {{- if not .IsTree }}
     <div class="gva-search-box">
       <el-form ref="elSearchFormRef" :inline="true" :model="searchInfo" class="demo-form-inline" :rules="searchRule" @keyup.enter="onSubmit">
       {{- if .GvaModel }}
@@ -397,7 +405,7 @@ getDataSourceFunc()
             </el-form-item>
            {{- else if .DictType}}
            <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">
-            <el-select v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择" @clear="()=>{searchInfo.{{.FieldJson}}=undefined}">
+            <el-select {{if eq .FieldType "array"}} multiple {{end}}v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择" @clear="()=>{searchInfo.{{.FieldJson}}=undefined}">
               <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
             </el-select>
             </el-form-item>
@@ -415,13 +423,7 @@ getDataSourceFunc()
             —
             <el-input v-model.number="searchInfo.end{{.FieldName}}" placeholder="最大值" />
            {{- else}}
-             {{- if .DictType}}
-              <el-select v-model="searchInfo.{{.FieldJson}}" placeholder="请选择" style="width:100%" :clearable="true" >
-               <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
-             </el-select>
-                    {{- else}}
              <el-input v-model.number="searchInfo.{{.FieldJson}}" placeholder="搜索条件" />
-                    {{- end }}
           {{- end}}
         {{- else if eq .FieldType "time.Time"}}
             {{if eq .FieldSearchType "BETWEEN" "NOT BETWEEN"}}
@@ -463,7 +465,7 @@ getDataSourceFunc()
                       </el-form-item>
                      {{- else if .DictType}}
                      <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">
-                      <el-select v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择" @clear="()=>{searchInfo.{{.FieldJson}}=undefined}">
+                      <el-select {{if eq .FieldType "array"}}multiple {{end}}v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择" @clear="()=>{searchInfo.{{.FieldJson}}=undefined}">
                         <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
                       </el-select>
                       </el-form-item>
@@ -475,13 +477,7 @@ getDataSourceFunc()
                       —
                       <el-input v-model.number="searchInfo.end{{.FieldName}}" placeholder="最大值" />
                      {{- else}}
-                       {{- if .DictType}}
-                        <el-select v-model="searchInfo.{{.FieldJson}}" placeholder="请选择" style="width:100%" :clearable="true" >
-                         <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
-                       </el-select>
-                              {{- else}}
                        <el-input v-model.number="searchInfo.{{.FieldJson}}" placeholder="搜索条件" />
-                              {{- end }}
                     {{- end}}
                   {{- else if eq .FieldType "time.Time"}}
                       {{if eq .FieldSearchType "BETWEEN" "NOT BETWEEN"}}
@@ -515,9 +511,10 @@ getDataSourceFunc()
         </el-form-item>
       </el-form>
     </div>
+  {{- end }}
     <div class="gva-table-box">
         <div class="gva-btn-list">
-            <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.add"{{ end }} type="primary" icon="plus" @click="openDialog">新增</el-button>
+            <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.add"{{ end }} type="primary" icon="plus" @click="openDialog()">新增</el-button>
             <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.batchDelete"{{ end }} icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="onDelete">删除</el-button>
             {{ if .HasExcel -}}
             <ExportTemplate {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.exportTemplate"{{ end }} template-id="{{$templateID}}" />
@@ -560,7 +557,11 @@ getDataSourceFunc()
         {{- else if .DictType}}
         <el-table-column {{- if .Sort}} sortable{{- end}} align="center" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
             <template #default="scope">
-            {{"{{"}} filterDict(scope.row.{{.FieldJson}},{{.DictType}}Options) {{"}}"}}
+                {{if eq .FieldType "array"}}
+                <el-tag class="mr-1" v-for="item in scope.row.{{.FieldJson}}" :key="item"> {{"{{"}} filterDict(item,{{.DictType}}Options) {{"}}"}}</el-tag>
+                {{- else }}
+                {{"{{"}} filterDict(scope.row.{{.FieldJson}},{{.DictType}}Options) {{"}}"}}
+                {{end}}
             </template>
         </el-table-column>
         {{- else if eq .FieldType "bool" }}
@@ -630,9 +631,12 @@ getDataSourceFunc()
         {{- end }}
         <el-table-column align="center" label="操作" fixed="right" min-width="240">
             <template #default="scope">
+            {{- if .IsTree }}
+            <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.add"{{ end }} type="primary" link class="table-button" @click="openDialog(scope.row)"><el-icon style="margin-right: 5px"><InfoFilled /></el-icon>新增子节点</el-button>
+            {{- end }}
             <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.info"{{ end }} type="primary" link class="table-button" @click="getDetails(scope.row)"><el-icon style="margin-right: 5px"><InfoFilled /></el-icon>查看</el-button>
             <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.edit"{{ end }} type="primary" link icon="edit" class="table-button" @click="update{{.StructName}}Func(scope.row)">编辑</el-button>
-            <el-button {{ if $global.AutoCreateBtnAuth }}v-auth="btnAuth.delete"{{ end }} type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
+            <el-button {{ if .IsTree }}v-if="!scope.row.children?.length" {{ end }} {{if $global.AutoCreateBtnAuth }}v-auth="btnAuth.delete"{{ end }} type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
         </el-table-column>
         </el-table>
@@ -648,7 +652,7 @@ getDataSourceFunc()
             />
         </div>
     </div>
-    <el-drawer destroy-on-close size="800" v-model="dialogFormVisible" :show-close="false" :before-close="closeDialog">
+    <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="dialogFormVisible" :show-close="false" :before-close="closeDialog">
        <template #header>
               <div class="flex justify-between items-center">
                 <span class="text-lg">{{"{{"}}type==='create'?'新增':'编辑'{{"}}"}}</span>
@@ -660,6 +664,20 @@ getDataSourceFunc()
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
+          {{- if .IsTree }}
+            <el-form-item label="父节点:" prop="parentID" >
+                <el-tree-select
+                    v-model="formData.parentID"
+                    :data="[rootNode,...tableData]"
+                    check-strictly
+                    :render-after-expand="false"
+                    :props="defaultProps"
+                    clearable
+                    style="width: 240px"
+                    placeholder="根节点"
+                />
+            </el-form-item>
+          {{- end }}
         {{- range .Fields}}
           {{- if .Form}}
             <el-form-item label="{{.FieldDesc}}:"  prop="{{.FieldJson}}" >
@@ -688,7 +706,13 @@ getDataSourceFunc()
               {{"{{"}} formData.{{.FieldJson}} {{"}}"}}
           {{- end }}
            {{- if eq .FieldType "array" }}
+             {{- if .DictType}}
+               <el-select multiple v-model="formData.{{ .FieldJson }}" placeholder="请选择{{.FieldDesc}}" style="width:100%" :clearable="{{.Clearable}}" >
+                 <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
+               </el-select>
+             {{- else }}
               <ArrayCtrl v-model="formData.{{ .FieldJson }}" editable/>
+              {{- end }}
            {{- end }}
           {{- if eq .FieldType "int" }}
               <el-input v-model.number="formData.{{ .FieldJson }}" :clearable="{{.Clearable}}" placeholder="请输入{{.FieldDesc}}" />
@@ -733,13 +757,27 @@ getDataSourceFunc()
           </el-form>
     </el-drawer>
 
-    <el-drawer destroy-on-close size="800" v-model="detailShow" :show-close="true" :before-close="closeDetailShow" title="查看">
+    <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="detailShow" :show-close="true" :before-close="closeDetailShow" title="查看">
             <el-descriptions :column="1" border>
+            {{- if .IsTree }}
+            <el-descriptions-item label="父节点">
+                <el-tree-select
+                  v-model="detailFrom.parentID"
+                  :data="[rootNode,...tableData]"
+                  check-strictly
+                  disabled
+                  :render-after-expand="false"
+                  :props="defaultProps"
+                  clearable
+                  style="width: 240px"
+                  placeholder="根节点"
+                />
+            </el-descriptions-item>
+            {{- end }}
             {{- range .Fields}}
               {{- if .Desc }}
                     <el-descriptions-item label="{{ .FieldDesc }}">
                     {{- if .CheckDataSource }}
-                   <template #default="scope">
                        {{- if eq .DataSource.Association 2}}
                        <el-tag v-for="(item,key) in filterDataSource(dataSource.{{.FieldJson}},detailFrom.{{.FieldJson}})" :key="key">
                             {{ "{{ item }}" }}
@@ -747,8 +785,13 @@ getDataSourceFunc()
                        {{- else }}
                        <span>{{"{{"}} filterDataSource(dataSource.{{.FieldJson}},detailFrom.{{.FieldJson}}) {{"}}"}}</span>
                        {{- end }}
-                   </template>
-                {{- else if and (ne .FieldType "picture" ) (ne .FieldType "pictures" ) (ne .FieldType "file" ) (ne .FieldType "array" ) }}
+                 {{- else if .DictType}}
+                        {{if eq .FieldType "array"}}
+                        <el-tag class="mr-1" v-for="item in detailFrom.{{.FieldJson}}" :key="item"> {{"{{"}} filterDict(item,{{.DictType}}Options) {{"}}"}}</el-tag>
+                        {{- else }}
+                        {{"{{"}} filterDict(detailFrom.{{.FieldJson}},{{.DictType}}Options) {{"}}"}}
+                        {{end}}
+                {{- else if and (ne .FieldType "picture" ) (ne .FieldType "richtext" ) (ne .FieldType "pictures" ) (ne .FieldType "file" ) (ne .FieldType "array" ) }}
                         {{"{{"}} detailFrom.{{.FieldJson}} {{"}}"}}
                 {{- else }}
                     {{- if eq .FieldType "picture" }}
@@ -759,6 +802,9 @@ getDataSourceFunc()
                     {{- end }}
                     {{- if eq .FieldType "pictures" }}
                             <el-image style="width: 50px; height: 50px; margin-right: 10px" :preview-src-list="returnArrImg(detailFrom.{{ .FieldJson }})" :initial-index="index" v-for="(item,index) in detailFrom.{{ .FieldJson }}" :key="index" :src="getUrl(item)" fit="cover" />
+                    {{- end }}
+                    {{- if eq .FieldType "richtext" }}
+                            <RichView v-model="detailFrom.{{.FieldJson}}" />
                     {{- end }}
                     {{- if eq .FieldType "file" }}
                             <div class="fileBtn" v-for="(item,index) in detailFrom.{{ .FieldJson }}" :key="index">
@@ -802,6 +848,7 @@ import SelectImage from '@/components/selectImage/selectImage.vue'
 {{- if .HasRichText }}
 // 富文本组件
 import RichEdit from '@/components/richtext/rich-edit.vue'
+import RichView from '@/components/richtext/rich-view.vue'
 {{- end }}
 
 {{- if .HasFile }}
@@ -822,6 +869,7 @@ import { ref, reactive } from 'vue'
 // 引入按钮权限标识
 import { useBtnAuth } from '@/utils/btnAuth'
 {{- end }}
+import { useAppStore } from "@/pinia"
 
 {{if .HasExcel -}}
 // 导出组件
@@ -844,6 +892,7 @@ defineOptions({
 
 // 提交按钮loading
 const btnLoading = ref(false)
+const appStore = useAppStore()
 
 // 控制更多查询条件显示/隐藏状态
 const showAllQuery = ref(false)
@@ -853,6 +902,9 @@ const showAllQuery = ref(false)
 const {{ $element }}Options = ref([])
     {{- end }}
 const formData = ref({
+        {{- if .IsTree }}
+            parentID:undefined,
+        {{- end }}
         {{- range .Fields}}
           {{- if .Form}}
             {{- if eq .FieldType "bool" }}
@@ -865,7 +917,7 @@ const formData = ref({
             {{.FieldJson}}: '',
             {{- end }}
             {{- if eq .FieldType "int" }}
-            {{.FieldJson}}: {{- if or .DictType .DataSource}} undefined{{ else }} 0{{- end }},
+            {{.FieldJson}}: {{- if .DataSource}} undefined{{ else }} 0{{- end }},
             {{- end }}
             {{- if eq .FieldType "time.Time" }}
             {{.FieldJson}}: new Date(),
@@ -1000,6 +1052,7 @@ const sortChange = ({ prop, order }) => {
 }
 {{- end}}
 
+{{- if not .IsTree }}
 // 重置
 const onReset = () => {
   searchInfo.value = {}
@@ -1041,6 +1094,28 @@ const getTableData = async() => {
     pageSize.value = table.data.pageSize
   }
 }
+{{- else }}
+// 树选择器配置
+const defaultProps = {
+  children: "children",
+  label: "{{ .TreeJson }}",
+  value: "{{ .PrimaryField.FieldJson }}"
+}
+
+const rootNode = {
+  {{ .PrimaryField.FieldJson }}: 0,
+  {{ .TreeJson }}: '根节点',
+  children: []
+}
+
+// 查询
+const getTableData = async() => {
+  const table = await get{{.StructName}}List()
+  if (table.code === 0) {
+    tableData.value = table.data || []
+  }
+}
+{{- end }}
 
 getTableData()
 
@@ -1141,8 +1216,11 @@ const delete{{.StructName}}Func = async (row) => {
 const dialogFormVisible = ref(false)
 
 // 打开弹窗
-const openDialog = () => {
+const openDialog = ({{- if .IsTree -}}row{{- end -}}) => {
     type.value = 'create'
+    {{- if .IsTree }}
+    formData.value.parentID = row ? row.{{.PrimaryField.FieldJson}} : undefined
+    {{- end }}
     dialogFormVisible.value = true
 }
 
@@ -1162,7 +1240,7 @@ const closeDialog = () => {
         {{.FieldJson}}: '',
         {{- end }}
         {{- if eq .FieldType "int" }}
-        {{.FieldJson}}: {{- if or .DictType .DataSource }} undefined{{ else }} 0{{- end }},
+        {{.FieldJson}}: {{- if .DataSource }} undefined{{ else }} 0{{- end }},
         {{- end }}
         {{- if eq .FieldType "time.Time" }}
         {{.FieldJson}}: new Date(),

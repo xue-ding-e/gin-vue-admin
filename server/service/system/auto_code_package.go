@@ -169,7 +169,7 @@ func (s *autoCodePackage) All(ctx context.Context) (entities []model.SysAutoCode
 			//dir目录需要包含所有的dirNameMap
 			for k := 0; k < len(dir); k++ {
 				if dir[k].IsDir() {
-					if _, ok := dirNameMap[dir[k].Name()]; ok {
+					if ok := dirNameMap[dir[k].Name()]; ok {
 						delete(dirNameMap, dir[k].Name())
 					}
 				}

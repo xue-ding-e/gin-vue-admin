@@ -7,13 +7,41 @@
     <div class="gva-search-box" v-if="!isAdd">
       <div class="text-lg mb-2 text-gray-600">使用AI创建<a class="text-blue-600 text-sm ml-4" href="https://plugin.gin-vue-admin.com/#/layout/userInfo/center" target="_blank">获取AiPath</a></div>
       <div class="relative">
-        <el-input v-model="prompt"
-                  type="textarea"
-                  :rows="5"
-                  :placeholder="`现已完全免费\n试试描述你的表，让AI帮你完成。\n此功能需要到插件市场个人中心获取自己的AI-Path，把AI-Path填入config.yaml下的autocode-->ai-path，重启项目即可使用。\n按下 Ctrl+Enter 或 Cmd+Enter 直接生成`"
-                  resize="none"
-                  @focus="handleFocus"
-                  @blur="handleBlur"/>
+        <el-input
+          v-model="prompt"
+          type="textarea"
+          :rows="5"
+          :placeholder="`现已完全免费\n试试复制一张图片然后按下ctrl+v或者commend+v\n试试描述你的表，让AI帮你完成。\n此功能需要到插件市场个人中心获取自己的AI-Path，把AI-Path填入config.yaml下的autocode-->ai-path，重启项目即可使用。\n按下 Ctrl+Enter 或 Cmd+Enter 直接生成`"
+          resize="none"
+          @focus="handleFocus"
+          @blur="handleBlur"
+        />
+
+        <div class="flex absolute right-28 bottom-2">
+          <el-tooltip effect="light">
+            <template #content>
+              <div>
+                【完全免费】前往<a
+                  class="text-blue-600"
+                  href="https://plugin.gin-vue-admin.com/#/layout/userInfo/center"
+                  target="_blank"
+              >插件市场个人中心</a
+              >申请AIPath，填入config.yaml的ai-path属性即可使用。
+              </div>
+            </template>
+            <el-button
+                :disabled="form.onlyTemplate"
+                type="primary"
+                @click="eyeFunc()"
+            >
+              <el-icon size="18">
+                <ai-gva />
+              </el-icon>
+              识图
+            </el-button>
+          </el-tooltip>
+        </div>
+
         <div class="flex absolute right-2 bottom-2">
           <el-tooltip
             effect="light"
@@ -408,6 +436,26 @@
               <el-checkbox v-model="form.onlyTemplate" />
             </el-form-item>
           </el-col>
+          <el-col :span="9">
+            <el-form-item>
+              <template #label>
+                <el-tooltip
+                    content="注：会自动创建parentID来进行父子关系关联,仅支持主键为int类型"
+                    placement="bottom"
+                    effect="light"
+                >
+                  <div>
+                    树型结构 <el-icon><QuestionFilled /></el-icon>
+                  </div>
+                </el-tooltip>
+              </template>
+              <div class="flex gap-2 items-center">
+                <el-checkbox v-model="form.isTree" />
+                <el-input v-model="form.treeJson" :disabled="!form.isTree" placeholder="前端展示json属性"></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+
         </el-row>
       </el-form>
     </div>
@@ -698,10 +746,10 @@
           导出json
         </el-button>
         <el-upload
-            class="flex items-center"
-            :before-upload="importJson"
-            show-file-list="false"
-            accept=".json"
+          class="flex items-center"
+          :before-upload="importJson"
+          :show-file-list="false"
+          accept=".json"
         >
           <el-button type="primary" class="mx-2" :disabled="isAdd">导入json</el-button>
         </el-upload>
@@ -802,26 +850,40 @@
 </template>
 
 <script setup>
+  import FieldDialog from '@/view/systemTools/autoCode/component/fieldDialog.vue'
+  import PreviewCodeDialog from '@/view/systemTools/autoCode/component/previewCodeDialog.vue'
+  import {
+    toUpperCase,
+    toHump,
+    toSQLLine,
+    toLowerCase
+  } from '@/utils/stringFun'
+  import {
+    createTemp,
+    getDB,
+    getTable,
+    getColumn,
+    preview,
+    getMeta,
+    getPackageApi,
+    llmAuto, butler, eye
+  } from '@/api/autoCode'
+  import { getDict } from '@/utils/dictionary'
+  import { ref, watch, toRaw, onMounted, nextTick } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import { ElMessage, ElMessageBox } from 'element-plus'
+  import WarningBar from '@/components/warningBar/warningBar.vue'
+  import Sortable from 'sortablejs'
 
-import FieldDialog from '@/view/systemTools/autoCode/component/fieldDialog.vue'
-import PreviewCodeDialog from '@/view/systemTools/autoCode/component/previewCodeDialog.vue'
-import { toUpperCase, toHump, toSQLLine, toLowerCase } from '@/utils/stringFun'
-import { createTemp, getDB, getTable, getColumn, preview, getMeta, getPackageApi,llmAuto } from '@/api/autoCode'
-import { getDict } from '@/utils/dictionary'
-import { ref, watch, toRaw, onMounted, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import WarningBar from '@/components/warningBar/warningBar.vue'
-import Sortable from 'sortablejs'
+  const handleFocus = () => {
+    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('paste', handlePaste);
+  }
 
-const handleFocus = () => {
-  document.addEventListener('keydown', handleKeydown);
-};
-
-const handleBlur = () => {
-  document.removeEventListener('keydown', handleKeydown);
-};
-
+  const handleBlur = () => {
+    document.removeEventListener('keydown', handleKeydown);
+    document.removeEventListener('paste', handlePaste);
+  }
 
 const handleKeydown = (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
@@ -829,27 +891,72 @@ const handleKeydown = (event) => {
   }
 };
 
-const getOnlyNumber = () => {
-  let randomNumber = '';
-  while (randomNumber.length < 16) {
-    randomNumber += Math.random().toString(16).substring(2);
+  const handlePaste = (event) => {
+    const items = event.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        const file = items[i].getAsFile();
+        const reader = new FileReader();
+        reader.onload =async (e) => {
+          const base64String = e.target.result;
+          const res = await eye({ picture: base64String,command: 'eye' })
+          if (res.code === 0) {
+            prompt.value = res.data
+            llmAutoFunc()
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  const getOnlyNumber = () => {
+    let randomNumber = ''
+    while (randomNumber.length < 16) {
+      randomNumber += Math.random().toString(16).substring(2)
+    }
+    return randomNumber.substring(0, 16)
   }
-  return randomNumber.substring(0, 16);
-}
 
 const prompt = ref("")
 
-const llmAutoFunc = async (flag) =>{
-  if (flag&&!form.value.structName) {
-    ElMessage.error('请输入结构体名称')
-    return
+  const eyeFunc = async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const base64String = e.target.result;
+
+          const res = await eye({ picture: base64String,command: 'eye' })
+          if (res.code === 0) {
+            prompt.value = res.data
+            llmAutoFunc()
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    input.click();
   }
-  //删除多余的字符
-  prompt.value = prompt.value.replace(/\s+/g, '')
-  if (!flag&&!prompt.value) {
-    ElMessage.error('请输入描述')
-    return
-  }
+
+
+  const llmAutoFunc = async (flag) => {
+    if (flag && !form.value.structName) {
+      ElMessage.error('请输入结构体名称')
+      return
+    }
+    //删除多余的字符
+    prompt.value = prompt.value.replace(/\s+/g, '')
+    if (!flag && !prompt.value) {
+      ElMessage.error('请输入描述')
+      return
+    }
 
   if(form.value.fields.length>0){
     const res = await ElMessageBox.confirm('AI生成会清空当前数据，是否继续?', '提示', {
@@ -1006,91 +1113,91 @@ const typeIndexOptions = ref([
   }
 ])
 
-const fieldTemplate = {
-  fieldName: '',
-  fieldDesc: '',
-  fieldType: '',
-  dataType: '',
-  fieldJson: '',
-  columnName: '',
-  dataTypeLong: '',
-  comment: '',
-  defaultValue: '',
-  require: false,
-  sort: false,
-  form: true,
-  desc: true,
-  table: true,
-  excel: false,
-  errorText: '',
-  primaryKey: false,
-  clearable: true,
-  fieldSearchType: '',
-  fieldIndexType: '',
-  dictType: '',
-  dataSource: {
-    dbName: '',
-    association:1,
-    table: '',
-    label: '',
-    value: '',
-    hasDeletedAt: false
-  }
-}
-const route = useRoute()
-const router = useRouter()
-const preViewCode = ref({})
-const dbform = ref({
-  businessDB: '',
-  dbName: '',
-  tableName: ''
-})
-const tableOptions = ref([])
-const addFlag = ref('')
-const fdMap = ref({})
-const form = ref({
-  structName: '',
-  tableName: '',
-  packageName: '',
-  package: '',
-  abbreviation: '',
-  description: '',
-  businessDB: '',
-  autoCreateApiToSql: true,
-  autoCreateMenuToSql: true,
-  autoCreateBtnAuth: false,
-  autoMigrate: true,
-  autoKeepCode: false,
-  gvaModel: true,
-  autoCreateResource: false,
-  onlyTemplate: false,
-  fields: []
-})
-const rules = ref({
-  structName: [
-    { required: true, message: '请输入结构体名称', trigger: 'blur' }
-  ],
-  abbreviation: [
-    { required: true, message: '请输入结构体简称', trigger: 'blur' }
-  ],
-  description: [
-    { required: true, message: '请输入结构体描述', trigger: 'blur' }
-  ],
-  packageName: [
-    {
-      required: true,
-      message: '文件名称：sysXxxxXxxx',
-      trigger: 'blur'
+  const fieldTemplate = {
+    fieldName: '',
+    fieldDesc: '',
+    fieldType: '',
+    dataType: '',
+    fieldJson: '',
+    columnName: '',
+    dataTypeLong: '',
+    comment: '',
+    defaultValue: '',
+    require: false,
+    sort: false,
+    form: true,
+    desc: true,
+    table: true,
+    excel: false,
+    errorText: '',
+    primaryKey: false,
+    clearable: true,
+    fieldSearchType: '',
+    fieldIndexType: '',
+    dictType: '',
+    dataSource: {
+      dbName: '',
+      association: 1,
+      table: '',
+      label: '',
+      value: '',
+      hasDeletedAt: false
     }
-  ],
-  package: [
-    { required: true, message: '请选择package', trigger: 'blur' }
-  ]
-})
-const dialogMiddle = ref({})
-const bk = ref({})
-const dialogFlag = ref(false)
-const previewFlag = ref(false)
+  }
+  const route = useRoute()
+  const router = useRouter()
+  const preViewCode = ref({})
+  const dbform = ref({
+    businessDB: '',
+    dbName: '',
+    tableName: ''
+  })
+  const tableOptions = ref([])
+  const addFlag = ref('')
+  const fdMap = ref({})
+  const form = ref({
+    structName: '',
+    tableName: '',
+    packageName: '',
+    package: '',
+    abbreviation: '',
+    description: '',
+    businessDB: '',
+    autoCreateApiToSql: true,
+    autoCreateMenuToSql: true,
+    autoCreateBtnAuth: false,
+    autoMigrate: true,
+    autoKeepCode: false,
+    gvaModel: true,
+    autoCreateResource: false,
+    onlyTemplate: false,
+    isTree: false,
+    treeJson: "",
+    fields: []
+  })
+  const rules = ref({
+    structName: [
+      { required: true, message: '请输入结构体名称', trigger: 'blur' }
+    ],
+    abbreviation: [
+      { required: true, message: '请输入结构体简称', trigger: 'blur' }
+    ],
+    description: [
+      { required: true, message: '请输入结构体描述', trigger: 'blur' }
+    ],
+    packageName: [
+      {
+        required: true,
+        message: '文件名称：sysXxxxXxxx',
+        trigger: 'blur'
+      }
+    ],
+    package: [{ required: true, message: '请选择package', trigger: 'blur' }]
+  })
+  const dialogMiddle = ref({})
+  const bk = ref({})
+  const dialogFlag = ref(false)
+  const previewFlag = ref(false)
 
 const useGva = (e) => {
   if (e && form.value.fields.length) {
@@ -1145,50 +1252,52 @@ const editAndAddField = (item) => {
   }
 }
 
-const fieldDialogNode = ref(null)
-const enterDialog = () => {
-  fieldDialogNode.value.fieldDialogForm.validate(valid => {
-    if (valid) {
-      dialogMiddle.value.fieldName = toUpperCase(
-        dialogMiddle.value.fieldName
-      )
-      if (addFlag.value === 'add') {
-        form.value.fields.push(dialogMiddle.value)
+  const fieldDialogNode = ref(null)
+  const enterDialog = () => {
+    fieldDialogNode.value.fieldDialogForm.validate((valid) => {
+      if (valid) {
+        dialogMiddle.value.fieldName = toUpperCase(dialogMiddle.value.fieldName)
+        if (addFlag.value === 'add') {
+          form.value.fields.push(dialogMiddle.value)
+        }
+        dialogFlag.value = false
+      } else {
+        return false
       }
-      dialogFlag.value = false
-    } else {
+    })
+  }
+  const closeDialog = () => {
+    if (addFlag.value === 'edit') {
+      dialogMiddle.value = bk.value
+    }
+    dialogFlag.value = false
+  }
+  const deleteField = (index) => {
+    ElMessageBox.confirm('确定要删除吗?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(async () => {
+      form.value.fields.splice(index, 1)
+    })
+  }
+  const autoCodeForm = ref(null)
+  const enterForm = async (isPreview) => {
+    if (form.value.isTree && !form.value.treeJson){
+      ElMessage({
+        type: 'error',
+        message: '请填写树型结构的前端展示json属性'
+      })
       return false
     }
-  })
-}
-const closeDialog = () => {
-  if (addFlag.value === 'edit') {
-    dialogMiddle.value = bk.value
-  }
-  dialogFlag.value = false
-}
-const deleteField = (index) => {
-  ElMessageBox.confirm('确定要删除吗?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(async() => {
-    form.value.fields.splice(index, 1)
-  })
-}
-const autoCodeForm = ref(null)
-const enterForm = async(isPreview) => {
-
-  if(!form.value.onlyTemplate){
-
-
-  if (form.value.fields.length <= 0) {
-    ElMessage({
-      type: 'error',
-      message: '请填写至少一个field'
-    })
-    return false
-  }
+    if (!form.value.onlyTemplate) {
+      if (form.value.fields.length <= 0) {
+        ElMessage({
+          type: 'error',
+          message: '请填写至少一个field'
+        })
+        return false
+      }
 
   if (!form.value.gvaModel && form.value.fields.every(item => !item.primaryKey)) {
     ElMessage({
@@ -1314,62 +1423,68 @@ const getTableFunc = async() => {
   dbform.value.tableName = ''
 }
 
-const getColumnFunc = async() => {
-  const res = await getColumn(dbform.value)
-  if (res.code === 0) {
-    let dbtype = ''
-    if (dbform.value.businessDB !== '') {
-      const dbtmp = dbList.value.find(item => item.aliasName === dbform.value.businessDB)
-      const dbraw = toRaw(dbtmp)
-      dbtype = dbraw.dbtype
+  const getColumnFunc = async () => {
+    const res = await getColumn(dbform.value)
+    if (res.code === 0) {
+      let dbtype = ''
+      if (dbform.value.businessDB !== '') {
+        const dbtmp = dbList.value.find(
+          (item) => item.aliasName === dbform.value.businessDB
+        )
+        const dbraw = toRaw(dbtmp)
+        dbtype = dbraw.dbtype
+      }
+      form.value.gvaModel = false
+      const tbHump = toHump(dbform.value.tableName)
+      form.value.structName = toUpperCase(tbHump)
+      form.value.tableName = dbform.value.tableName
+      form.value.packageName = toLowerCase(tbHump)
+      form.value.abbreviation = toLowerCase(tbHump)
+      form.value.description = tbHump + '表'
+      form.value.autoCreateApiToSql = true
+      form.value.fields = []
+      res.data.columns &&
+        res.data.columns.forEach((item) => {
+          if (needAppend(item)) {
+            const fbHump = toHump(item.columnName)
+            form.value.fields.push({
+              onlyNumber: getOnlyNumber(),
+              fieldName: toUpperCase(fbHump),
+              fieldDesc: item.columnComment || fbHump + '字段',
+              fieldType: fdMap.value[item.dataType],
+              dataType: item.dataType,
+              fieldJson: fbHump,
+              primaryKey: item.primaryKey,
+              dataTypeLong:
+                item.dataTypeLong && item.dataTypeLong.split(',')[0],
+              columnName:
+                dbtype === 'oracle'
+                  ? item.columnName.toUpperCase()
+                  : item.columnName,
+              comment: item.columnComment,
+              require: false,
+              errorText: '',
+              clearable: true,
+              fieldSearchType: '',
+              fieldIndexType: '',
+              dictType: '',
+              form: true,
+              table: true,
+              excel: false,
+              desc: true,
+              dataSource: {
+                dbName: '',
+                association: 1,
+                table: '',
+                label: '',
+                value: '',
+                hasDeletedAt: false
+              }
+            })
+          }
+        })
     }
-    form.value.gvaModel = false
-    const tbHump = toHump(dbform.value.tableName)
-    form.value.structName = toUpperCase(tbHump)
-    form.value.tableName = dbform.value.tableName
-    form.value.packageName = tbHump
-    form.value.abbreviation = tbHump
-    form.value.description = tbHump + '表'
-    form.value.autoCreateApiToSql = true
-    form.value.fields = []
-    res.data.columns &&
-          res.data.columns.forEach(item => {
-            if (needAppend(item)) {
-              const fbHump = toHump(item.columnName)
-              form.value.fields.push({
-                onlyNumber: getOnlyNumber(),
-                fieldName: toUpperCase(fbHump),
-                fieldDesc: item.columnComment || fbHump + '字段',
-                fieldType: fdMap.value[item.dataType],
-                dataType: item.dataType,
-                fieldJson: fbHump,
-                primaryKey: item.primaryKey,
-                dataTypeLong: item.dataTypeLong && item.dataTypeLong.split(',')[0],
-                columnName: dbtype === 'oracle' ? item.columnName.toUpperCase() : item.columnName,
-                comment: item.columnComment,
-                require: false,
-                errorText: '',
-                clearable: true,
-                fieldSearchType: '',
-                fieldIndexType: '',
-                dictType: '',
-                form: true,
-                table: true,
-                excel: false,
-                desc: true,
-                dataSource: {
-                  dbName: '',
-                  association:1,
-                  table: '',
-                  label: '',
-                  value: '',
-                  hasDeletedAt: false
-                }
-              })
-            }
-          })
   }
-}
 
 const needAppend = (item) => {
   let isAppend = true
@@ -1446,28 +1561,30 @@ const getCatch = () => {
   }
 }
 
-const clearCatch = async () => {
-  form.value = {
-    structName: '',
-    tableName: '',
-    packageName: '',
-    package: '',
-    abbreviation: '',
-    description: '',
-    businessDB: '',
-    autoCreateApiToSql: true,
-    autoCreateMenuToSql: true,
-    autoCreateBtnAuth: false,
-    autoMigrate: true,
-    autoKeepCode: false,
-    gvaModel: true,
-    autoCreateResource: false,
-    onlyTemplate: false,
-    fields: []
+  const clearCatch = async () => {
+    form.value = {
+      structName: '',
+      tableName: '',
+      packageName: '',
+      package: '',
+      abbreviation: '',
+      description: '',
+      businessDB: '',
+      autoCreateApiToSql: true,
+      autoCreateMenuToSql: true,
+      autoCreateBtnAuth: false,
+      autoMigrate: true,
+      autoKeepCode: false,
+      gvaModel: true,
+      autoCreateResource: false,
+      onlyTemplate: false,
+      isTree: false,
+      treeJson: "",
+      fields: []
+    }
+    await nextTick()
+    window.sessionStorage.removeItem('autoCode')
   }
-  await nextTick()
-  window.sessionStorage.removeItem('autoCode')
-}
 
 getCatch()
 
