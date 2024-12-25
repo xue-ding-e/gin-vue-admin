@@ -66,7 +66,7 @@
 {{- range .Fields}}
         {{- if .Table}}
         {{- if .CheckDataSource }}
-<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
         {{- if eq .DataSource.Association 2}}
         <el-tag v-for="(item,key) in filterDataSource(dataSource.{{.FieldJson}},scope.row.{{.FieldJson}})" :key="key">
@@ -78,7 +78,7 @@
     </template>
 </el-table-column>
         {{- else if .DictType}}
-<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
     {{if eq .FieldType "array"}}
     <el-tag class="mr-1" v-for="item in scope.row.{{.FieldJson}}" :key="item"> {{"{{"}} filterDict(item,{{.DictType}}Options) {{"}}"}}</el-tag>
@@ -88,21 +88,21 @@
     </template>
 </el-table-column>
         {{- else if eq .FieldType "bool" }}
-<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">{{"{{"}} formatBoolean(scope.row.{{.FieldJson}}) {{"}}"}}</template>
 </el-table-column>
          {{- else if eq .FieldType "time.Time" }}
-<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="180">
+<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
    <template #default="scope">{{"{{"}} formatDate(scope.row.{{.FieldJson}}) {{"}}"}}</template>
 </el-table-column>
           {{- else if eq .FieldType "picture" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
       <el-image preview-teleported style="width: 100px; height: 100px" :src="getUrl(scope.row.{{.FieldJson}})" fit="cover"/>
     </template>
 </el-table-column>
            {{- else if eq .FieldType "pictures" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
    <template #default="scope">
       <div class="multiple-img-box">
          <el-image preview-teleported v-for="(item,index) in scope.row.{{.FieldJson}}" :key="index" style="width: 80px; height: 80px" :src="getUrl(item)" fit="cover"/>
@@ -110,7 +110,7 @@
    </template>
 </el-table-column>
            {{- else if eq .FieldType "video" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
    <template #default="scope">
     <video
        style="width: 100px; height: 100px"
@@ -122,13 +122,13 @@
    </template>
 </el-table-column>
            {{- else if eq .FieldType "richtext" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
    <template #default="scope">
       [富文本内容]
    </template>
 </el-table-column>
            {{- else if eq .FieldType "file" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
          <div class="file-list">
            <el-tag v-for="file in scope.row.{{.FieldJson}}" :key="file.uid" @click="downloadFile(file.url)">{{"{{"}}file.name{{"}}"}}</el-tag>
@@ -136,19 +136,19 @@
     </template>
 </el-table-column>
          {{- else if eq .FieldType "json" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
         [JSON]
     </template>
 </el-table-column>
            {{- else if eq .FieldType "array" }}
-<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+<el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
        <ArrayCtrl v-model="scope.row.{{ .FieldJson }}"/>
     </template>
 </el-table-column>
           {{- else }}
-<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" />
+<el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')" />
           {{- end }}
         {{- end }}
         {{- end }}
@@ -542,7 +542,7 @@ getDataSourceFunc()
         {{- range .Fields}}
         {{- if .Table}}
         {{- if .CheckDataSource }}
-        <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+        <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
           <template #default="scope">
                 {{- if eq .DataSource.Association 2}}
                     <el-tag v-for="(item,key) in filterDataSource(dataSource.{{.FieldJson}},scope.row.{{.FieldJson}})" :key="key">
@@ -554,7 +554,7 @@ getDataSourceFunc()
          </template>
          </el-table-column>
         {{- else if .DictType}}
-        <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+        <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
             <template #default="scope">
                 {{if eq .FieldType "array"}}
                 <el-tag class="mr-1" v-for="item in scope.row.{{.FieldJson}}" :key="item"> {{"{{"}} filterDict(item,{{.DictType}}Options) {{"}}"}}</el-tag>
@@ -564,21 +564,21 @@ getDataSourceFunc()
             </template>
         </el-table-column>
         {{- else if eq .FieldType "bool" }}
-        <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+        <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
             <template #default="scope">{{"{{"}} formatBoolean(scope.row.{{.FieldJson}}) {{"}}"}}</template>
         </el-table-column>
          {{- else if eq .FieldType "time.Time" }}
-         <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="180">
+         <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
             <template #default="scope">{{"{{"}} formatDate(scope.row.{{.FieldJson}}) {{"}}"}}</template>
          </el-table-column>
           {{- else if eq .FieldType "picture" }}
-          <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+          <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
               <template #default="scope">
                 <el-image preview-teleported style="width: 100px; height: 100px" :src="getUrl(scope.row.{{.FieldJson}})" fit="cover"/>
               </template>
           </el-table-column>
            {{- else if eq .FieldType "pictures" }}
-           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
               <template #default="scope">
                  <div class="multiple-img-box">
                     <el-image preview-teleported v-for="(item,index) in scope.row.{{.FieldJson}}" :key="index" style="width: 80px; height: 80px" :src="getUrl(item)" fit="cover"/>
@@ -586,7 +586,7 @@ getDataSourceFunc()
               </template>
            </el-table-column>
            {{- else if eq .FieldType "video" }}
-           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
               <template #default="scope">
                <video
                   style="width: 100px; height: 100px"
@@ -598,13 +598,13 @@ getDataSourceFunc()
               </template>
            </el-table-column>
            {{- else if eq .FieldType "richtext" }}
-                      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+                      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
                          <template #default="scope">
                             [富文本内容]
                          </template>
                       </el-table-column>
            {{- else if eq .FieldType "file" }}
-                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
                         <template #default="scope">
                              <div class="file-list">
                                <el-tag v-for="file in scope.row.{{.FieldJson}}" :key="file.uid" @click="downloadFile(file.url)">{{"{{"}}file.name{{"}}"}}</el-tag>
@@ -612,19 +612,19 @@ getDataSourceFunc()
                         </template>
                     </el-table-column>
          {{- else if eq .FieldType "json" }}
-          <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+          <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
               <template #default="scope">
                   [JSON]
               </template>
           </el-table-column>
            {{- else if eq .FieldType "array" }}
-           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="200">
+           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
                <template #default="scope">
                   <ArrayCtrl v-model="scope.row.{{ .FieldJson }}"/>
                </template>
            </el-table-column>
           {{- else }}
-          <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" />
+          <el-table-column {{- if .Sort}} sortable{{- end}} align="left" label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')" />
           {{- end }}
         {{- end }}
         {{- end }}
