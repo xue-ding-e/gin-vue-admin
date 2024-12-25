@@ -5,7 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/email"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/plugin"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func PluginInit(group *gin.RouterGroup, Plugin ...plugin.Plugin) {

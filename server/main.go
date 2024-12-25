@@ -4,7 +4,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/core"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/initialize"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 	_ "go.uber.org/automaxprocs"
 	"go.uber.org/zap"
 )

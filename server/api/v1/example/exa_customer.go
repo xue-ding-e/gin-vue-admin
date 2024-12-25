@@ -7,7 +7,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
 	exampleRes "github.com/flipped-aurora/gin-vue-admin/server/model/example/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 

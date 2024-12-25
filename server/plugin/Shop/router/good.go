@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 var Good = new(good)

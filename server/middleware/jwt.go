@@ -11,7 +11,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
 
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 var jwtService = service.ServiceGroupApp.SystemServiceGroup.JwtService

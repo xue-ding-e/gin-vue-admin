@@ -3,7 +3,7 @@ package initialize
 import (
 	"{{.Module}}/global"
 	"{{.Module}}/middleware"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func Router(engine *gin.Engine) {

@@ -1,7 +1,7 @@
 package system
 
 import (
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type AuthorityBtnRouter struct{}

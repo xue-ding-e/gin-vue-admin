@@ -8,14 +8,14 @@ import (
     {{- if not .IsTree}}
     {{.Package}}Req "{{.Module}}/model/{{.Package}}/request"
     {{- end }}
-    "github.com/xue-ding-e/gin"
+    "github.com/gin-gonic/gin"
     "go.uber.org/zap"
     {{- if .AutoCreateResource}}
     "{{.Module}}/utils"
     {{- end }}
     {{- else}}
     "{{.Module}}/model/common/response"
-    "github.com/xue-ding-e/gin"
+    "github.com/gin-gonic/gin"
     {{- end}}
 )
 

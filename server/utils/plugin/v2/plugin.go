@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 // Plugin 插件模式接口化v2

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/fvbock/endless"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func initServer(address string, router *gin.Engine) server {

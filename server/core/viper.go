@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/flipped-aurora/gin-vue-admin/server/core/internal"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 	"os"
 	"path/filepath"
 

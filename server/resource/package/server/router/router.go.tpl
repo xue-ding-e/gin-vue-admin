@@ -2,7 +2,7 @@ package {{.Package}}
 
 import (
 	{{if .OnlyTemplate}}// {{ end}}"{{.Module}}/middleware"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type {{.StructName}}Router struct {}

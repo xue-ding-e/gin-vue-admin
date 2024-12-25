@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"reflect"
 
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type Response struct {

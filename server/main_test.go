@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/stretchr/testify/assert"
-	"github.com/xue-ding-e/gin"
-	"github.com/xue-ding-e/gin/binding"
 )
 
 type TestStruct struct {
@@ -41,7 +41,6 @@ func TestShouldBindWith(t *testing.T) {
 
 		obj := &TestStruct{}
 		err := c.ShouldBindWith(obj, binding.JSON)
-
 		assert.Error(t, err)
 		assert.Equal(t, "invalid name", err.Error())
 	})
@@ -55,7 +54,6 @@ func TestShouldBindWith(t *testing.T) {
 
 		obj := &NormalStruct{}
 		err := c.ShouldBindWith(obj, binding.JSON)
-
 		assert.NoError(t, err)
 		assert.Equal(t, 18, obj.Age)
 	})

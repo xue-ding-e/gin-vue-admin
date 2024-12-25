@@ -10,6 +10,7 @@ require (
 	github.com/casbin/gorm-adapter/v3 v3.28.0
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6
+	github.com/gin-gonic/gin v1.9.0
 	github.com/glebarez/sqlite v1.11.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/goccy/go-json v0.10.3
@@ -33,11 +34,10 @@ require (
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/swaggo/files v1.0.1
+	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.3
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.55
 	github.com/unrolled/secure v1.16.0
-	github.com/xue-ding-e/gin v0.0.1
-	github.com/xue-ding-e/gin-swagger v0.0.1
 	github.com/xuri/excelize/v2 v2.9.0
 	go.mongodb.org/mongo-driver v1.17.1
 	go.uber.org/automaxprocs v1.6.0
@@ -79,7 +79,6 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.6 // indirect
 	github.com/gammazero/toposort v0.1.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.9.0 // indirect
 	github.com/glebarez/go-sqlite v1.22.0 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
@@ -188,3 +187,5 @@ require (
 	modernc.org/memory v1.8.0 // indirect
 	modernc.org/sqlite v1.33.1 // indirect
 )
+
+replace github.com/gin-gonic/gin => github.com/xue-ding-e/gin v0.0.3

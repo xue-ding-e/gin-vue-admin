@@ -4,7 +4,6 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Shop/router"
-	"github.com/xue-ding-e/gin"
 )
 
 func Router(engine *gin.Engine) {

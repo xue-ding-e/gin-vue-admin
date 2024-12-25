@@ -5,7 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/BusinessConfig/service"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-	"github.com/xue-ding-e/gin"
+	"github.com/gin-gonic/gin"
 )
 
 var BusinessConfig = new(businessConfig)
