@@ -2,7 +2,7 @@ package example
 
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 type CustomerRouter struct{}

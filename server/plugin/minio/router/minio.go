@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 var Minio = new(MI)

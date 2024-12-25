@@ -6,7 +6,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Shop/initialize"
 	_ "github.com/flipped-aurora/gin-vue-admin/server/plugin/Shop/initialize/data"
 	interfaces "github.com/flipped-aurora/gin-vue-admin/server/utils/plugin/v2"
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 var _ interfaces.Plugin = (*plugin)(nil)

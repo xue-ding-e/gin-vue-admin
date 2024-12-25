@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 const (

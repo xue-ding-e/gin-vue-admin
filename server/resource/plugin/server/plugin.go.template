@@ -5,7 +5,7 @@ import (
 	"{{.Module}}/plugin/{{ .Package }}/initialize"
 	// _ "{{.Module}}/plugin/{{ .Package }}/initialize/data"
 	interfaces "{{.Module}}/utils/plugin/v2"
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 var _ interfaces.Plugin = (*plugin)(nil)

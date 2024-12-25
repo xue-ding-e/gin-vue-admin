@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 func initServer(address string, router *gin.Engine) server {

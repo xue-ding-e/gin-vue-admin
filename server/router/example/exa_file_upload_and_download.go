@@ -1,7 +1,7 @@
 package example
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 type FileUploadAndDownloadRouter struct{}

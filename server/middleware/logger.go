@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 // LogLayout 日志layout

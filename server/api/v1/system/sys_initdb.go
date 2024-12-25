@@ -6,7 +6,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	"go.uber.org/zap"
 
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 type DBApi struct{}

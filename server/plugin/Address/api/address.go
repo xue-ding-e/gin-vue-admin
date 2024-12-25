@@ -6,7 +6,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Address/model"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/Address/model/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 	"go.uber.org/zap"
 )
 

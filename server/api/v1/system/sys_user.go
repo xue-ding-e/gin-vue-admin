@@ -14,8 +14,8 @@ import (
 	systemRes "github.com/flipped-aurora/gin-vue-admin/server/model/system/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 
-	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
+	"github.com/xue-ding-e/gin"
 	"go.uber.org/zap"
 )
 

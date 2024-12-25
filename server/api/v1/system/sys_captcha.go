@@ -6,8 +6,8 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	systemRes "github.com/flipped-aurora/gin-vue-admin/server/model/system/response"
-	"github.com/gin-gonic/gin"
 	"github.com/mojocn/base64Captcha"
+	"github.com/xue-ding-e/gin"
 	"go.uber.org/zap"
 )
 

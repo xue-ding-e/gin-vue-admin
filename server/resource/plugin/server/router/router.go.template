@@ -2,7 +2,7 @@ package router
 
 import (
 	{{if .OnlyTemplate }} // {{end}}"{{.Module}}/middleware"
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 var {{.StructName}} = new({{.Abbreviation}})

@@ -1,7 +1,7 @@
 package system
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/xue-ding-e/gin"
 )
 
 type BaseRouter struct{}

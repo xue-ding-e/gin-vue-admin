@@ -8,9 +8,9 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
 	"github.com/flipped-aurora/gin-vue-admin/server/router"
-	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/xue-ding-e/gin"
+	ginSwagger "github.com/xue-ding-e/gin-swagger"
 )
 
 type justFilesFilesystem struct {
