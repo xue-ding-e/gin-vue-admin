@@ -74,6 +74,8 @@ const formatRouter = (routes, routeMap, parent) => {
 
 #### 急!!!!!
 
+自动化代码,web template , form增加default 值(closeDialog等直接使用默认空值) 
+
 tokenNext 和 clams改造方便增删(下次遇到立刻更改)  遇到了 例如authority等信息
 
 C端用户默认api 和默认菜单(下次遇到立刻更改)
