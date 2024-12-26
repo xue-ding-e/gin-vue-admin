@@ -14,6 +14,6 @@
   import { useRouterStore } from '@/pinia/modules/router'
   const routerStore = useRouterStore()
   defineOptions({
-    name: 'Example'
+    name: 'Example',
   })
 </script>

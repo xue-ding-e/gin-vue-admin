@@ -23,12 +23,12 @@
   const prop = defineProps({
     height: {
       type: String,
-      default: '128px'
+      default: '128px',
     },
     data: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   })
   const graphicFactory = (side) => {
     return {
@@ -39,21 +39,18 @@
         text: '',
         textAlign: 'center',
         fill: '#4E5969',
-        fontSize: 12
-      }
+        fontSize: 12,
+      },
     }
   }
-  const graphicElements = ref([
-    graphicFactory({ left: '5%' }),
-    graphicFactory({ right: 0 })
-  ])
+  const graphicElements = ref([graphicFactory({ left: '5%' }), graphicFactory({ right: 0 })])
   const { chartOption } = useChartOption(() => {
     return {
       grid: {
         left: '40',
         right: '0',
         top: '10',
-        bottom: '30'
+        bottom: '30',
       },
       xAxis: {
         type: 'category',
@@ -61,30 +58,30 @@
         show: false,
         boundaryGap: false,
         axisLine: {
-          show: false
+          show: false,
         },
         axisTick: {
-          show: false
+          show: false,
         },
         splitLine: {
-          show: false
-        }
+          show: false,
+        },
       },
       yAxis: {
         type: 'value',
         show: false,
         axisLine: {
-          show: false
+          show: false,
         },
         axisLabel: {
-          show: false
+          show: false,
         },
         splitLine: {
-          show: false
-        }
+          show: false,
+        },
       },
       graphic: {
-        elements: graphicElements.value
+        elements: graphicElements.value,
       },
       series: [
         {
@@ -95,25 +92,25 @@
           emphasis: {
             focus: 'series',
             itemStyle: {
-              borderWidth: 2
-            }
+              borderWidth: 2,
+            },
           },
           lineStyle: {
             width: 3,
             color: new graphic.LinearGradient(0, 0, 1, 0, [
               {
                 offset: 0,
-                color: `${config.value.primaryColor}32`
+                color: `${config.value.primaryColor}32`,
               },
               {
                 offset: 0.5,
-                color: `${config.value.primaryColor}64`
+                color: `${config.value.primaryColor}64`,
               },
               {
                 offset: 1,
-                color: `${config.value.primaryColor}FF`
-              }
-            ])
+                color: `${config.value.primaryColor}FF`,
+              },
+            ]),
           },
           showSymbol: false,
           areaStyle: {
@@ -121,16 +118,16 @@
             color: new graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: `${config.value.primaryColor}20`
+                color: `${config.value.primaryColor}20`,
               },
               {
                 offset: 1,
-                color: `${config.value.primaryColor}08`
-              }
-            ])
-          }
-        }
-      ]
+                color: `${config.value.primaryColor}08`,
+              },
+            ]),
+          },
+        },
+      ],
     }
   })
 </script>

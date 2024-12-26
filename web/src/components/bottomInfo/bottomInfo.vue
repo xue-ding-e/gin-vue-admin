@@ -9,34 +9,28 @@
     <div class="text-center">
       <span class="mr-1">Powered by</span>
       <span>
-        <a
-          class="font-bold text-active"
-          href=""
-        >薛定饿了不养喵</a>
+        <a class="font-bold text-active" href="">薛定饿了不养喵</a>
       </span>
     </div>
     <slot />
     <div class="text-center">
       <span class="mr-1">Copyright</span>
       <span>
-        <a
-          class="font-bold text-active"
-          href=""
-        >薛定饿了不养喵</a>
+        <a class="font-bold text-active" href="">薛定饿了不养喵</a>
       </span>
     </div>
   </div>
 </template>
 
-<script  setup>
-defineOptions({
-  name: 'BottomInfo'
-})
+<script setup>
+  defineOptions({
+    name: 'BottomInfo',
+  })
 
-// console.log(
-//   `%c powered by %c flipped-aurorae %c`,
-//   'background:#0081ff; padding: 1px; border-radius: 3px 0 0 3px; color: #fff',
-//   'background:#354855; padding: 1px 5px; border-radius: 0 3px 3px 0; color: #fff; font-weight: bold;',
-//   'background:transparent'
-// )
+  // console.log(
+  //   `%c powered by %c flipped-aurorae %c`,
+  //   'background:#0081ff; padding: 1px; border-radius: 3px 0 0 3px; color: #fff',
+  //   'background:#354855; padding: 1px 5px; border-radius: 0 3px 3px 0; color: #fff; font-weight: bold;',
+  //   'background:transparent'
+  // )
 </script>

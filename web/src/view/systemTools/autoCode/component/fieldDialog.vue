@@ -12,11 +12,7 @@
       class="grid grid-cols-2"
     >
       <el-form-item label="字段名称" prop="fieldName">
-        <el-input
-          v-model="middleDate.fieldName"
-          autocomplete="off"
-          style="width: 80%"
-        />
+        <el-input v-model="middleDate.fieldName" autocomplete="off" style="width: 80%" />
         <el-button style="width: 18%; margin-left: 2%" @click="autoFill">
           <span style="font-size: 12px">自动填充</span>
         </el-button>
@@ -56,11 +52,7 @@
       >
         <el-input
           v-model="middleDate.dataTypeLong"
-          :placeholder="
-            middleDate.fieldType === 'enum'
-              ? `例:'北京','天津'`
-              : '数据库类型长度'
-          "
+          :placeholder="middleDate.fieldType === 'enum' ? `例:'北京','天津'` : '数据库类型长度'"
         />
       </el-form-item>
       <el-form-item label="字段查询条件" prop="fieldSearchType">
@@ -97,10 +89,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="默认值">
-        <el-input
-          v-model="middleDate.defaultValue"
-          placeholder="请输入默认值"
-        />
+        <el-input v-model="middleDate.defaultValue" placeholder="请输入默认值" />
       </el-form-item>
       <el-form-item label="主键">
         <el-checkbox v-model="middleDate.primaryKey" />
@@ -144,10 +133,7 @@
         <el-switch v-model="middleDate.clearable" />
       </el-form-item>
       <el-form-item label="隐藏查询条件">
-        <el-switch
-          v-model="middleDate.fieldSearchHide"
-          :disabled="!middleDate.fieldSearchType"
-        />
+        <el-switch v-model="middleDate.fieldSearchHide" :disabled="!middleDate.fieldSearchType" />
       </el-form-item>
       <el-form-item label="校验失败文案">
         <el-input v-model="middleDate.errorText" />
@@ -175,9 +161,9 @@
               >
                 <div>
                   <span>{{ item.aliasName }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{
-                    item.dbName
-                  }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">
+                    {{ item.dbName }}
+                  </span>
                 </div>
               </el-option>
             </el-select>
@@ -212,12 +198,9 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select
-              v-model="middleDate.dataSource.value"
-              placeholder="请先选择需要存储的数据"
-            >
+            <el-select v-model="middleDate.dataSource.value" placeholder="请先选择需要存储的数据">
               <template #label="{ value }">
-                <span>存储: </span>
+                <span>存储:</span>
                 <span style="font-weight: bold">{{ value }}</span>
               </template>
               <el-option
@@ -229,8 +212,8 @@
                   <el-tag :type="item.isPrimary ? 'primary' : 'info'">
                     {{ item.isPrimary ? '主&emsp;键' : '非主键' }}
                   </el-tag>
-                  {{ item.columnName }}</span
-                >
+                  {{ item.columnName }}
+                </span>
                 <span
                   style="
                     float: right;
@@ -240,20 +223,15 @@
                   "
                 >
                   类型：{{ item.type }}
-                  <block v-if="item.comment != ''"
-                    >，字段说明：{{ item.comment }}</block
-                  >
+                  <block v-if="item.comment != ''">，字段说明：{{ item.comment }}</block>
                 </span>
               </el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select
-              v-model="middleDate.dataSource.label"
-              placeholder="请先选择需要展示的数据"
-            >
+            <el-select v-model="middleDate.dataSource.label" placeholder="请先选择需要展示的数据">
               <template #label="{ value }">
-                <span>展示: </span>
+                <span>展示:</span>
                 <span style="font-weight: bold">{{ value }}</span>
               </template>
               <el-option
@@ -265,8 +243,8 @@
                   <el-tag :type="item.isPrimary ? 'primary' : 'info'">
                     {{ item.isPrimary ? '主&emsp;键' : '非主键' }}
                   </el-tag>
-                  {{ item.columnName }}</span
-                >
+                  {{ item.columnName }}
+                </span>
                 <span
                   style="
                     float: right;
@@ -276,9 +254,7 @@
                   "
                 >
                   类型：{{ item.type }}
-                  <span v-if="item.comment != ''"
-                    >，字段说明：{{ item.comment }}</span
-                  >
+                  <span v-if="item.comment != ''">，字段说明：{{ item.comment }}</span>
                 </span>
               </el-option>
             </el-select>
@@ -299,7 +275,7 @@
   import { getColumn, getDB, getTable } from '@/api/autoCode'
 
   defineOptions({
-    name: 'FieldDialog'
+    name: 'FieldDialog',
   })
 
   const props = defineProps({
@@ -307,26 +283,26 @@
       type: Object,
       default: function () {
         return {}
-      }
+      },
     },
     typeOptions: {
       type: Array,
       default: function () {
         return []
-      }
+      },
     },
     typeSearchOptions: {
       type: Array,
       default: function () {
         return []
-      }
+      },
     },
     typeIndexOptions: {
       type: Array,
       default: function () {
         return []
-      }
-    }
+      },
+    },
   })
 
   const activeNames = ref([])
@@ -353,27 +329,19 @@
   }
 
   const rules = ref({
-    fieldName: [
-      { required: true, message: '请输入字段英文名', trigger: 'blur' }
-    ],
-    fieldDesc: [
-      { required: true, message: '请输入字段中文名', trigger: 'blur' }
-    ],
-    fieldJson: [
-      { required: true, message: '请输入字段格式化json', trigger: 'blur' }
-    ],
-    columnName: [
-      { required: true, message: '请输入数据库字段', trigger: 'blur' }
-    ],
+    fieldName: [{ required: true, message: '请输入字段英文名', trigger: 'blur' }],
+    fieldDesc: [{ required: true, message: '请输入字段中文名', trigger: 'blur' }],
+    fieldJson: [{ required: true, message: '请输入字段格式化json', trigger: 'blur' }],
+    columnName: [{ required: true, message: '请输入数据库字段', trigger: 'blur' }],
     fieldType: [{ required: true, message: '请选择字段类型', trigger: 'blur' }],
-    dataTypeLong: [{ validator: validateDataTypeLong, trigger: 'blur' }]
+    dataTypeLong: [{ validator: validateDataTypeLong, trigger: 'blur' }],
   })
 
   const init = async () => {
     middleDate.value = props.dialogMiddle
     const dictRes = await getSysDictionaryList({
       page: 1,
-      pageSize: 999999
+      pageSize: 999999,
     })
 
     dictOptions.value = dictRes.data
@@ -415,8 +383,8 @@
         {
           confirmButtonText: '继续',
           cancelButtonText: '取消',
-          type: 'warning'
-        }
+          type: 'warning',
+        },
       )
         .then(() => {
           middleDate.value.fieldType = 'array'
@@ -446,13 +414,13 @@
 
   const getDBTableList = async () => {
     const res = await getTable({
-      businessDB: middleDate.value.dataSource.dbName
+      businessDB: middleDate.value.dataSource.dbName,
     })
     if (res.code === 0) {
       let list = res.data.tables // 确保这里正确获取到 tables 数组
       dbTableList.value = list.map((item) => ({
         tableName: item.tableName,
-        value: item.tableName // 这里假设 value 也是 tableName，如果不同请调整
+        value: item.tableName, // 这里假设 value 也是 tableName，如果不同请调整
       }))
     }
     clearAccress()
@@ -464,7 +432,7 @@
     middleDate.value.dataSource.table = val
     const res = await getColumn({
       businessDB: middleDate.value.dataSource.dbName,
-      tableName: val
+      tableName: val,
     })
 
     if (res.code === 0) {
@@ -478,7 +446,7 @@
           value: item.columnName,
           type: item.dataType,
           isPrimary: item.primaryKey,
-          comment: item.columnComment
+          comment: item.columnComment,
         }
       })
       if (dbColumnList.value.length > 0 && !isInit) {

@@ -11,7 +11,7 @@ export const UpdateCasbin = (data) => {
   return service({
     url: '/casbin/updateCasbin',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -27,6 +27,6 @@ export const getPolicyPathByAuthorityId = (data) => {
   return service({
     url: '/casbin/getPolicyPathByAuthorityId',
     method: 'post',
-    data
+    data,
   })
 }

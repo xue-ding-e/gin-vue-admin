@@ -11,7 +11,7 @@ export const getFileList = (data) => {
   return service({
     url: '/fileUploadAndDownload/getFileList',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -26,7 +26,7 @@ export const deleteFile = (data) => {
   return service({
     url: '/fileUploadAndDownload/deleteFile',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -39,7 +39,7 @@ export const editFileName = (data) => {
   return service({
     url: '/fileUploadAndDownload/editFileName',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -52,6 +52,6 @@ export const importURL = (data) => {
   return service({
     url: '/fileUploadAndDownload/importURL',
     method: 'post',
-    data
+    data,
   })
 }

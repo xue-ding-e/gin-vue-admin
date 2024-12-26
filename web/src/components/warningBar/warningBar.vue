@@ -17,12 +17,12 @@
   const prop = defineProps({
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     href: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   })
 
   const open = () => {

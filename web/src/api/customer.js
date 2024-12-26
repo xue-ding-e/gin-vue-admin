@@ -11,7 +11,7 @@ export const createExaCustomer = (data) => {
   return service({
     url: '/customer/customer',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -27,7 +27,7 @@ export const updateExaCustomer = (data) => {
   return service({
     url: '/customer/customer',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -43,7 +43,7 @@ export const deleteExaCustomer = (data) => {
   return service({
     url: '/customer/customer',
     method: 'delete',
-    data
+    data,
   })
 }
 
@@ -59,7 +59,7 @@ export const getExaCustomer = (params) => {
   return service({
     url: '/customer/customer',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -75,6 +75,6 @@ export const getExaCustomerList = (params) => {
   return service({
     url: '/customer/customerList',
     method: 'get',
-    params
+    params,
   })
 }

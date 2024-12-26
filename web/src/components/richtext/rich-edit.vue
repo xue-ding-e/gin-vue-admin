@@ -1,10 +1,6 @@
 <template>
   <div class="border border-solid border-gray-100 h-full">
-    <Toolbar
-      :editor="editorRef"
-      :default-config="toolbarConfig"
-      mode="default"
-    />
+    <Toolbar :editor="editorRef" :default-config="toolbarConfig" mode="default" />
     <Editor
       v-model="valueHtml"
       class="overflow-y-hidden mt-0.5"
@@ -38,8 +34,8 @@
   const props = defineProps({
     modelValue: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   })
 
   const editorRef = shallowRef()
@@ -48,7 +44,7 @@
   const toolbarConfig = {}
   const editorConfig = {
     placeholder: '请输入内容...',
-    MENU_CONF: {}
+    MENU_CONF: {},
   }
   editorConfig.MENU_CONF['uploadImage'] = {
     fieldName: 'file',
@@ -60,7 +56,7 @@
         return
       }
       ElMessage.error(res.msg)
-    }
+    },
   }
 
   // 组件销毁时，也及时销毁编辑器
@@ -79,7 +75,7 @@
     () => props.modelValue,
     () => {
       valueHtml.value = props.modelValue
-    }
+    },
   )
 </script>
 

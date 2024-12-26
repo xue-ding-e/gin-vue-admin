@@ -2,9 +2,7 @@
   <div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="goAutoCode(null)">
-          新增
-        </el-button>
+        <el-button type="primary" icon="plus" @click="goAutoCode(null)">新增</el-button>
       </div>
       <el-table :data="tableData">
         <el-table-column type="selection" width="55" />
@@ -14,35 +12,13 @@
             {{ formatDate(scope.row.CreatedAt) }}
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="结构体名"
-          min-width="150"
-          prop="structName"
-        />
-        <el-table-column
-          align="left"
-          label="结构体描述"
-          min-width="150"
-          prop="description"
-        />
-        <el-table-column
-          align="left"
-          label="表名称"
-          min-width="150"
-          prop="tableName"
-        />
-        <el-table-column
-          align="left"
-          label="回滚标记"
-          min-width="150"
-          prop="flag"
-        >
+        <el-table-column align="left" label="结构体名" min-width="150" prop="structName" />
+        <el-table-column align="left" label="结构体描述" min-width="150" prop="description" />
+        <el-table-column align="left" label="表名称" min-width="150" prop="tableName" />
+        <el-table-column align="left" label="回滚标记" min-width="150" prop="flag">
           <template #default="scope">
-            <el-tag v-if="scope.row.flag" type="danger" effect="dark">
-              已回滚
-            </el-tag>
-            <el-tag v-else type="success" effect="dark"> 未回滚 </el-tag>
+            <el-tag v-if="scope.row.flag" type="danger" effect="dark">已回滚</el-tag>
+            <el-tag v-else type="success" effect="dark">未回滚</el-tag>
           </template>
         </el-table-column>
         <el-table-column align="left" label="操作" min-width="240">
@@ -56,9 +32,7 @@
               >
                 增加方法
               </el-button>
-              <el-button type="primary" link @click="goAutoCode(scope.row, 1)">
-                增加字段
-              </el-button>
+              <el-button type="primary" link @click="goAutoCode(scope.row, 1)">增加字段</el-button>
               <el-button
                 type="primary"
                 link
@@ -67,12 +41,8 @@
               >
                 回滚
               </el-button>
-              <el-button type="primary" link @click="goAutoCode(scope.row)">
-                复用
-              </el-button>
-              <el-button type="primary" link @click="deleteRow(scope.row)">
-                删除
-              </el-button>
+              <el-button type="primary" link @click="goAutoCode(scope.row)">复用</el-button>
+              <el-button type="primary" link @click="deleteRow(scope.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -99,44 +69,28 @@
         <el-form-item label="选项：">
           <el-checkbox v-model="formData.deleteApi" label="删除接口" />
           <el-checkbox v-model="formData.deleteMenu" label="删除菜单" />
-          <el-checkbox
-            v-model="formData.deleteTable"
-            label="删除表"
-            @change="deleteTableCheck"
-          />
+          <el-checkbox v-model="formData.deleteTable" label="删除表" @change="deleteTableCheck" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="closeDialog"> 取 消 </el-button>
-          <el-popconfirm
-            title="此操作将回滚生成文件和勾选项目, 是否继续?"
-            @confirm="enterDialog"
-          >
+          <el-button @click="closeDialog">取 消</el-button>
+          <el-popconfirm title="此操作将回滚生成文件和勾选项目, 是否继续?" @confirm="enterDialog">
             <template #reference>
-              <el-button type="primary"> 确 定 </el-button>
+              <el-button type="primary">确 定</el-button>
             </template>
           </el-popconfirm>
         </div>
       </template>
     </el-dialog>
 
-    <el-drawer
-      v-model="funcFlag"
-      size="60%"
-      :show-close="false"
-      :close-on-click-modal="false"
-    >
+    <el-drawer v-model="funcFlag" size="60%" :show-close="false" :close-on-click-modal="false">
       <template #header>
         <div class="flex justify-between items-center">
           <span class="text-lg">操作栏</span>
           <div>
-            <el-button type="primary" @click="runFunc" :loading="aiLoading">
-              生成
-            </el-button>
-            <el-button type="primary" @click="closeFunc" :loading="aiLoading">
-              取消
-            </el-button>
+            <el-button type="primary" @click="runFunc" :loading="aiLoading">生成</el-button>
+            <el-button type="primary" @click="closeFunc" :loading="aiLoading">取消</el-button>
           </div>
         </div>
       </template>
@@ -151,66 +105,42 @@
           <el-row :gutter="12">
             <el-col :span="8">
               <el-form-item label="包名：">
-                <el-input
-                    v-model="autoFunc.package"
-                    placeholder="请输入包名"
-                    disabled
-                />
+                <el-input v-model="autoFunc.package" placeholder="请输入包名" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="结构体名：">
-                <el-input
-                    v-model="autoFunc.structName"
-                    placeholder="请输入结构体名"
-                    disabled
-                />
+                <el-input v-model="autoFunc.structName" placeholder="请输入结构体名" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="前端文件名：">
-                <el-input
-                    v-model="autoFunc.packageName"
-                    placeholder="请输入文件名"
-                    disabled
-                />
+                <el-input v-model="autoFunc.packageName" placeholder="请输入文件名" disabled />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="12">
             <el-col :span="8">
               <el-form-item label="后端文件名：">
-                <el-input
-                    v-model="autoFunc.humpPackageName"
-                    placeholder="请输入文件名"
-                    disabled
-                />
+                <el-input v-model="autoFunc.humpPackageName" placeholder="请输入文件名" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="描述：">
-                <el-input
-                    v-model="autoFunc.description"
-                    placeholder="请输入描述"
-                    disabled
-                />
+                <el-input v-model="autoFunc.description" placeholder="请输入描述" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="缩写：">
-                <el-input
-                    v-model="autoFunc.abbreviation"
-                    placeholder="请输入缩写"
-                    disabled
-                />
+                <el-input v-model="autoFunc.abbreviation" placeholder="请输入缩写" disabled />
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="是否AI填充：">
             <el-switch v-model="autoFunc.isAi" />
-            <span class="text-sm text-red-600 p-2"
-              >当前ai帮写存在不稳定因素，生成代码后请注意手动调整部分内容</span
-            >
+            <span class="text-sm text-red-600 p-2">
+              当前ai帮写存在不稳定因素，生成代码后请注意手动调整部分内容
+            </span>
           </el-form-item>
           <template v-if="autoFunc.isAi">
             <el-form-item label="Ai帮写:">
@@ -222,12 +152,10 @@
                   :rows="5"
                   @input="autoFunc.router = autoFunc.router.replace(/\//g, '')"
                 />
-                <el-button
-                  @click="aiAddFunc"
-                  type="primary"
-                  class="absolute right-2 bottom-2"
-                  ><ai-gva />帮写</el-button
-                >
+                <el-button @click="aiAddFunc" type="primary" class="absolute right-2 bottom-2">
+                  <ai-gva />
+                  帮写
+                </el-button>
               </div>
             </el-form-item>
             <el-form-item label="Api方法:">
@@ -258,14 +186,11 @@
 
           <el-form-item label="方法介绍：">
             <div class="flex w-full gap-2">
-              <el-input
-                class="flex-1"
-                v-model="autoFunc.funcDesc"
-                placeholder="请输入方法介绍"
-              />
-              <el-button type="primary" @click="autoComplete"
-                ><ai-gva />补全</el-button
-              >
+              <el-input class="flex-1" v-model="autoFunc.funcDesc" placeholder="请输入方法介绍" />
+              <el-button type="primary" @click="autoComplete">
+                <ai-gva />
+                补全
+              </el-button>
             </div>
           </el-form-item>
           <el-form-item label="方法名：">
@@ -286,11 +211,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="是否鉴权：">
-            <el-switch
-              v-model="autoFunc.isAuth"
-              active-text="是"
-              inactive-text="否"
-            />
+            <el-switch v-model="autoFunc.isAuth" active-text="是" inactive-text="否" />
           </el-form-item>
           <el-form-item label="路由path:">
             <el-input
@@ -299,9 +220,7 @@
               @input="autoFunc.router = autoFunc.router.replace(/\//g, '')"
             />
             <div>
-              API路径: [{{ autoFunc.method }}] /{{ autoFunc.abbreviation }}/{{
-                autoFunc.router
-              }}
+              API路径: [{{ autoFunc.method }}] /{{ autoFunc.abbreviation }}/{{ autoFunc.router }}
             </div>
           </el-form-item>
         </el-form>
@@ -311,13 +230,7 @@
 </template>
 
 <script setup>
-  import {
-    getSysHistory,
-    rollback,
-    delSysHistory,
-    addFunc,
-    butler
-  } from '@/api/autoCode.js'
+  import { getSysHistory, rollback, delSysHistory, addFunc, butler } from '@/api/autoCode.js'
   import { useRouter } from 'vue-router'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { ref } from 'vue'
@@ -330,7 +243,7 @@
   import 'ace-builds/src-noconflict/theme-github_dark'
 
   defineOptions({
-    name: 'AutoCodeAdmin'
+    name: 'AutoCodeAdmin',
   })
 
   const aiLoading = ref(false)
@@ -339,7 +252,7 @@
     id: undefined,
     deleteApi: true,
     deleteMenu: true,
-    deleteTable: false
+    deleteTable: false,
   })
 
   const router = useRouter()
@@ -368,7 +281,7 @@
     isAi: false,
     apiFunc: '',
     serverFunc: '',
-    jsFunc: ''
+    jsFunc: '',
   })
 
   const addFuncBtn = (row) => {
@@ -421,11 +334,7 @@
     }
 
     if (autoFunc.value.isAi) {
-      if (
-        !autoFunc.value.apiFunc ||
-        !autoFunc.value.serverFunc ||
-        !autoFunc.value.jsFunc
-      ) {
+      if (!autoFunc.value.apiFunc || !autoFunc.value.serverFunc || !autoFunc.value.jsFunc) {
         ElMessage.error('请先使用AI帮写完成基础代码，如果生成失败请重新调用')
         return
       }
@@ -453,7 +362,7 @@
   const getTableData = async () => {
     const table = await getSysHistory({
       page: page.value,
-      pageSize: pageSize.value
+      pageSize: pageSize.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -469,7 +378,7 @@
     ElMessageBox.confirm('此操作将删除本历史, 是否继续?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const res = await delSysHistory({ id: Number(row.ID) })
       if (res.code === 0) {
@@ -493,24 +402,20 @@
       id: undefined,
       deleteApi: true,
       deleteMenu: true,
-      deleteTable: false
+      deleteTable: false,
     }
   }
 
   // 确认删除表
   const deleteTableCheck = (flag) => {
     if (flag) {
-      ElMessageBox.confirm(
-        `此操作将删除自动创建的文件和api（会删除表！！！）, 是否继续?`,
-        '提示',
-        {
-          closeOnClickModal: false,
-          distinguishCancelAndClose: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      )
+      ElMessageBox.confirm(`此操作将删除自动创建的文件和api（会删除表！！！）, 是否继续?`, '提示', {
+        closeOnClickModal: false,
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
         .then(() => {
           ElMessageBox.confirm(
             `此操作将删除自动创建的文件和api（会删除表！！！）, 请继续确认！！！`,
@@ -520,8 +425,8 @@
               distinguishCancelAndClose: true,
               confirmButtonText: '确定',
               cancelButtonText: '取消',
-              type: 'warning'
-            }
+              type: 'warning',
+            },
           ).catch(() => {
             formData.value.deleteTable = false
           })
@@ -545,11 +450,11 @@
       router.push({
         name: 'autoCodeEdit',
         params: {
-          id: row.ID
+          id: row.ID,
         },
         query: {
-          isAdd: isAdd
-        }
+          isAdd: isAdd,
+        },
       })
     } else {
       router.push({ name: 'autoCode' })
@@ -578,7 +483,7 @@
       structInfo: activeInfo.value,
       template: JSON.stringify(res.data),
       prompt: autoFunc.value.prompt,
-      command: 'addFunc'
+      command: 'addFunc',
     })
     aiLoading.value = false
     if (aiRes.code === 0) {
@@ -602,7 +507,7 @@
     aiLoading.value = true
     const aiRes = await butler({
       prompt: autoFunc.value.funcDesc,
-      command: 'autoCompleteFunc'
+      command: 'autoCompleteFunc',
     })
     aiLoading.value = false
     if (aiRes.code === 0) {

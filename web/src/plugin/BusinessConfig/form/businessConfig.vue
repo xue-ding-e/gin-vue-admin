@@ -1,8 +1,5 @@
-
 <template>
-<div>form</div>
+  <div>form</div>
 </template>
-<script setup>
-</script>
-<style>
-</style>
+<script setup></script>
+<style></style>

@@ -21,8 +21,8 @@
   defineProps({
     height: {
       type: String,
-      default: '128px'
-    }
+      default: '128px',
+    },
   })
   const dotColor = computed(() => {
     return appStore.isDark ? '#333' : '#E5E8EF'
@@ -36,8 +36,8 @@
         text: '',
         textAlign: 'center',
         fill: '#4E5969',
-        fontSize: 12
-      }
+        fontSize: 12,
+      },
     }
   }
   const xAxis = ref([
@@ -48,20 +48,17 @@
     '2024-5',
     '2024-6',
     '2024-7',
-    '2024-8'
+    '2024-8',
   ])
   const chartsData = ref([12, 22, 32, 45, 32, 78, 89, 92])
-  const graphicElements = ref([
-    graphicFactory({ left: '5%' }),
-    graphicFactory({ right: 0 })
-  ])
+  const graphicElements = ref([graphicFactory({ left: '5%' }), graphicFactory({ right: 0 })])
   const { chartOption } = useChartOption(() => {
     return {
       grid: {
         left: '40',
         right: '0',
         top: '10',
-        bottom: '30'
+        bottom: '30',
       },
       xAxis: {
         type: 'category',
@@ -74,13 +71,13 @@
             if (idx === 0) return ''
             if (idx === xAxis.value.length - 1) return ''
             return `${value}`
-          }
+          },
         },
         axisLine: {
-          show: false
+          show: false,
         },
         axisTick: {
-          show: false
+          show: false,
         },
         splitLine: {
           show: true,
@@ -90,35 +87,35 @@
             return true
           },
           lineStyle: {
-            color: dotColor.value
-          }
+            color: dotColor.value,
+          },
         },
         axisPointer: {
           show: true,
           lineStyle: {
             color: `${config.value.primaryColor}FF`,
-            width: 2
-          }
-        }
+            width: 2,
+          },
+        },
       },
       yAxis: {
         type: 'value',
         axisLine: {
-          show: false
+          show: false,
         },
         axisLabel: {
           formatter(value, idx) {
             if (idx === 0) return value
             return `${value}k`
-          }
+          },
         },
         splitLine: {
           show: true,
           lineStyle: {
             type: 'dashed',
-            color: dotColor.value
-          }
-        }
+            color: dotColor.value,
+          },
+        },
       },
       tooltip: {
         trigger: 'axis',
@@ -131,10 +128,10 @@
             ).toLocaleString()}</span></div>
           </div>`
         },
-        className: 'echarts-tooltip-diy'
+        className: 'echarts-tooltip-diy',
       },
       graphic: {
-        elements: graphicElements.value
+        elements: graphicElements.value,
       },
       series: [
         {
@@ -146,25 +143,25 @@
           emphasis: {
             focus: 'series',
             itemStyle: {
-              borderWidth: 2
-            }
+              borderWidth: 2,
+            },
           },
           lineStyle: {
             width: 3,
             color: new graphic.LinearGradient(0, 0, 1, 0, [
               {
                 offset: 0,
-                color: `${config.value.primaryColor}80`
+                color: `${config.value.primaryColor}80`,
               },
               {
                 offset: 0.5,
-                color: `${config.value.primaryColor}92`
+                color: `${config.value.primaryColor}92`,
               },
               {
                 offset: 1,
-                color: `${config.value.primaryColor}FF`
-              }
-            ])
+                color: `${config.value.primaryColor}FF`,
+              },
+            ]),
           },
           showSymbol: false,
           areaStyle: {
@@ -172,16 +169,16 @@
             color: new graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: `${config.value.primaryColor}20`
+                color: `${config.value.primaryColor}20`,
               },
               {
                 offset: 1,
-                color: `${config.value.primaryColor}08`
-              }
-            ])
-          }
-        }
-      ]
+                color: `${config.value.primaryColor}08`,
+              },
+            ]),
+          },
+        },
+      ],
     }
   })
 </script>

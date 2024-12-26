@@ -1,15 +1,6 @@
 <template>
-  <el-tabs
-    v-model="activeName"
-    tab-position="left"
-    class="h-[calc(100vh-110px)]"
-  >
-    <el-tab-pane
-      v-for="(item, key) in useCode"
-      :key="key"
-      :label="key"
-      :name="key"
-    >
+  <el-tabs v-model="activeName" tab-position="left" class="h-[calc(100vh-110px)]">
+    <el-tab-pane v-for="(item, key) in useCode" :key="key" :label="key" :name="key">
       <div :id="key" class="h-[calc(100vh-110px)] px-5 overflow-y-scroll"></div>
     </el-tab-pane>
   </el-tabs>
@@ -34,7 +25,7 @@
     'api',
     'router',
     'initialize',
-    'gen.go'
+    'gen.go',
   ]
 
   onMounted(() => {
@@ -51,20 +42,17 @@
       type: Object,
       default() {
         return {}
-      }
+      },
     },
     isAdd: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   })
 
   watchEffect(() => {
     for (const key in props.previewCode) {
-      if (
-        props.isAdd &&
-        createKey.some((createKeyItem) => key.includes(createKeyItem))
-      ) {
+      if (props.isAdd && createKey.some((createKeyItem) => key.includes(createKeyItem))) {
         continue
       }
       useCode.value[key] = props.previewCode[key]
@@ -82,8 +70,8 @@
             return hljs.highlight(code, { language: 'html' }).value
           }
           return hljs.highlight(code, { language }).value
-        }
-      })
+        },
+      }),
     )
     for (const key in useCode.value) {
       if (activeName.value === '') {

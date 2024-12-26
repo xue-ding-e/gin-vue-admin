@@ -4,7 +4,7 @@ export const preview = (data) => {
   return service({
     url: '/autoCode/preview',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -12,7 +12,7 @@ export const createTemp = (data) => {
   return service({
     url: '/autoCode/createTemp',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -27,7 +27,7 @@ export const getDB = (params) => {
   return service({
     url: '/autoCode/getDB',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -42,7 +42,7 @@ export const getTable = (params) => {
   return service({
     url: '/autoCode/getTables',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -57,7 +57,7 @@ export const getColumn = (params) => {
   return service({
     url: '/autoCode/getColumn',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -65,7 +65,7 @@ export const getSysHistory = (data) => {
   return service({
     url: '/autoCode/getSysHistory',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -73,7 +73,7 @@ export const rollback = (data) => {
   return service({
     url: '/autoCode/rollback',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -81,7 +81,7 @@ export const getMeta = (data) => {
   return service({
     url: '/autoCode/getMeta',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -89,7 +89,7 @@ export const delSysHistory = (data) => {
   return service({
     url: '/autoCode/delSysHistory',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -97,14 +97,14 @@ export const createPackageApi = (data) => {
   return service({
     url: '/autoCode/createPackage',
     method: 'post',
-    data
+    data,
   })
 }
 
 export const getPackageApi = () => {
   return service({
     url: '/autoCode/getPackage',
-    method: 'post'
+    method: 'post',
   })
 }
 
@@ -112,30 +112,29 @@ export const deletePackageApi = (data) => {
   return service({
     url: '/autoCode/delPackage',
     method: 'post',
-    data
+    data,
   })
 }
 export const getPackageById = (data) => {
   return service({
     url: '/autoCode/getPackageByID',
     method: 'post',
-    data
+    data,
   })
 }
-
 
 export const updatePackageDetail = (data) => {
   return service({
     url: '/autoCode/updatePackageDetail',
     method: 'post',
-    data
+    data,
   })
 }
 
 export const getTemplatesApi = () => {
   return service({
     url: '/autoCode/getTemplates',
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -143,7 +142,7 @@ export const installPlug = (data) => {
   return service({
     url: '/autoCode/installPlug',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -151,7 +150,7 @@ export const pubPlug = (params) => {
   return service({
     url: '/autoCode/pubPlug',
     method: 'post',
-    params
+    params,
   })
 }
 
@@ -164,8 +163,8 @@ export const llmAuto = (data) => {
     loadingOption: {
       lock: true,
       fullscreen: true,
-      text: `小淼正在思考，请稍候...`
-    }
+      text: `小淼正在思考，请稍候...`,
+    },
   })
 }
 
@@ -174,26 +173,24 @@ export const butler = (data) => {
     url: '/autoCode/llmAuto',
     method: 'post',
     data: { ...data, mode: 'butler' },
-    timeout: 1000 * 60 * 10
+    timeout: 1000 * 60 * 10,
   })
 }
-
 
 export const eye = (data) => {
   return service({
     url: '/autoCode/llmAuto',
     method: 'post',
     data: { ...data, mode: 'eye' },
-    timeout: 1000 * 60 * 10
+    timeout: 1000 * 60 * 10,
   })
 }
-
 
 export const addFunc = (data) => {
   return service({
     url: '/autoCode/addFunc',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -201,7 +198,7 @@ export const initMenu = (data) => {
   return service({
     url: '/autoCode/initMenu',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -209,6 +206,6 @@ export const initAPI = (data) => {
   return service({
     url: '/autoCode/initAPI',
     method: 'post',
-    data
+    data,
   })
 }

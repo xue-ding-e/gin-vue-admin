@@ -11,7 +11,7 @@
   import { useAppStore } from '@/pinia'
   useAppStore()
   defineOptions({
-    name: 'App'
+    name: 'App',
   })
 </script>
 <style lang="scss">

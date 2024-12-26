@@ -4,12 +4,7 @@
       title="需要提前配置email配置文件，为防止不必要的垃圾邮件，在线体验功能不开放此功能体验。"
     />
     <div class="gva-form-box">
-      <el-form
-        ref="emailForm"
-        label-position="right"
-        label-width="80px"
-        :model="form"
-      >
+      <el-form ref="emailForm" label-position="right" label-width="80px" :model="form">
         <el-form-item label="目标邮箱">
           <el-input v-model="form.to" />
         </el-form-item>
@@ -35,14 +30,14 @@
   import { reactive, ref } from 'vue'
 
   defineOptions({
-    name: 'Email'
+    name: 'Email',
   })
 
   const emailForm = ref(null)
   const form = reactive({
     to: '',
     subject: '',
-    body: ''
+    body: '',
   })
   const sendTestEmail = async () => {
     const res = await emailTest()

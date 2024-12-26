@@ -15,9 +15,7 @@
         @deleteItem="deleteImg(index)"
       />
       <selectComponent
-        v-if="
-          model?.length < props.maxUpdateCount || props.maxUpdateCount === 0
-        "
+        v-if="model?.length < props.maxUpdateCount || props.maxUpdateCount === 0"
         @chooseItem="openChooseImg"
         @deleteItem="openChooseImg"
       />
@@ -33,14 +31,8 @@
           :max-w-h="1080"
           @on-success="getImageList"
         />
-        <el-input
-          v-model="search.keyword"
-          class="keyword"
-          placeholder="请输入文件名或备注"
-        />
-        <el-button type="primary" icon="search" @click="getImageList">
-          查询
-        </el-button>
+        <el-input v-model="search.keyword" class="keyword" placeholder="请输入文件名或备注" />
+        <el-button type="primary" icon="search" @click="getImageList">查询</el-button>
       </div>
       <div class="flex flex-wrap gap-4">
         <div v-for="(item, key) in picList" :key="key" class="w-40">
@@ -72,10 +64,7 @@
                   <source :src="getUrl(item.url) + '#t=1'" />
                   您的浏览器不支持视频播放
                 </video>
-                <div
-                  v-else
-                  class="w-full h-full object-cover flex items-center justify-center"
-                >
+                <div v-else class="w-full h-full object-cover flex items-center justify-center">
                   <el-icon :size="32">
                     <icon-picture />
                   </el-icon>
@@ -113,18 +102,14 @@
 <script setup>
   import { getUrl, isVideoExt } from '@/utils/image'
   import { ref } from 'vue'
-  import {
-    getFileList,
-    editFileName,
-    deleteFile
-  } from '@/api/fileUploadAndDownload'
+  import { getFileList, editFileName, deleteFile } from '@/api/fileUploadAndDownload'
   import UploadImage from '@/components/upload/image.vue'
   import UploadCommon from '@/components/upload/common.vue'
   import WarningBar from '@/components/warningBar/warningBar.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { Picture as IconPicture } from '@element-plus/icons-vue'
   import selectComponent from '@/components/selectImage/selectComponent.vue'
-  import { useAppStore } from "@/pinia";
+  import { useAppStore } from '@/pinia'
 
   const appStore = useAppStore()
 
@@ -141,16 +126,16 @@
   const props = defineProps({
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     fileType: {
       type: String,
-      default: ''
+      default: '',
     },
     maxUpdateCount: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   })
 
   const deleteImg = (index) => {
@@ -173,7 +158,7 @@
       cancelButtonText: '取消',
       inputPattern: /\S/,
       inputErrorMessage: '不能为空',
-      inputValue: row.name
+      inputValue: row.name,
     })
       .then(async ({ value }) => {
         row.name = value
@@ -181,7 +166,7 @@
         if (res.code === 0) {
           ElMessage({
             type: 'success',
-            message: '编辑成功!'
+            message: '编辑成功!',
           })
           getImageList()
         }
@@ -189,7 +174,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '取消修改'
+          message: '取消修改',
         })
       })
   }
@@ -210,12 +195,12 @@
     'mpe',
     'wmv',
     'mkv',
-    'vob'
+    'vob',
   ]
 
   const listObj = {
     image: imageTypeList,
-    video: videoTyteList
+    video: videoTyteList,
   }
 
   const chooseImg = (url) => {
@@ -228,7 +213,7 @@
       if (!typeSuccess) {
         ElMessage({
           type: 'error',
-          message: '当前类型不支持使用'
+          message: '当前类型不支持使用',
         })
         return
       }
@@ -254,7 +239,7 @@
     const res = await getFileList({
       page: page.value,
       pageSize: pageSize.value,
-      ...search.value
+      ...search.value,
     })
     if (res.code === 0) {
       picList.value = res.data.list
@@ -268,14 +253,14 @@
     ElMessageBox.confirm('是否删除该文件', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
       .then(async () => {
         const res = await deleteFile(item)
         if (res.code === 0) {
           ElMessage({
             type: 'success',
-            message: '删除成功!'
+            message: '删除成功!',
           })
           getImageList()
         }
@@ -283,7 +268,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消删除',
         })
       })
   }

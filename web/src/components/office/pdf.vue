@@ -1,13 +1,9 @@
 <template>
-  <vue-office-pdf
-    :src="pdf"
-    @rendered="renderedHandler"
-    @error="errorHandler"
-  />
+  <vue-office-pdf :src="pdf" @rendered="renderedHandler" @error="errorHandler" />
 </template>
 <script>
   export default {
-    name: 'Pdf'
+    name: 'Pdf',
   }
 </script>
 <script setup>
@@ -21,14 +17,14 @@
   const props = defineProps({
     modelValue: {
       type: String,
-      default: () => ''
-    }
+      default: () => '',
+    },
   })
   const pdf = ref(null)
   watch(
     () => props.modelValue,
     (val) => (pdf.value = val),
-    { immediate: true }
+    { immediate: true },
   )
   const renderedHandler = () => {
     console.log('pdf 加载成功')

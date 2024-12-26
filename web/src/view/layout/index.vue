@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bg-gray-100 text-slate-700 dark:text-slate-500 dark:bg-slate-800 w-screen h-screen"
-  >
+  <div class="bg-gray-100 text-slate-700 dark:text-slate-500 dark:bg-slate-800 w-screen h-screen">
     <el-watermark
       v-if="config.show_watermark"
       :font="font"
@@ -12,8 +10,14 @@
     />
     <gva-header />
     <div class="flex flex-row w-full gva-container pt-20 box-border h-full">
-        <gva-aside v-if="config.side_mode === 'normal' || (device === 'mobile' && config.side_mode == 'head' ) || (device === 'mobile' && config.side_mode == 'combination' )" />
-        <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal"/>
+      <gva-aside
+        v-if="
+          config.side_mode === 'normal' ||
+          (device === 'mobile' && config.side_mode == 'head') ||
+          (device === 'mobile' && config.side_mode == 'combination')
+        "
+      />
+      <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal" />
       <div class="flex-1 p-2 w-0 h-full">
         <gva-tabs v-if="config.showTabs" />
         <div class="h-2"></div>
@@ -21,11 +25,8 @@
           class="overflow-auto"
           :class="config.showTabs ? 'gva-container2' : 'gva-container pt-1'"
         >
-          <router-view v-if="reloadFlag" v-slot="{ Component,route }">
-            <div
-              id="gva-base-load-dom"
-              class="gva-body-h border-radius bg-white dark:bg-slate-800"
-            >
+          <router-view v-if="reloadFlag" v-slot="{ Component, route }">
+            <div id="gva-base-load-dom" class="gva-body-h border-radius bg-white dark:bg-slate-800">
               <transition mode="out-in" name="el-fade-in-linear">
                 <keep-alive :include="routerStore.keepAliveRouters">
                   <component :is="Component" :key="route.fullPath" />
@@ -56,52 +57,50 @@
   const appStore = useAppStore()
   const { config, isDark, device } = storeToRefs(appStore)
 
-defineOptions({
-  name: "GvaLayout",
-});
-
-useResponsive(true);
-const font = reactive({
-  color: "rgba(0, 0, 0, .15)",
-});
-
-  watchEffect(() => {
-    font.color =
-      isDark.value ? 'rgba(255,255,255, .15)' : 'rgba(0, 0, 0, .15)'
+  defineOptions({
+    name: 'GvaLayout',
   })
 
-const router = useRouter();
-const route = useRoute();
-const routerStore = useRouterStore();
+  useResponsive(true)
+  const font = reactive({
+    color: 'rgba(0, 0, 0, .15)',
+  })
 
-onMounted(() => {
-  // 挂载一些通用的事件
-  emitter.on("reload", reload);
-  if (userStore.loadingInstance) {
-    userStore.loadingInstance.close();
-  }
-});
+  watchEffect(() => {
+    font.color = isDark.value ? 'rgba(255,255,255, .15)' : 'rgba(0, 0, 0, .15)'
+  })
 
-const userStore = useUserStore();
+  const router = useRouter()
+  const route = useRoute()
+  const routerStore = useRouterStore()
 
-const reloadFlag = ref(true);
-let reloadTimer = null;
-const reload = async () => {
-  if (reloadTimer) {
-    window.clearTimeout(reloadTimer);
-  }
-  reloadTimer = window.setTimeout(async () => {
-    if (route.meta.keepAlive) {
-      reloadFlag.value = false;
-      await nextTick();
-      reloadFlag.value = true;
-    } else {
-      const title = route.meta.title;
-      router.push({ name: "Reload", params: { title } });
+  onMounted(() => {
+    // 挂载一些通用的事件
+    emitter.on('reload', reload)
+    if (userStore.loadingInstance) {
+      userStore.loadingInstance.close()
     }
-  }, 400);
-};
+  })
+
+  const userStore = useUserStore()
+
+  const reloadFlag = ref(true)
+  let reloadTimer = null
+  const reload = async () => {
+    if (reloadTimer) {
+      window.clearTimeout(reloadTimer)
+    }
+    reloadTimer = window.setTimeout(async () => {
+      if (route.meta.keepAlive) {
+        reloadFlag.value = false
+        await nextTick()
+        reloadFlag.value = true
+      } else {
+        const title = route.meta.title
+        router.push({ name: 'Reload', params: { title } })
+      }
+    }, 400)
+  }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

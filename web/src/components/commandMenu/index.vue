@@ -1,16 +1,7 @@
 <template>
-  <el-dialog
-    v-model="dialogVisible"
-    width="30%"
-    class="overlay"
-    :show-close="false"
-  >
+  <el-dialog v-model="dialogVisible" width="30%" class="overlay" :show-close="false">
     <template #header>
-      <input
-        v-model="searchInput"
-        class="quick-input"
-        placeholder="请输入你需要快捷到达的功能"
-      />
+      <input v-model="searchInput" class="quick-input" placeholder="请输入你需要快捷到达的功能" />
     </template>
 
     <div v-for="(option, index) in options" :key="index">
@@ -41,7 +32,7 @@
   import { useRouterStore } from '@/pinia/modules/router'
   import { useAppStore, useUserStore } from '@/pinia'
   defineOptions({
-    name: 'CommandMenu'
+    name: 'CommandMenu',
   })
   const appStore = useAppStore()
   const userStore = useUserStore()
@@ -58,13 +49,10 @@
       if (menu.children && menu.children.length > 0) {
         arr.push(...deepMenus(menu.children))
       } else {
-        if (
-          menu.meta.title &&
-          menu.meta.title.indexOf(searchInput.value) > -1
-        ) {
+        if (menu.meta.title && menu.meta.title.indexOf(searchInput.value) > -1) {
           arr.push({
             label: menu.meta.title,
-            func: () => changeRouter(menu)
+            func: () => changeRouter(menu),
           })
         }
       }
@@ -75,7 +63,7 @@
   const addQuickMenu = () => {
     const option = {
       label: '跳转',
-      children: []
+      children: [],
     }
     const menus = deepMenus(routerStore.asyncRouters[0].children)
     option.children.push(...menus)
@@ -85,25 +73,23 @@
   const addQuickOption = () => {
     const option = {
       label: '操作',
-      children: []
+      children: [],
     }
     const quickArr = [
       {
         label: '亮色主题',
-        func: () => changeMode(false)
+        func: () => changeMode(false),
       },
       {
         label: '暗色主题',
-        func: () => changeMode(true)
+        func: () => changeMode(true),
       },
       {
         label: '退出登录',
-        func: () => userStore.LoginOut()
-      }
+        func: () => userStore.LoginOut(),
+      },
     ]
-    option.children.push(
-      ...quickArr.filter((item) => item.label.indexOf(searchInput.value) > -1)
-    )
+    option.children.push(...quickArr.filter((item) => item.label.indexOf(searchInput.value) > -1))
     options.push(option)
   }
 

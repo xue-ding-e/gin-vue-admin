@@ -9,7 +9,7 @@ export const emailTest = (data) => {
   return service({
     url: '/email/emailTest',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -24,6 +24,6 @@ export const sendEmail = (data) => {
   return service({
     url: '/email/sendEmail',
     method: 'post',
-    data
+    data,
   })
 }

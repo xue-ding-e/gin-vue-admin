@@ -21,24 +21,24 @@
   const wikis = [
     {
       title: 'Vue3',
-      url: 'https://v3.cn.vuejs.org/guide/introduction.html'
+      url: 'https://v3.cn.vuejs.org/guide/introduction.html',
     },
     {
       title: 'GIN 文档',
-      url: 'https://gin-gonic.com/'
+      url: 'https://gin-gonic.com/',
     },
     {
       title: 'GVA 文档',
-      url: 'https://www.gin-vue-admin.com/'
+      url: 'https://www.gin-vue-admin.com/',
     },
     {
       title: '插件市场',
-      url: 'https://plugin.gin-vue-admin.com/'
+      url: 'https://plugin.gin-vue-admin.com/',
     },
     {
       title: 'github 仓库',
-      url: 'https://github.com/flipped-aurora/gin-vue-admin'
-    }
+      url: 'https://github.com/flipped-aurora/gin-vue-admin',
+    },
   ]
 </script>
 

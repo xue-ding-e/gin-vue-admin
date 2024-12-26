@@ -9,11 +9,7 @@
           <el-input v-model="searchInfo.description" placeholder="描述" />
         </el-form-item>
         <el-form-item label="API分组">
-          <el-select
-            v-model="searchInfo.apiGroup"
-            clearable
-            placeholder="请选择"
-          >
+          <el-select v-model="searchInfo.apiGroup" clearable placeholder="请选择">
             <el-option
               v-for="item in apiGroupOptions"
               :key="item.value"
@@ -33,23 +29,17 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit">
-            查询
-          </el-button>
-          <el-button icon="refresh" @click="onReset"> 重置 </el-button>
+          <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
+          <el-button icon="refresh" @click="onReset">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDialog('addApi')">
-          新增
-        </el-button>
-        <el-button icon="delete" :disabled="!apis.length" @click="onDelete">
-          删除
-        </el-button>
-        <el-button icon="Refresh" @click="onFresh"> 刷新缓存 </el-button>
-        <el-button icon="Compass" @click="onSync"> 同步API </el-button>
+        <el-button type="primary" icon="plus" @click="openDialog('addApi')">新增</el-button>
+        <el-button icon="delete" :disabled="!apis.length" @click="onDelete">删除</el-button>
+        <el-button icon="Refresh" @click="onFresh">刷新缓存</el-button>
+        <el-button icon="Compass" @click="onSync">同步API</el-button>
         <ExportTemplate template-id="api" />
         <ExportExcel template-id="api" :limit="9999" />
         <ImportExcel template-id="api" @on-success="getTableData" />
@@ -60,13 +50,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column
-          align="left"
-          label="id"
-          min-width="60"
-          prop="ID"
-          sortable="custom"
-        />
+        <el-table-column align="left" label="id" min-width="60" prop="ID" sortable="custom" />
         <el-table-column
           align="left"
           label="API路径"
@@ -88,36 +72,23 @@
           prop="description"
           sortable="custom"
         />
-        <el-table-column
-          align="left"
-          label="请求"
-          min-width="150"
-          prop="method"
-          sortable="custom"
-        >
+        <el-table-column align="left" label="请求" min-width="150" prop="method" sortable="custom">
           <template #default="scope">
-            <div>
-              {{ scope.row.method }} / {{ methodFilter(scope.row.method) }}
-            </div>
+            <div>{{ scope.row.method }} / {{ methodFilter(scope.row.method) }}</div>
           </template>
         </el-table-column>
 
-        <el-table-column align="left" fixed="right" label="操作" :min-width="appStore.operateMinWith">
+        <el-table-column
+          align="left"
+          fixed="right"
+          label="操作"
+          :min-width="appStore.operateMinWith"
+        >
           <template #default="scope">
-            <el-button
-              icon="edit"
-              type="primary"
-              link
-              @click="editApiFunc(scope.row)"
-            >
+            <el-button icon="edit" type="primary" link @click="editApiFunc(scope.row)">
               编辑
             </el-button>
-            <el-button
-              icon="delete"
-              type="primary"
-              link
-              @click="deleteApiFunc(scope.row)"
-            >
+            <el-button icon="delete" type="primary" link @click="deleteApiFunc(scope.row)">
               删除
             </el-button>
           </template>
@@ -150,9 +121,7 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">同步路由</span>
           <div>
-            <el-button :loading="apiCompletionLoading" @click="closeSyncDialog">
-              取 消
-            </el-button>
+            <el-button :loading="apiCompletionLoading" @click="closeSyncDialog">取 消</el-button>
             <el-button
               type="primary"
               :loading="syncing || apiCompletionLoading"
@@ -166,9 +135,9 @@
 
       <h4>
         新增路由
-        <span class="text-xs text-gray-500 mx-2 font-normal"
-          >存在于当前路由中，但是不存在于api表</span
-        >
+        <span class="text-xs text-gray-500 mx-2 font-normal">
+          存在于当前路由中，但是不存在于api表
+        </span>
         <el-button type="primary" size="small" @click="apiCompletion">
           <el-icon size="18">
             <ai-gva />
@@ -181,18 +150,8 @@
         element-loading-text="小淼正在思考..."
         :data="syncApiData.newApis"
       >
-        <el-table-column
-          align="left"
-          label="API路径"
-          min-width="150"
-          prop="path"
-        />
-        <el-table-column
-          align="left"
-          label="API分组"
-          min-width="150"
-          prop="apiGroup"
-        >
+        <el-table-column align="left" label="API路径" min-width="150" prop="path" />
+        <el-table-column align="left" label="API分组" min-width="150" prop="apiGroup">
           <template #default="{ row }">
             <el-select
               v-model="row.apiGroup"
@@ -210,39 +169,20 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="API简介"
-          min-width="150"
-          prop="description"
-        >
+        <el-table-column align="left" label="API简介" min-width="150" prop="description">
           <template #default="{ row }">
             <el-input v-model="row.description" autocomplete="off" />
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="请求"
-          min-width="150"
-          prop="method"
-        >
+        <el-table-column align="left" label="请求" min-width="150" prop="method">
           <template #default="scope">
-            <div>
-              {{ scope.row.method }} / {{ methodFilter(scope.row.method) }}
-            </div>
+            <div>{{ scope.row.method }} / {{ methodFilter(scope.row.method) }}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" min-width="150" fixed="right">
           <template #default="{ row }">
-            <el-button icon="plus" type="primary" link @click="addApiFunc(row)">
-              单条新增
-            </el-button>
-            <el-button
-              icon="sunrise"
-              type="primary"
-              link
-              @click="ignoreApiFunc(row, true)"
-            >
+            <el-button icon="plus" type="primary" link @click="addApiFunc(row)">单条新增</el-button>
+            <el-button icon="sunrise" type="primary" link @click="ignoreApiFunc(row, true)">
               忽略
             </el-button>
           </template>
@@ -251,88 +191,39 @@
 
       <h4>
         已删除路由
-        <span class="text-xs text-gray-500 ml-2 font-normal"
-          >已经不存在于当前项目的路由中，确定同步后会自动从apis表删除</span
-        >
+        <span class="text-xs text-gray-500 ml-2 font-normal">
+          已经不存在于当前项目的路由中，确定同步后会自动从apis表删除
+        </span>
       </h4>
       <el-table :data="syncApiData.deleteApis">
-        <el-table-column
-          align="left"
-          label="API路径"
-          min-width="150"
-          prop="path"
-        />
-        <el-table-column
-          align="left"
-          label="API分组"
-          min-width="150"
-          prop="apiGroup"
-        />
-        <el-table-column
-          align="left"
-          label="API简介"
-          min-width="150"
-          prop="description"
-        />
-        <el-table-column
-          align="left"
-          label="请求"
-          min-width="150"
-          prop="method"
-        >
+        <el-table-column align="left" label="API路径" min-width="150" prop="path" />
+        <el-table-column align="left" label="API分组" min-width="150" prop="apiGroup" />
+        <el-table-column align="left" label="API简介" min-width="150" prop="description" />
+        <el-table-column align="left" label="请求" min-width="150" prop="method">
           <template #default="scope">
-            <div>
-              {{ scope.row.method }} / {{ methodFilter(scope.row.method) }}
-            </div>
+            <div>{{ scope.row.method }} / {{ methodFilter(scope.row.method) }}</div>
           </template>
         </el-table-column>
       </el-table>
 
       <h4>
         忽略路由
-        <span class="text-xs text-gray-500 ml-2 font-normal"
-          >忽略路由不参与api同步，常见为不需要进行鉴权行为的路由</span
-        >
+        <span class="text-xs text-gray-500 ml-2 font-normal">
+          忽略路由不参与api同步，常见为不需要进行鉴权行为的路由
+        </span>
       </h4>
       <el-table :data="syncApiData.ignoreApis">
-        <el-table-column
-          align="left"
-          label="API路径"
-          min-width="150"
-          prop="path"
-        />
-        <el-table-column
-          align="left"
-          label="API分组"
-          min-width="150"
-          prop="apiGroup"
-        />
-        <el-table-column
-          align="left"
-          label="API简介"
-          min-width="150"
-          prop="description"
-        />
-        <el-table-column
-          align="left"
-          label="请求"
-          min-width="150"
-          prop="method"
-        >
+        <el-table-column align="left" label="API路径" min-width="150" prop="path" />
+        <el-table-column align="left" label="API分组" min-width="150" prop="apiGroup" />
+        <el-table-column align="left" label="API简介" min-width="150" prop="description" />
+        <el-table-column align="left" label="请求" min-width="150" prop="method">
           <template #default="scope">
-            <div>
-              {{ scope.row.method }} / {{ methodFilter(scope.row.method) }}
-            </div>
+            <div>{{ scope.row.method }} / {{ methodFilter(scope.row.method) }}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" min-width="150" fixed="right">
           <template #default="{ row }">
-            <el-button
-              icon="sunny"
-              type="primary"
-              link
-              @click="ignoreApiFunc(row, false)"
-            >
+            <el-button icon="sunny" type="primary" link @click="ignoreApiFunc(row, false)">
               取消忽略
             </el-button>
           </template>
@@ -350,8 +241,8 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ dialogTitle }}</span>
           <div>
-            <el-button @click="closeDialog"> 取 消 </el-button>
-            <el-button type="primary" @click="enterDialog"> 确 定 </el-button>
+            <el-button @click="closeDialog">取 消</el-button>
+            <el-button type="primary" @click="enterDialog">确 定</el-button>
           </div>
         </div>
       </template>
@@ -362,11 +253,7 @@
           <el-input v-model="form.path" autocomplete="off" />
         </el-form-item>
         <el-form-item label="请求" prop="method">
-          <el-select
-            v-model="form.method"
-            placeholder="请选择"
-            style="width: 100%"
-          >
+          <el-select v-model="form.method" placeholder="请选择" style="width: 100%">
             <el-option
               v-for="item in methodOptions"
               :key="item.value"
@@ -411,7 +298,7 @@
     syncApi,
     getApiGroups,
     ignoreApi,
-    enterSyncApi
+    enterSyncApi,
   } from '@/api/api'
   import { toSQLLine } from '@/utils/stringFun'
   import WarningBar from '@/components/warningBar/warningBar.vue'
@@ -421,10 +308,10 @@
   import ExportTemplate from '@/components/exportExcel/exportTemplate.vue'
   import ImportExcel from '@/components/exportExcel/importExcel.vue'
   import { butler } from '@/api/autoCode'
-  import { useAppStore } from "@/pinia";
+  import { useAppStore } from '@/pinia'
 
   defineOptions({
-    name: 'Api'
+    name: 'Api',
   })
 
   const appStore = useAppStore()
@@ -439,29 +326,29 @@
     path: '',
     apiGroup: '',
     method: '',
-    description: ''
+    description: '',
   })
   const methodOptions = ref([
     {
       value: 'POST',
       label: '创建',
-      type: 'success'
+      type: 'success',
     },
     {
       value: 'GET',
       label: '查看',
-      type: ''
+      type: '',
     },
     {
       value: 'PUT',
       label: '更新',
-      type: 'warning'
+      type: 'warning',
     },
     {
       value: 'DELETE',
       label: '删除',
-      type: 'danger'
-    }
+      type: 'danger',
+    },
   ])
 
   const type = ref('')
@@ -469,7 +356,7 @@
     path: [{ required: true, message: '请输入api路径', trigger: 'blur' }],
     apiGroup: [{ required: true, message: '请输入组名称', trigger: 'blur' }],
     method: [{ required: true, message: '请选择请求方式', trigger: 'blur' }],
-    description: [{ required: true, message: '请输入api介绍', trigger: 'blur' }]
+    description: [{ required: true, message: '请输入api介绍', trigger: 'blur' }],
   })
 
   const page = ref(1)
@@ -486,7 +373,7 @@
       const groups = res.data.groups
       apiGroupOptions.value = groups.map((item) => ({
         label: item,
-        value: item
+        value: item,
       }))
       apiGroupMap.value = res.data.apiGroupMap
     }
@@ -497,17 +384,17 @@
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: res.msg
+        message: res.msg,
       })
       if (flag) {
         syncApiData.value.newApis = syncApiData.value.newApis.filter(
-          (item) => !(item.path === row.path && item.method === row.method)
+          (item) => !(item.path === row.path && item.method === row.method),
         )
         syncApiData.value.ignoreApis.push(row)
         return
       }
       syncApiData.value.ignoreApis = syncApiData.value.ignoreApis.filter(
-        (item) => !(item.path === row.path && item.method === row.method)
+        (item) => !(item.path === row.path && item.method === row.method),
       )
       syncApiData.value.newApis.push(row)
     }
@@ -517,14 +404,14 @@
     if (!row.apiGroup) {
       ElMessage({
         type: 'error',
-        message: '请先选择API分组'
+        message: '请先选择API分组',
       })
       return
     }
     if (!row.description) {
       ElMessage({
         type: 'error',
-        message: '请先填写API描述'
+        message: '请先填写API描述',
       })
       return
     }
@@ -533,10 +420,10 @@
       ElMessage({
         type: 'success',
         message: '添加成功',
-        showClose: true
+        showClose: true,
       })
       syncApiData.value.newApis = syncApiData.value.newApis.filter(
-        (item) => !(item.path === row.path && item.method === row.method)
+        (item) => !(item.path === row.path && item.method === row.method),
       )
     }
     getTableData()
@@ -550,14 +437,10 @@
   const syncing = ref(false)
 
   const enterSyncDialog = async () => {
-    if (
-      syncApiData.value.newApis.some(
-        (item) => !item.apiGroup || !item.description
-      )
-    ) {
+    if (syncApiData.value.newApis.some((item) => !item.apiGroup || !item.description)) {
       ElMessage({
         type: 'error',
-        message: '存在API未分组或未填写描述'
+        message: '存在API未分组或未填写描述',
       })
       return
     }
@@ -568,7 +451,7 @@
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: res.msg
+        message: res.msg,
       })
       syncApiFlag.value = false
       getTableData()
@@ -614,7 +497,7 @@
     const table = await getApiList({
       page: page.value,
       pageSize: pageSize.value,
-      ...searchInfo.value
+      ...searchInfo.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -635,14 +518,14 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const ids = apis.value.map((item) => item.ID)
       const res = await deleteApisByIds({ ids })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: res.msg
+          message: res.msg,
         })
         if (tableData.value.length === ids.length && page.value > 1) {
           page.value--
@@ -655,13 +538,13 @@
     ElMessageBox.confirm('确定要刷新缓存吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const res = await freshCasbin()
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: res.msg
+          message: res.msg,
         })
       }
     })
@@ -670,7 +553,7 @@
   const syncApiData = ref({
     newApis: [],
     deleteApis: [],
-    ignoreApis: []
+    ignoreApis: [],
   })
 
   const syncApiFlag = ref(false)
@@ -695,7 +578,7 @@
       path: '',
       apiGroup: '',
       method: '',
-      description: ''
+      description: '',
     }
   }
 
@@ -737,7 +620,7 @@
                 ElMessage({
                   type: 'success',
                   message: '添加成功',
-                  showClose: true
+                  showClose: true,
                 })
               }
               getTableData()
@@ -753,7 +636,7 @@
                 ElMessage({
                   type: 'success',
                   message: '编辑成功',
-                  showClose: true
+                  showClose: true,
                 })
               }
               getTableData()
@@ -765,7 +648,7 @@
               ElMessage({
                 type: 'error',
                 message: '未知操作',
-                showClose: true
+                showClose: true,
               })
             }
             break
@@ -778,13 +661,13 @@
     ElMessageBox.confirm('此操作将永久删除所有角色下该api, 是否继续?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const res = await deleteApi(row)
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功!'
+          message: '删除成功!',
         })
         if (tableData.value.length === 1 && page.value > 1) {
           page.value--
@@ -819,7 +702,7 @@
       } catch (_) {
         ElMessage({
           type: 'error',
-          message: 'AI自动填充失败,请重新生成'
+          message: 'AI自动填充失败,请重新生成',
         })
       }
     }

@@ -39,8 +39,7 @@ export const getDictFunc = async (type) => {
   return dicts
 }
 
-const path =
-  import.meta.env.VITE_BASE_PATH + ':' + import.meta.env.VITE_SERVER_PORT + '/'
+const path = import.meta.env.VITE_BASE_PATH + ':' + import.meta.env.VITE_SERVER_PORT + '/'
 export const ReturnArrImg = (arr) => {
   const imgArr = []
   if (arr instanceof Array) {
@@ -107,23 +106,23 @@ export const setBodyPrimaryColor = (primaryColor, darkMode) => {
   document.documentElement.style.setProperty('--el-color-primary', primaryColor)
   document.documentElement.style.setProperty(
     '--el-color-primary-bg',
-    addOpacityToColor(primaryColor, 0.4)
+    addOpacityToColor(primaryColor, 0.4),
   )
   for (let times = 1; times <= 2; times++) {
     document.documentElement.style.setProperty(
       `--el-color-primary-dark-${times}`,
-      fmtColorFunc(primaryColor, times / 10)
+      fmtColorFunc(primaryColor, times / 10),
     )
   }
   for (let times = 1; times <= 10; times++) {
     document.documentElement.style.setProperty(
       `--el-color-primary-light-${times}`,
-      fmtColorFunc(primaryColor, times / 10)
+      fmtColorFunc(primaryColor, times / 10),
     )
   }
   document.documentElement.style.setProperty(
     `--el-menu-hover-bg-color`,
-    addOpacityToColor(primaryColor, 0.2)
+    addOpacityToColor(primaryColor, 0.2),
   )
 }
 

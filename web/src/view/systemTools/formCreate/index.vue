@@ -7,12 +7,12 @@
   import FcDesigner from '@form-create/designer'
 
   defineOptions({
-    name: 'FormGenerator'
+    name: 'FormGenerator',
   })
 
   const designer = ref(null)
 
   const config = {
-    fieldReadonly: false
+    fieldReadonly: false,
   }
 </script>

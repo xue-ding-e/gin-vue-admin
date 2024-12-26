@@ -17,7 +17,8 @@
           <el-statistic :value="268500" />
         </div>
         <div class="mt-2 text-green-600 text-sm font-bold font-mono">
-          +80% <el-icon><TopRight /></el-icon>
+          +80%
+          <el-icon><TopRight /></el-icon>
         </div>
       </div>
       <div class="absolute top-0 right-2 w-[50%] h-20">
@@ -36,18 +37,18 @@
   defineProps({
     type: {
       type: Number,
-      default: 1
+      default: 1,
     },
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   })
 
   const data = [
     [12, 22, 32, 45, 32, 78, 89, 92],
     [1, 2, 43, 5, 67, 78, 89, 12],
-    [12, 22, 32, 45, 32, 78, 89, 92]
+    [12, 22, 32, 45, 32, 78, 89, 92],
   ]
 </script>
 

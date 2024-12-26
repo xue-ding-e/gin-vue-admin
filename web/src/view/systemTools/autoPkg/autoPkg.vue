@@ -6,45 +6,21 @@
     />
     <div class="gva-table-box">
       <div class="gva-btn-list gap-3 flex items-center">
-        <el-button type="primary" icon="plus" @click="openDialog('addApi')">
-          新增
-        </el-button>
+        <el-button type="primary" icon="plus" @click="openDialog('addApi')">新增</el-button>
       </div>
       <el-table :data="tableData">
         <el-table-column align="left" label="id" width="120" prop="ID" />
-        <el-table-column
-          align="left"
-          label="包名"
-          width="150"
-          prop="packageName"
-        />
-        <el-table-column
-          align="left"
-          label="模板"
-          width="150"
-          prop="template"
-        />
+        <el-table-column align="left" label="包名" width="150" prop="packageName" />
+        <el-table-column align="left" label="模板" width="150" prop="template" />
         <el-table-column align="left" label="展示名" width="150" prop="label" />
-        <el-table-column
-          align="left"
-          label="描述"
-          min-width="150"
-          prop="desc"
-        />
+        <el-table-column align="left" label="描述" min-width="150" prop="desc" />
 
         <el-table-column align="left" label="操作" width="200">
           <template #default="scope">
-            <el-button
-              icon="edit"
-              type="primary"
-              link
-              @click="editPackageFunc(scope.row)"
-            >编辑</el-button>
-            <el-button icon="delete"
-              type="primary"
-              link
-              @click="deleteApiFunc(scope.row)"
-            >
+            <el-button icon="edit" type="primary" link @click="editPackageFunc(scope.row)">
+              编辑
+            </el-button>
+            <el-button icon="delete" type="primary" link @click="deleteApiFunc(scope.row)">
               删除
             </el-button>
           </template>
@@ -53,12 +29,10 @@
     </div>
 
     <el-drawer v-model="dialogFormVisible" size="40%" :show-close="false">
-      <warning-bar
-        title="模板package会创建集成于项目本体中的代码包，模板plugin会创建插件包"
-      />
+      <warning-bar title="模板package会创建集成于项目本体中的代码包，模板plugin会创建插件包" />
       <el-form ref="pkgForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="包名" prop="packageName">
-          <el-input v-model="form.packageName" autocomplete="off" :disabled="type === 'edit'"/>
+          <el-input v-model="form.packageName" autocomplete="off" :disabled="type === 'edit'" />
         </el-form-item>
         <el-form-item label="模板" prop="template">
           <el-select v-model="form.template" :disabled="type === 'edit'">
@@ -82,8 +56,8 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">创建Package</span>
           <div>
-            <el-button @click="closeDialog"> 取 消 </el-button>
-            <el-button type="primary" @click="enterDialog"> 确 定 </el-button>
+            <el-button @click="closeDialog">取 消</el-button>
+            <el-button type="primary" @click="enterDialog">确 定</el-button>
           </div>
         </div>
       </template>
@@ -92,27 +66,27 @@
 </template>
 
 <script setup>
-import {
-  createPackageApi,
-  getPackageApi,
-  deletePackageApi,
-  getTemplatesApi,
-  updatePackageDetail,
-  getPackageById
-} from '@/api/autoCode'
-import { ref } from 'vue'
-import WarningBar from '@/components/warningBar/warningBar.vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+  import {
+    createPackageApi,
+    getPackageApi,
+    deletePackageApi,
+    getTemplatesApi,
+    updatePackageDetail,
+    getPackageById,
+  } from '@/api/autoCode'
+  import { ref } from 'vue'
+  import WarningBar from '@/components/warningBar/warningBar.vue'
+  import { ElMessage, ElMessageBox } from 'element-plus'
 
   defineOptions({
-    name: 'AutoPkg'
+    name: 'AutoPkg',
   })
 
   const form = ref({
     packageName: '',
     template: '',
     label: '',
-    desc: ''
+    desc: '',
   })
   const templatesOptions = ref([])
 
@@ -134,35 +108,34 @@ import { ElMessage, ElMessageBox } from 'element-plus'
       callback()
     }
   }
-const type = ref('')
+  const type = ref('')
   const rules = ref({
     packageName: [
       { required: true, message: '请输入包名', trigger: 'blur' },
-      { validator: validateData, trigger: 'blur' }
+      { validator: validateData, trigger: 'blur' },
     ],
     template: [
       { required: true, message: '请选择模板', trigger: 'change' },
-      { validator: validateData, trigger: 'blur' }
-    ]
+      { validator: validateData, trigger: 'blur' },
+    ],
   })
 
-
-const dialogTitle = ref('新增')
-const dialogFormVisible = ref(false)
-const openDialog = (key) => {
-  switch (key) {
-    case "addApi":
-      dialogTitle.value = '新增'
-      break
-    case "edit":
-      dialogTitle.value = '更新'
-      break
-    default:
-      break
+  const dialogTitle = ref('新增')
+  const dialogFormVisible = ref(false)
+  const openDialog = (key) => {
+    switch (key) {
+      case 'addApi':
+        dialogTitle.value = '新增'
+        break
+      case 'edit':
+        dialogTitle.value = '更新'
+        break
+      default:
+        break
+    }
+    type.value = key
+    dialogFormVisible.value = true
   }
-  type.value = key
-  dialogFormVisible.value = true
-}
 
   const closeDialog = () => {
     dialogFormVisible.value = false
@@ -170,56 +143,57 @@ const openDialog = (key) => {
       packageName: '',
       template: '',
       label: '',
-      desc: ''
+      desc: '',
     }
   }
 
-const pkgForm = ref(null)
-const enterDialog = async () => {
-  pkgForm.value.validate(async valid => {
-    if (valid) {
-      switch (type.value) {
-        case 'addApi': {
-          const res = await createPackageApi(form.value)
-          if (res.code === 0) {
-            ElMessage({
-              type: 'success',
-              message: '添加成功',
-              showClose: true
-            })
-          }
-          getTableData()
-          closeDialog()
+  const pkgForm = ref(null)
+  const enterDialog = async () => {
+    pkgForm.value.validate(async (valid) => {
+      if (valid) {
+        switch (type.value) {
+          case 'addApi':
+            {
+              const res = await createPackageApi(form.value)
+              if (res.code === 0) {
+                ElMessage({
+                  type: 'success',
+                  message: '添加成功',
+                  showClose: true,
+                })
+              }
+              getTableData()
+              closeDialog()
+            }
+            break
+          case 'edit':
+            {
+              const res = await updatePackageDetail(form.value)
+              if (res.code === 0) {
+                ElMessage({
+                  type: 'success',
+                  message: '编辑成功',
+                  showClose: true,
+                })
+              }
+              getTableData()
+              closeDialog()
+            }
+            break
+          default:
+            // eslint-disable-next-line no-lone-blocks
+            {
+              ElMessage({
+                type: 'error',
+                message: '未知操作',
+                showClose: true,
+              })
+            }
+            break
         }
-          break
-        case 'edit': {
-          const res = await updatePackageDetail(form.value)
-          if (res.code === 0) {
-            ElMessage({
-              type: 'success',
-              message: '编辑成功',
-              showClose: true
-
-            })
-          }
-          getTableData()
-          closeDialog()
-        }
-          break
-        default:
-          // eslint-disable-next-line no-lone-blocks
-        {
-          ElMessage({
-            type: 'error',
-            message: '未知操作',
-            showClose: true
-          })
-        }
-          break
       }
-    }
-  })
-}
+    })
+  }
 
   const tableData = ref([])
   const getTableData = async () => {
@@ -229,11 +203,11 @@ const enterDialog = async () => {
     }
   }
 
-const editPackageFunc = async (row) => {
-  const res = await getPackageById(row)
-  form.value = res.data.pkg
-  openDialog('edit')
-}
+  const editPackageFunc = async (row) => {
+    const res = await getPackageById(row)
+    form.value = res.data.pkg
+    openDialog('edit')
+  }
 
   const deleteApiFunc = async (row) => {
     ElMessageBox.confirm(
@@ -242,14 +216,14 @@ const editPackageFunc = async (row) => {
       {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }
+        type: 'warning',
+      },
     ).then(async () => {
       const res = await deletePackageApi(row)
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功!'
+          message: '删除成功!',
         })
         getTableData()
       }

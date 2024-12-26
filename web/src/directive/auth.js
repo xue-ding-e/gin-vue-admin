@@ -34,7 +34,7 @@ export default {
         if (!flag) {
           el.parentNode.removeChild(el)
         }
-      }
+      },
     })
-  }
+  },
 }

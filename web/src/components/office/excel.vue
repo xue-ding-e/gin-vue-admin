@@ -8,7 +8,7 @@
 </template>
 <script>
   export default {
-    name: 'Excel'
+    name: 'Excel',
   }
 </script>
 <script setup>
@@ -21,14 +21,14 @@
   const props = defineProps({
     modelValue: {
       type: String,
-      default: () => ''
-    }
+      default: () => '',
+    },
   })
   const excel = ref('')
   watch(
     () => props.modelValue,
     (val) => (excel.value = val),
-    { immediate: true }
+    { immediate: true },
   )
   const renderedHandler = () => {}
   const errorHandler = () => {}

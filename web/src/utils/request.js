@@ -9,17 +9,17 @@ import { requestBaseUrl } from '@/core/global'
 const service = axios.create({
   baseURL: requestBaseUrl,
   timeout: 99999,
-  paramsSerializer: params => {
+  paramsSerializer: (params) => {
     return qs.stringify(params, { arrayFormat: 'repeat' }) // 自定义参数序列化函数
-  }
+  },
 })
 let activeAxios = 0
 let timer
 let loadingInstance
 const showLoading = (
   option = {
-    target: null
-  }
+    target: null,
+  },
 ) => {
   const loadDom = document.getElementById('gva-base-load-dom')
   activeAxios++
@@ -52,7 +52,7 @@ service.interceptors.request.use(
       'Content-Type': 'application/json',
       'x-token': userStore.token,
       'x-user-id': userStore.userInfo.ID,
-      ...config.headers
+      ...config.headers,
     }
     return config
   },
@@ -63,10 +63,10 @@ service.interceptors.request.use(
     ElMessage({
       showClose: true,
       message: error,
-      type: 'error'
+      type: 'error',
     })
     return error
-  }
+  },
 )
 
 // http response 拦截器
@@ -88,7 +88,7 @@ service.interceptors.response.use(
       ElMessage({
         showClose: true,
         message: response.data.msg || decodeURI(response.headers.msg),
-        type: 'error'
+        type: 'error',
       })
       return response.data.msg ? response.data : response
     }
@@ -109,8 +109,8 @@ service.interceptors.response.use(
           dangerouslyUseHTMLString: true,
           distinguishCancelAndClose: true,
           confirmButtonText: '稍后重试',
-          cancelButtonText: '取消'
-        }
+          cancelButtonText: '取消',
+        },
       )
       return
     }
@@ -127,8 +127,8 @@ service.interceptors.response.use(
             dangerouslyUseHTMLString: true,
             distinguishCancelAndClose: true,
             confirmButtonText: '清理缓存',
-            cancelButtonText: '取消'
-          }
+            cancelButtonText: '取消',
+          },
         ).then(() => {
           const userStore = useUserStore()
           userStore.ClearStorage()
@@ -146,8 +146,8 @@ service.interceptors.response.use(
             dangerouslyUseHTMLString: true,
             distinguishCancelAndClose: true,
             confirmButtonText: '我知道了',
-            cancelButtonText: '取消'
-          }
+            cancelButtonText: '取消',
+          },
         )
         break
       case 401:
@@ -161,8 +161,8 @@ service.interceptors.response.use(
             dangerouslyUseHTMLString: true,
             distinguishCancelAndClose: true,
             confirmButtonText: '重新登录',
-            cancelButtonText: '取消'
-          }
+            cancelButtonText: '取消',
+          },
         ).then(() => {
           const userStore = useUserStore()
           userStore.ClearStorage()
@@ -172,6 +172,6 @@ service.interceptors.response.use(
     }
 
     return error
-  }
+  },
 )
 export default service

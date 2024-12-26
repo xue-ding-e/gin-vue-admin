@@ -16,9 +16,7 @@
       placeholder="页面:view/xxx/xx.vue 插件:plugin/xx/xx.vue"
       @change="emitChange"
     />
-    <el-button @click="togglePathIsSelect"
-      >{{ pathIsSelect ? '手动输入' : '快捷选择' }}
-    </el-button>
+    <el-button @click="togglePathIsSelect">{{ pathIsSelect ? '手动输入' : '快捷选择' }}</el-button>
   </div>
 </template>
 
@@ -29,8 +27,8 @@
   const props = defineProps({
     component: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   })
 
   const emits = defineEmits(['change'])
@@ -71,7 +69,7 @@
           node = {
             value: part,
             label: part,
-            children: []
+            children: [],
           }
           currentLevel.push(node)
         }
@@ -93,7 +91,7 @@
     () => props.component,
     (value) => {
       initCascader(value)
-    }
+    },
   )
 
   onMounted(() => {
@@ -121,10 +119,7 @@
   }
 
   const emitChange = () => {
-    emits(
-      'change',
-      pathIsSelect.value ? activeComponent.value?.join('/') : tempPath.value
-    )
+    emits('change', pathIsSelect.value ? activeComponent.value?.join('/') : tempPath.value)
   }
 </script>
 

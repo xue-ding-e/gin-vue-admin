@@ -15,7 +15,7 @@ const formatRouter = (routes, routeMap, parent) => {
       item.parent = parent
       item.meta.btns = item.btns
       item.meta.hidden = item.hidden
-      item.path = encodeURIComponent(item.path);  // 路径中文编码
+      item.path = encodeURIComponent(item.path) // 路径中文编码
       if (item.meta.defaultMenu === true) {
         if (!parent) {
           item = { ...item, path: `/${item.path}` }
@@ -33,10 +33,7 @@ const KeepAliveFilter = (routes) => {
   routes &&
     routes.forEach((item) => {
       // 子菜单中有 keep-alive 的，父菜单也必须 keep-alive，否则无效。这里将子菜单中有 keep-alive 的父菜单也加入。
-      if (
-        (item.children && item.children.some((ch) => ch.meta.keepAlive)) ||
-        item.meta.keepAlive
-      ) {
+      if ((item.children && item.children.some((ch) => ch.meta.keepAlive)) || item.meta.keepAlive) {
         const path = item.meta.path
         keepAliveRoutersArr.push(pathInfo[path])
         nameMap[item.name] = pathInfo[path]
@@ -108,10 +105,10 @@ export const useRouterStore = defineStore('router', () => {
         name: 'layout',
         component: 'view/layout/index.vue',
         meta: {
-          title: '底层layout'
+          title: '底层layout',
         },
-        children: []
-      }
+        children: [],
+      },
     ]
     const asyncRouterRes = await asyncMenu()
     const asyncRouter = asyncRouterRes.data.menus
@@ -122,9 +119,9 @@ export const useRouterStore = defineStore('router', () => {
         hidden: true,
         meta: {
           title: '',
-          closeTab: true
+          closeTab: true,
         },
-        component: 'view/error/reload.vue'
+        component: 'view/error/reload.vue',
       })
     formatRouter(asyncRouter, routeMap)
     baseRouter[0].children = asyncRouter
@@ -146,6 +143,6 @@ export const useRouterStore = defineStore('router', () => {
     keepAliveRouters,
     asyncRouterFlag,
     SetAsyncRouter,
-    routeMap
+    routeMap,
   }
 })

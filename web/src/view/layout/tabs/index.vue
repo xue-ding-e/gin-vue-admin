@@ -30,15 +30,16 @@
                 ? 'text-active'
                 : 'text-gray-600 dark:text-slate-400 '
             "
-            ><i
+          >
+            <i
               :class="
                 activeValue === getFmtString(item)
                   ? 'text-active'
                   : 'text-gray-600 dark:text-slate-400'
               "
             />
-            {{ fmtTitle(item.meta.title, item) }}</span
-          >
+            {{ fmtTitle(item.meta.title, item) }}
+          </span>
         </template>
       </el-tab-pane>
     </el-tabs>
@@ -65,7 +66,7 @@
   import { fmtTitle } from '@/utils/fmtRouterTitle'
 
   defineOptions({
-    name: 'HistoryComponent'
+    name: 'HistoryComponent',
   })
 
   const route = useRoute()
@@ -86,9 +87,7 @@
   const isCollapse = ref(false)
   const isMobile = ref(false)
   const rightActive = ref('')
-  const defaultRouter = computed(
-    () => userStore.userInfo.authority.defaultRouter
-  )
+  const defaultRouter = computed(() => userStore.userInfo.authority.defaultRouter)
   const openContextMenu = (e) => {
     if (historys.value.length === 1 && route.name === defaultRouter.value) {
       return false
@@ -112,11 +111,11 @@
       {
         name: defaultRouter.value,
         meta: {
-          title: '首页'
+          title: '首页',
         },
         query: {},
-        params: {}
-      }
+        params: {},
+      },
     ]
     router.push({ name: defaultRouter.value })
     contextMenuVisible.value = false
@@ -130,9 +129,7 @@
       }
       return getFmtString(item) === rightActive.value
     })
-    const activeIndex = historys.value.findIndex(
-      (item) => getFmtString(item) === activeValue.value
-    )
+    const activeIndex = historys.value.findIndex((item) => getFmtString(item) === activeValue.value)
     historys.value.splice(0, rightIndex)
     if (rightIndex > activeIndex) {
       router.push(right)
@@ -147,9 +144,7 @@
       }
       return getFmtString(item) === rightActive.value
     })
-    const activeIndex = historys.value.findIndex(
-      (item) => getFmtString(item) === activeValue.value
-    )
+    const activeIndex = historys.value.findIndex((item) => getFmtString(item) === activeValue.value)
     historys.value.splice(leftIndex + 1, historys.value.length)
     if (leftIndex < activeIndex) {
       router.push(right)
@@ -211,7 +206,7 @@
     router.push({
       name: tab.name,
       query: tab.query,
-      params: tab.params
+      params: tab.params,
     })
   }
   const removeTab = (tab) => {
@@ -224,13 +219,13 @@
           router.push({
             name: historys.value[index + 1].name,
             query: historys.value[index + 1].query,
-            params: historys.value[index + 1].params
+            params: historys.value[index + 1].params,
           })
         } else {
           router.push({
             name: historys.value[index - 1].name,
             query: historys.value[index - 1].query,
-            params: historys.value[index - 1].params
+            params: historys.value[index - 1].params,
           })
         }
       }
@@ -250,7 +245,7 @@
           contextMenuVisible.value = false
         })
       }
-    }
+    },
   )
 
   watch(
@@ -264,7 +259,7 @@
       sessionStorage.setItem('historys', JSON.stringify(historys.value))
       activeValue.value = window.sessionStorage.getItem('activeValue')
     },
-    { deep: true }
+    { deep: true },
   )
 
   watch(
@@ -278,8 +273,8 @@
       emitter.emit('setKeepAlive', historys.value)
     },
     {
-      deep: true
-    }
+      deep: true,
+    },
   )
 
   const initPage = () => {
@@ -299,18 +294,12 @@
     })
 
     emitter.on('setQuery', (data) => {
-      const index = historys.value.findIndex(
-        (item) => getFmtString(item) === activeValue.value
-      )
+      const index = historys.value.findIndex((item) => getFmtString(item) === activeValue.value)
       historys.value[index].query = data
       activeValue.value = getFmtString(historys.value[index])
       const currentUrl = window.location.href.split('?')[0]
       const currentSearchParams = new URLSearchParams(data).toString()
-      window.history.replaceState(
-        {},
-        '',
-        `${currentUrl}?${currentSearchParams}`
-      )
+      window.history.replaceState({}, '', `${currentUrl}?${currentSearchParams}`)
       sessionStorage.setItem('historys', JSON.stringify(historys.value))
     })
 
@@ -335,15 +324,14 @@
       {
         name: defaultRouter.value,
         meta: {
-          title: '首页'
+          title: '首页',
         },
         query: {},
-        params: {}
-      }
+        params: {},
+      },
     ]
     setTab(route)
-    historys.value =
-      JSON.parse(sessionStorage.getItem('historys')) || initHistorys
+    historys.value = JSON.parse(sessionStorage.getItem('historys')) || initHistorys
     if (!window.sessionStorage.getItem('activeValue')) {
       activeValue.value = getFmtString(route)
     } else {

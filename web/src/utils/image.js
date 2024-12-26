@@ -50,7 +50,7 @@ export default class ImageCompress {
   dWH(srcW, srcH, dMax) {
     const defaults = {
       width: srcW,
-      height: srcH
+      height: srcH,
     }
     if (Math.max(srcW, srcH) > dMax) {
       if (srcW > srcH) {
@@ -112,7 +112,7 @@ const IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xm
 
 export const isVideoExt = (url) => {
   const urlLower = url?.toLowerCase() || ''
-  return urlLower !== '' && VIDEO_EXTENSIONS.some(ext => urlLower.endsWith(ext))
+  return urlLower !== '' && VIDEO_EXTENSIONS.some((ext) => urlLower.endsWith(ext))
 }
 
 export const isVideoMime = (type) => {

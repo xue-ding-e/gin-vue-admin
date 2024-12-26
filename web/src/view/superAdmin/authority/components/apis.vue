@@ -24,9 +24,11 @@
         >
           <template #default="{ _, data }">
             <div class="flex items-center justify-between w-full pr-1">
-              <span>{{ data.description }} </span>
+              <span>{{ data.description }}</span>
               <el-tooltip :content="data.path">
-                <span class="max-w-[240px] break-all overflow-ellipsis overflow-hidden">{{ data.path }}</span>
+                <span class="max-w-[240px] break-all overflow-ellipsis overflow-hidden">
+                  {{ data.path }}
+                </span>
               </el-tooltip>
             </div>
           </template>
@@ -43,7 +45,7 @@
   import { ElMessage } from 'element-plus'
 
   defineOptions({
-    name: 'Apis'
+    name: 'Apis',
   })
 
   const props = defineProps({
@@ -51,13 +53,13 @@
       default: function () {
         return {}
       },
-      type: Object
-    }
+      type: Object,
+    },
   })
 
   const apiDefaultProps = ref({
     children: 'children',
-    label: 'description'
+    label: 'description',
   })
   const isAllSelected = ref(false)
   // 切换全选状态的方法
@@ -99,7 +101,7 @@
 
     apiTreeData.value = buildApiTree(apis)
     const res = await getPolicyPathByAuthorityId({
-      authorityId: props.row.authorityId
+      authorityId: props.row.authorityId,
     })
     activeUserId.value = props.row.authorityId
     apiTreeIds.value = []
@@ -142,7 +144,7 @@
       const treeNode = {
         ID: key,
         description: key + '组',
-        children: apiObj[key]
+        children: apiObj[key],
       }
       apiTree.push(treeNode)
     }
@@ -158,13 +160,13 @@
       checkArr.forEach((item) => {
         var casbinInfo = {
           path: item.path,
-          method: item.method
+          method: item.method,
         }
         casbinInfos.push(casbinInfo)
       })
     const res = await UpdateCasbin({
       authorityId: activeUserId.value,
-      casbinInfos
+      casbinInfos,
     })
     if (res.code === 0) {
       ElMessage({ type: 'success', message: 'api设置成功' })
@@ -173,7 +175,7 @@
 
   defineExpose({
     needConfirm,
-    enterAndNext
+    enterAndNext,
   })
 
   const filterNode = (value, data) => {
@@ -196,6 +198,4 @@
     apiTree.value.filter('')
     isAllSelected.value = false
   })
-
-
 </script>

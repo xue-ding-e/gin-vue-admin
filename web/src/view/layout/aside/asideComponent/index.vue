@@ -1,15 +1,7 @@
 <template>
-  <component
-    :is="menuComponent"
-    v-if="!routerInfo.hidden"
-    :router-info="routerInfo"
-  >
+  <component :is="menuComponent" v-if="!routerInfo.hidden" :router-info="routerInfo">
     <template v-if="routerInfo.children && routerInfo.children.length">
-      <AsideComponent
-        v-for="item in routerInfo.children"
-        :key="item.name"
-        :router-info="item"
-      />
+      <AsideComponent v-for="item in routerInfo.children" :key="item.name" :router-info="item" />
     </template>
   </component>
 </template>
@@ -20,18 +12,18 @@
   import { computed } from 'vue'
 
   defineOptions({
-    name: 'AsideComponent'
+    name: 'AsideComponent',
   })
 
   const props = defineProps({
     routerInfo: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     mode: {
       type: String,
-      default: 'vertical'
-    }
+      default: 'vertical',
+    },
   })
 
   const menuComponent = computed(() => {

@@ -21,7 +21,7 @@
   import { getBaseUrl } from '@/utils/format'
 
   defineOptions({
-    name: 'UploadCommon'
+    name: 'UploadCommon',
   })
 
   const emit = defineEmits(['on-success'])
@@ -36,9 +36,7 @@
     const isImage = isImageMime(file.type)
     let pass = true
     if (!isVideo && !isImage) {
-      ElMessage.error(
-        '上传图片只能是 jpg,png,svg,webp 格式, 上传视频只能是 mp4,webm 格式!'
-      )
+      ElMessage.error('上传图片只能是 jpg,png,svg,webp 格式, 上传视频只能是 mp4,webm 格式!')
       fullscreenLoading.value = false
       pass = false
     }
@@ -68,7 +66,7 @@
   const uploadError = () => {
     ElMessage({
       type: 'error',
-      message: '上传失败'
+      message: '上传失败',
     })
     fullscreenLoading.value = false
   }

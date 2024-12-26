@@ -3,7 +3,7 @@ export const headerWidth = (label) => {
   const fontSize = window.getComputedStyle(document.body).fontSize || '14px'
   const fontFamily = window.getComputedStyle(document.body).fontFamily || 'Arial'
   const font = `${fontSize} ${fontFamily}`
- 
+
   let flexWidth = getTextWidth(label, font)
   flexWidth += 25
   if (flexWidth < 80) {

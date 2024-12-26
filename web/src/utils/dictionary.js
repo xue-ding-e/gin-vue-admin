@@ -8,12 +8,7 @@ export const getDict = async (type) => {
 }
 
 //  字典文字展示方法
-export const showDictLabel = (
-  dict,
-  code,
-  keyCode = 'value',
-  valueCode = 'label'
-) => {
+export const showDictLabel = (dict, code, keyCode = 'value', valueCode = 'label') => {
   if (!dict) {
     return ''
   }

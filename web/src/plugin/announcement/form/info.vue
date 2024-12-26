@@ -9,11 +9,7 @@
         label-width="80px"
       >
         <el-form-item label="标题:" prop="title">
-          <el-input
-            v-model="formData.title"
-            :clearable="true"
-            placeholder="请输入标题"
-          />
+          <el-input v-model="formData.title" :clearable="true" placeholder="请输入标题" />
         </el-form-item>
         <el-form-item label="内容:" prop="content">
           <RichEdit v-model="formData.content" />
@@ -50,11 +46,11 @@
     getInfoDataSource,
     createInfo,
     updateInfo,
-    findInfo
+    findInfo,
   } from '@/plugin/announcement/api/info'
 
   defineOptions({
-    name: 'InfoForm'
+    name: 'InfoForm',
   })
 
   // 自动获取字典
@@ -73,7 +69,7 @@
     title: '',
     content: '',
     userID: undefined,
-    attachments: []
+    attachments: [],
   })
   // 验证规则
   const rule = reactive({})
@@ -122,7 +118,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
         })
       }
     })

@@ -12,7 +12,7 @@ export const createInfo = (data) => {
   return service({
     url: '/info/createInfo',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -28,7 +28,7 @@ export const deleteInfo = (params) => {
   return service({
     url: '/info/deleteInfo',
     method: 'delete',
-    params
+    params,
   })
 }
 
@@ -44,7 +44,7 @@ export const deleteInfoByIds = (params) => {
   return service({
     url: '/info/deleteInfoByIds',
     method: 'delete',
-    params
+    params,
   })
 }
 
@@ -60,7 +60,7 @@ export const updateInfo = (data) => {
   return service({
     url: '/info/updateInfo',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -76,7 +76,7 @@ export const findInfo = (params) => {
   return service({
     url: '/info/findInfo',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -92,7 +92,7 @@ export const getInfoList = (params) => {
   return service({
     url: '/info/getInfoList',
     method: 'get',
-    params
+    params,
   })
 }
 // @Tags Info
@@ -105,6 +105,6 @@ export const getInfoList = (params) => {
 export const getInfoDataSource = () => {
   return service({
     url: '/info/getInfoDataSource',
-    method: 'get'
+    method: 'get',
   })
 }

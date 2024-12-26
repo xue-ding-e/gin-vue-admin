@@ -23,7 +23,7 @@ export const useDictionaryStore = defineStore('dictionary', () => {
             dict.push({
               label: item.label,
               value: item.value,
-              extend: item.extend
+              extend: item.extend,
             })
           })
         dictionaryRes[res.data.resysDictionary.type] = dict
@@ -36,6 +36,6 @@ export const useDictionaryStore = defineStore('dictionary', () => {
   return {
     dictionaryMap,
     setDictionaryMap,
-    getDictionary
+    getDictionary,
   }
 })

@@ -18,12 +18,7 @@
       <source :src="getUrl(model) + '#t=1'" />
     </video>
 
-    <img
-      v-if="model && !isVideoExt(model)"
-      class="w-full h-full"
-      :src="getUrl(model)"
-      alt="图片"
-    />
+    <img v-if="model && !isVideoExt(model)" class="w-full h-full" :src="getUrl(model)" alt="图片" />
     <div
       v-if="model"
       class="left-0 top-0 hidden text-gray-600 group-hover:bg-gray-600 group-hover:bg-opacity-30 w-full h-full group-hover:flex justify-center items-center absolute z-10"
@@ -53,8 +48,8 @@
   defineProps({
     model: {
       default: '',
-      type: String
-    }
+      type: String,
+    },
   })
 
   const emits = defineEmits(['chooseItem', 'deleteItem'])

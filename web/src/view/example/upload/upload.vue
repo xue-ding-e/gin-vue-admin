@@ -10,17 +10,9 @@
           :max-w-h="1080"
           @on-success="getTableData"
         />
-        <el-button type="primary" icon="upload" @click="importUrlFunc">
-          导入URL
-        </el-button>
-        <el-input
-          v-model="search.keyword"
-          class="w-72"
-          placeholder="请输入文件名或备注"
-        />
-        <el-button type="primary" icon="search" @click="getTableData"
-          >查询</el-button
-        >
+        <el-button type="primary" icon="upload" @click="importUrlFunc">导入URL</el-button>
+        <el-input v-model="search.keyword" class="w-72" placeholder="请输入文件名或备注" />
+        <el-button type="primary" icon="search" @click="getTableData">查询</el-button>
       </div>
 
       <el-table :data="tableData">
@@ -34,12 +26,7 @@
             <div>{{ formatDate(scope.row.UpdatedAt) }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="文件名/备注"
-          prop="name"
-          width="180"
-        >
+        <el-table-column align="left" label="文件名/备注" prop="name" width="180">
           <template #default="scope">
             <div class="name" @click="editFileNameFunc(scope.row)">
               {{ scope.row.name }}
@@ -52,26 +39,19 @@
             <el-tag
               :type="scope.row.tag?.toLowerCase() === 'jpg' ? 'info' : 'success'"
               disable-transitions
-              >{{ scope.row.tag }}
+            >
+              {{ scope.row.tag }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column align="left" label="操作" width="160">
           <template #default="scope">
-            <el-button
-              icon="download"
-              type="primary"
-              link
-              @click="downloadFile(scope.row)"
-              >下载</el-button
-            >
-            <el-button
-              icon="delete"
-              type="primary"
-              link
-              @click="deleteFileFunc(scope.row)"
-              >删除</el-button
-            >
+            <el-button icon="download" type="primary" link @click="downloadFile(scope.row)">
+              下载
+            </el-button>
+            <el-button icon="delete" type="primary" link @click="deleteFileFunc(scope.row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,12 +72,7 @@
 </template>
 
 <script setup>
-  import {
-    getFileList,
-    deleteFile,
-    editFileName,
-    importURL
-  } from '@/api/fileUploadAndDownload'
+  import { getFileList, deleteFile, editFileName, importURL } from '@/api/fileUploadAndDownload'
   import { downloadImage } from '@/utils/downloadImg'
   import CustomPic from '@/components/customPic/index.vue'
   import UploadImage from '@/components/upload/image.vue'
@@ -109,7 +84,7 @@
   import { ElMessage, ElMessageBox } from 'element-plus'
 
   defineOptions({
-    name: 'Upload'
+    name: 'Upload',
   })
 
   const path = ref(import.meta.env.VITE_APP_PROXY_PREFIX)
@@ -139,7 +114,7 @@
     const table = await getFileList({
       page: page.value,
       pageSize: pageSize.value,
-      ...search.value
+      ...search.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -154,14 +129,14 @@
     ElMessageBox.confirm('此操作将永久删除文件, 是否继续?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     })
       .then(async () => {
         const res = await deleteFile(row)
         if (res.code === 0) {
           ElMessage({
             type: 'success',
-            message: '删除成功!'
+            message: '删除成功!',
           })
           if (tableData.value.length === 1 && page.value > 1) {
             page.value--
@@ -172,7 +147,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消删除',
         })
       })
   }
@@ -196,7 +171,7 @@
       cancelButtonText: '取消',
       inputPattern: /\S/,
       inputErrorMessage: '不能为空',
-      inputValue: row.name
+      inputValue: row.name,
     })
       .then(async ({ value }) => {
         row.name = value
@@ -205,7 +180,7 @@
         if (res.code === 0) {
           ElMessage({
             type: 'success',
-            message: '编辑成功!'
+            message: '编辑成功!',
           })
           await getTableData()
         }
@@ -213,7 +188,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '取消修改'
+          message: '取消修改',
         })
       })
   }
@@ -226,10 +201,9 @@
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       inputType: 'textarea',
-      inputPlaceholder:
-        '我的图片|https://my-oss.com/my.png\nhttps://my-oss.com/my_1.png',
+      inputPlaceholder: '我的图片|https://my-oss.com/my.png\nhttps://my-oss.com/my_1.png',
       inputPattern: /\S/,
-      inputErrorMessage: '不能为空'
+      inputErrorMessage: '不能为空',
     })
       .then(async ({ value }) => {
         let data = value.split('\n')
@@ -250,7 +224,7 @@
               name: name,
               url: url,
               tag: url.substring(url.lastIndexOf('.') + 1),
-              key: CreateUUID()
+              key: CreateUUID(),
             })
           }
         })
@@ -259,7 +233,7 @@
         if (res.code === 0) {
           ElMessage({
             type: 'success',
-            message: '导入成功!'
+            message: '导入成功!',
           })
           await getTableData()
         }
@@ -267,7 +241,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '取消导入'
+          message: '取消导入',
         })
       })
   }

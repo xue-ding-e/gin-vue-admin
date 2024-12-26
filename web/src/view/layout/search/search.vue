@@ -23,7 +23,7 @@
   import { ref, watchEffect } from 'vue'
 
   defineOptions({
-    name: 'BtnBox'
+    name: 'BtnBox',
   })
   const isDark = ref(localStorage.getItem('isDark') === 'true' || true)
 

@@ -17,7 +17,7 @@
         <el-transfer
           v-model="menus"
           :props="{
-            key: 'ID'
+            key: 'ID',
           }"
           class="plugin-transfer"
           :data="menusData"
@@ -27,21 +27,17 @@
           :titles="['可选菜单', '使用菜单']"
           :button-texts="['移除', '选中']"
         >
-          <template #default="{ option }">
-            {{ option.meta.title }} {{ option.component }}
-          </template>
+          <template #default="{ option }">{{ option.meta.title }} {{ option.component }}</template>
         </el-transfer>
         <div class="flex justify-end mt-2">
-          <el-button type="primary" @click="fmtInitMenu">
-            定义安装菜单
-          </el-button>
+          <el-button type="primary" @click="fmtInitMenu">定义安装菜单</el-button>
         </div>
       </el-card>
       <el-card class="mt-2 text-center">
         <el-transfer
           v-model="apis"
           :props="{
-            key: 'ID'
+            key: 'ID',
           }"
           class="plugin-transfer"
           :data="apisData"
@@ -51,19 +47,15 @@
           :titles="['可选API', '使用API']"
           :button-texts="['移除', '选中']"
         >
-          <template #default="{ option }">
-            {{ option.description }} {{ option.path }}
-          </template>
+          <template #default="{ option }">{{ option.description }} {{ option.path }}</template>
         </el-transfer>
         <div class="flex justify-end mt-2">
-          <el-button type="primary" @click="fmtInitAPI">
-            定义安装API
-          </el-button>
+          <el-button type="primary" @click="fmtInitAPI">定义安装API</el-button>
         </div>
       </el-card>
     </div>
     <div class="flex justify-end">
-      <el-button type="primary" @click="pubPlugin"> 打包插件 </el-button>
+      <el-button type="primary" @click="pubPlugin">打包插件</el-button>
     </div>
   </div>
 </template>
@@ -109,9 +101,7 @@
   }
 
   const filterMenuMethod = (query, item) => {
-    return (
-      item.meta.title.indexOf(query) > -1 || item.component.indexOf(query) > -1
-    )
+    return item.meta.title.indexOf(query) > -1 || item.component.indexOf(query) > -1
   }
 
   const filterApiMethod = (query, item) => {
@@ -127,8 +117,8 @@
       {
         confirmButtonText: '打包',
         cancelButtonText: '取消',
-        type: 'warning'
-      }
+        type: 'warning',
+      },
     )
       .then(async () => {
         const res = await pubPlug({ plugName: plugName.value })
@@ -139,7 +129,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '关闭打包'
+          message: '关闭打包',
         })
       })
   }
@@ -163,21 +153,21 @@
       {
         confirmButtonText: '生成',
         cancelButtonText: '取消',
-        type: 'warning'
-      }
+        type: 'warning',
+      },
     )
       .then(() => {
         const req = {
           plugName: plugName.value,
           parentMenu: parentMenu.value,
-          menus: menus.value
+          menus: menus.value,
         }
         initMenu(req)
       })
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '关闭生成菜单'
+          message: '关闭生成菜单',
         })
       })
   }
@@ -196,13 +186,13 @@
       {
         confirmButtonText: '生成',
         cancelButtonText: '取消',
-        type: 'warning'
-      }
+        type: 'warning',
+      },
     )
       .then(() => {
         const req = {
           plugName: plugName.value,
-          apis: apis.value
+          apis: apis.value,
         }
         initAPI(req)
         console.log(req)
@@ -210,7 +200,7 @@
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '关闭生成API'
+          message: '关闭生成API',
         })
       })
   }

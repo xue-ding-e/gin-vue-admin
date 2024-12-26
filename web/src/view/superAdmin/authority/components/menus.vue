@@ -5,9 +5,7 @@
       <el-button type="primary" @click="toggleSelectAll">
         {{ isAllSelected ? '取消全选' : '一键全选' }}
       </el-button>
-      <el-button class="float-right" type="primary" @click="relation"
-        >确 定</el-button
-      >
+      <el-button class="float-right" type="primary" @click="relation">确 定</el-button>
     </div>
     <div class="tree-content clear-both">
       <el-scrollbar>
@@ -31,8 +29,7 @@
                   type="primary"
                   link
                   :style="{
-                    color:
-                      row.defaultRouter === data.name ? '#E6A23C' : '#85ce61'
+                    color: row.defaultRouter === data.name ? '#E6A23C' : '#85ce61',
                   }"
                   @click="() => setDefault(data)"
                 >
@@ -40,9 +37,7 @@
                 </el-button>
               </span>
               <span v-if="data.menuBtn.length">
-                <el-button type="primary" link @click="() => OpenBtn(data)">
-                  分配按钮
-                </el-button>
+                <el-button type="primary" link @click="() => OpenBtn(data)">分配按钮</el-button>
               </span>
             </span>
           </template>
@@ -71,18 +66,14 @@
 </template>
 
 <script setup>
-  import {
-    getBaseMenuTree,
-    getMenuAuthority,
-    addMenuAuthority
-  } from '@/api/menu'
+  import { getBaseMenuTree, getMenuAuthority, addMenuAuthority } from '@/api/menu'
   import { updateAuthority } from '@/api/authority'
   import { getAuthorityBtnApi, setAuthorityBtnApi } from '@/api/authorityBtn'
   import { nextTick, ref, watch } from 'vue'
   import { ElMessage } from 'element-plus'
 
   defineOptions({
-    name: 'Menus'
+    name: 'Menus',
   })
 
   const props = defineProps({
@@ -90,8 +81,8 @@
       default: function () {
         return {}
       },
-      type: Object
-    }
+      type: Object,
+    },
   })
 
   const emit = defineEmits(['changeRow'])
@@ -132,7 +123,7 @@
     },
     disabled: function (data) {
       return props.row.defaultRouter === data.name
-    }
+    },
   })
 
   const init = async () => {
@@ -158,7 +149,7 @@
       authorityId: props.row.authorityId,
       AuthorityName: props.row.authorityName,
       parentId: props.row.parentId,
-      defaultRouter: data.name
+      defaultRouter: data.name,
     })
     if (res.code === 0) {
       ElMessage({ type: 'success', message: '设置成功' })
@@ -170,7 +161,6 @@
     const checkedKeys = menuTree.value.getCheckedKeys()
     const allKeys = getAllNodeKeys(menuTreeData.value)
     isAllSelected.value = checkedKeys.length === allKeys.length
-
   }
   // 暴露给外层使用的切换拦截统一方法
   const enterAndNext = () => {
@@ -182,12 +172,12 @@
     const checkArr = menuTree.value.getCheckedNodes(false, true)
     const res = await addMenuAuthority({
       menus: checkArr,
-      authorityId: props.row.authorityId
+      authorityId: props.row.authorityId,
     })
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: '菜单设置成功!'
+        message: '菜单设置成功!',
       })
     }
   }
@@ -204,7 +194,7 @@
     menuID = data.ID
     const res = await getAuthorityBtnApi({
       menuID: menuID,
-      authorityId: props.row.authorityId
+      authorityId: props.row.authorityId,
     })
     if (res.code === 0) {
       openDialog(data)
@@ -238,7 +228,7 @@
     const res = await setAuthorityBtnApi({
       menuID,
       selected,
-      authorityId: props.row.authorityId
+      authorityId: props.row.authorityId,
     })
     if (res.code === 0) {
       ElMessage({ type: 'success', message: '设置成功' })

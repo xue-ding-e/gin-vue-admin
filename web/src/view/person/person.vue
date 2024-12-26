@@ -5,49 +5,27 @@
         <div
           class="w-full h-full bg-white dark:bg-slate-900 px-4 py-8 rounded-lg shadow-lg box-border"
         >
-          <div
-            class="user-card px-6 text-center bg-white dark:bg-slate-900 shrink-0"
-          >
+          <div class="user-card px-6 text-center bg-white dark:bg-slate-900 shrink-0">
             <div class="flex justify-center">
-              <SelectImage
-                v-model="userStore.userInfo.headerImg"
-                file-type="image"
-              />
+              <SelectImage v-model="userStore.userInfo.headerImg" file-type="image" />
             </div>
             <div class="py-6 text-center">
-              <p
-                v-if="!editFlag"
-                class="text-3xl flex justify-center items-center gap-4"
-              >
+              <p v-if="!editFlag" class="text-3xl flex justify-center items-center gap-4">
                 {{ userStore.userInfo.nickname }}
-                <el-icon
-                  class="cursor-pointer text-sm"
-                  color="#66b1ff"
-                  @click="openEdit"
-                >
+                <el-icon class="cursor-pointer text-sm" color="#66b1ff" @click="openEdit">
                   <edit />
                 </el-icon>
               </p>
               <p v-if="editFlag" class="flex justify-center items-center gap-4">
                 <el-input v-model="nickname" />
-                <el-icon
-                  class="cursor-pointer"
-                  color="#67c23a"
-                  @click="enterEdit"
-                >
+                <el-icon class="cursor-pointer" color="#67c23a" @click="enterEdit">
                   <check />
                 </el-icon>
-                <el-icon
-                  class="cursor-pointer"
-                  color="#f23c3c"
-                  @click="closeEdit"
-                >
+                <el-icon class="cursor-pointer" color="#f23c3c" @click="closeEdit">
                   <close />
                 </el-icon>
               </p>
-              <p class="text-gray-500 mt-2 text-md">
-                这个家伙很懒，什么都没有留下
-              </p>
+              <p class="text-gray-500 mt-2 text-md">这个家伙很懒，什么都没有留下</p>
             </div>
             <div class="w-full h-full text-left">
               <ul class="inline-block h-full w-full">
@@ -95,9 +73,7 @@
         </div>
       </div>
       <div class="col-span-9">
-        <div
-          class="bg-white dark:bg-slate-900 h-full px-4 py-8 rounded-lg shadow-lg box-border"
-        >
+        <div class="bg-white dark:bg-slate-900 h-full px-4 py-8 rounded-lg shadow-lg box-border">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="账号绑定" name="second">
               <ul>
@@ -109,8 +85,9 @@
                       href="javascript:void(0)"
                       class="float-right text-blue-400"
                       @click="changePhoneFlag = true"
-                      >立即修改</a
                     >
+                      立即修改
+                    </a>
                   </p>
                 </li>
                 <li class="borderd pt-2.5">
@@ -121,19 +98,16 @@
                       href="javascript:void(0)"
                       class="float-right text-blue-400"
                       @click="changeEmailFlag = true"
-                      >立即修改</a
                     >
+                      立即修改
+                    </a>
                   </p>
                 </li>
                 <li class="borderd pt-2.5">
                   <p class="pb-2.5 text-xl text-gray-600">密保问题</p>
                   <p class="pb-2.5 text-lg text-gray-400">
                     未设置密保问题
-                    <a
-                      href="javascript:void(0)"
-                      class="float-right text-blue-400"
-                      >去设置</a
-                    >
+                    <a href="javascript:void(0)" class="float-right text-blue-400">去设置</a>
                   </p>
                 </li>
                 <li class="borderd pt-2.5">
@@ -144,8 +118,9 @@
                       href="javascript:void(0)"
                       class="float-right text-blue-400"
                       @click="showPassword = true"
-                      >修改密码</a
                     >
+                      修改密码
+                    </a>
                   </p>
                 </li>
               </ul>
@@ -155,18 +130,8 @@
       </div>
     </div>
 
-    <el-dialog
-      v-model="showPassword"
-      title="修改密码"
-      width="360px"
-      @close="clearPassword"
-    >
-      <el-form
-        ref="modifyPwdForm"
-        :model="pwdModify"
-        :rules="rules"
-        label-width="80px"
-      >
+    <el-dialog v-model="showPassword" title="修改密码" width="360px" @close="clearPassword">
+      <el-form ref="modifyPwdForm" :model="pwdModify" :rules="rules" label-width="80px">
         <el-form-item :minlength="6" label="原密码" prop="password">
           <el-input v-model="pwdModify.password" show-password />
         </el-form-item>
@@ -188,11 +153,7 @@
     <el-dialog v-model="changePhoneFlag" title="绑定手机" width="600px">
       <el-form :model="phoneForm">
         <el-form-item label="手机号" label-width="120px">
-          <el-input
-            v-model="phoneForm.phone"
-            placeholder="请输入手机号"
-            autocomplete="off"
-          />
+          <el-input v-model="phoneForm.phone" placeholder="请输入手机号" autocomplete="off" />
         </el-form-item>
         <el-form-item label="验证码" label-width="120px">
           <div class="flex w-full gap-4">
@@ -203,9 +164,9 @@
               placeholder="请自行设计短信服务，此处为模拟随便写"
               style="width: 300px"
             />
-            <el-button type="primary" :disabled="time > 0" @click="getCode">{{
-              time > 0 ? `(${time}s)后重新获取` : '获取验证码'
-            }}</el-button>
+            <el-button type="primary" :disabled="time > 0" @click="getCode">
+              {{ time > 0 ? `(${time}s)后重新获取` : '获取验证码' }}
+            </el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -220,11 +181,7 @@
     <el-dialog v-model="changeEmailFlag" title="绑定邮箱" width="600px">
       <el-form :model="emailForm">
         <el-form-item label="邮箱" label-width="120px">
-          <el-input
-            v-model="emailForm.email"
-            placeholder="请输入邮箱"
-            autocomplete="off"
-          />
+          <el-input v-model="emailForm.email" placeholder="请输入邮箱" autocomplete="off" />
         </el-form-item>
         <el-form-item label="验证码" label-width="120px">
           <div class="flex w-full gap-4">
@@ -235,14 +192,9 @@
               autocomplete="off"
               style="width: 300px"
             />
-            <el-button
-              type="primary"
-              :disabled="emailTime > 0"
-              @click="getEmailCode"
-              >{{
-                emailTime > 0 ? `(${emailTime}s)后重新获取` : '获取验证码'
-              }}</el-button
-            >
+            <el-button type="primary" :disabled="emailTime > 0" @click="getEmailCode">
+              {{ emailTime > 0 ? `(${emailTime}s)后重新获取` : '获取验证码' }}
+            </el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -264,18 +216,18 @@
   import SelectImage from '@/components/selectImage/selectImage.vue'
 
   defineOptions({
-    name: 'Person'
+    name: 'Person',
   })
 
   const activeName = ref('second')
   const rules = reactive({
     password: [
       { required: true, message: '请输入密码', trigger: 'blur' },
-      { min: 6, message: '最少6个字符', trigger: 'blur' }
+      { min: 6, message: '最少6个字符', trigger: 'blur' },
     ],
     newPassword: [
       { required: true, message: '请输入新密码', trigger: 'blur' },
-      { min: 6, message: '最少6个字符', trigger: 'blur' }
+      { min: 6, message: '最少6个字符', trigger: 'blur' },
     ],
     confirmPassword: [
       { required: true, message: '请输入确认密码', trigger: 'blur' },
@@ -288,9 +240,9 @@
             callback()
           }
         },
-        trigger: 'blur'
-      }
-    ]
+        trigger: 'blur',
+      },
+    ],
   })
 
   const userStore = useUserStore()
@@ -304,7 +256,7 @@
       if (valid) {
         changePassword({
           password: pwdModify.value.password,
-          newPassword: pwdModify.value.newPassword
+          newPassword: pwdModify.value.newPassword,
         }).then((res) => {
           if (res.code === 0) {
             ElMessage.success('修改密码成功！')
@@ -321,7 +273,7 @@
     pwdModify.value = {
       password: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
     }
     modifyPwdForm.value.clearValidate()
   }
@@ -334,10 +286,10 @@
         userStore.ResetUserInfo({ headerImg: val })
         ElMessage({
           type: 'success',
-          message: '设置成功'
+          message: '设置成功',
         })
       }
-    }
+    },
   )
 
   const openEdit = () => {
@@ -352,13 +304,13 @@
 
   const enterEdit = async () => {
     const res = await setSelfInfo({
-      nickname: nickname.value
+      nickname: nickname.value,
     })
     if (res.code === 0) {
       userStore.ResetUserInfo({ nickname: nickname.value })
       ElMessage({
         type: 'success',
-        message: '设置成功'
+        message: '设置成功',
       })
     }
     nickname.value = ''
@@ -373,7 +325,7 @@
   const time = ref(0)
   const phoneForm = reactive({
     phone: '',
-    code: ''
+    code: '',
   })
 
   const getCode = async () => {
@@ -406,7 +358,7 @@
   const emailTime = ref(0)
   const emailForm = reactive({
     email: '',
-    code: ''
+    code: '',
   })
 
   const getEmailCode = async () => {

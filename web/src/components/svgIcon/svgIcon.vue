@@ -8,12 +8,12 @@
   const props = defineProps({
     name: {
       type: String,
-      required: true
+      required: true,
     },
     color: {
       type: String,
-      default: 'currentColor'
-    }
+      default: 'currentColor',
+    },
   })
 
   const svgClass = computed(() => {

@@ -12,9 +12,7 @@
       <div class="text-base font-bold">
         {{ title }}
       </div>
-      <div v-if="showAction" class="text-sm text-active cursor-pointer">
-        查看更多
-      </div>
+      <div v-if="showAction" class="text-sm text-active cursor-pointer">查看更多</div>
     </div>
     <div class="mt-2">
       <slot />
@@ -26,20 +24,20 @@
   defineProps({
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     showAction: {
       type: Boolean,
-      default: false
+      default: false,
     },
     customClass: {
       type: String,
-      default: ''
+      default: '',
     },
     withoutPadding: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   })
 </script>
 

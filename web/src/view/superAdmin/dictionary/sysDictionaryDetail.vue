@@ -3,9 +3,7 @@
     <div class="gva-table-box">
       <div class="gva-btn-list justify-between">
         <span class="text font-bold">字典详细内容</span>
-        <el-button type="primary" icon="plus" @click="openDrawer">
-          新增字典项
-        </el-button>
+        <el-button type="primary" icon="plus" @click="openDrawer">新增字典项</el-button>
       </div>
       <el-table
         ref="multipleTable"
@@ -27,23 +25,13 @@
 
         <el-table-column align="left" label="扩展值" prop="extend" />
 
-        <el-table-column
-          align="left"
-          label="启用状态"
-          prop="status"
-          width="120"
-        >
+        <el-table-column align="left" label="启用状态" prop="status" width="120">
           <template #default="scope">
             {{ formatBoolean(scope.row.status) }}
           </template>
         </el-table-column>
 
-        <el-table-column
-          align="left"
-          label="排序标记"
-          prop="sort"
-          width="120"
-        />
+        <el-table-column align="left" label="排序标记" prop="sort" width="120" />
 
         <el-table-column align="left" label="操作" :min-width="appStore.operateMinWith">
           <template #default="scope">
@@ -88,21 +76,14 @@
     >
       <template #header>
         <div class="flex justify-between items-center">
-          <span class="text-lg">{{
-            type === 'create' ? '添加字典项' : '修改字典项'
-          }}</span>
+          <span class="text-lg">{{ type === 'create' ? '添加字典项' : '修改字典项' }}</span>
           <div>
-            <el-button @click="closeDrawer"> 取 消 </el-button>
-            <el-button type="primary" @click="enterDrawer"> 确 定 </el-button>
+            <el-button @click="closeDrawer">取 消</el-button>
+            <el-button type="primary" @click="enterDrawer">确 定</el-button>
           </div>
         </div>
       </template>
-      <el-form
-        ref="drawerForm"
-        :model="formData"
-        :rules="rules"
-        label-width="110px"
-      >
+      <el-form ref="drawerForm" :model="formData" :rules="rules" label-width="110px">
         <el-form-item label="展示值" prop="label">
           <el-input
             v-model="formData.label"
@@ -128,17 +109,10 @@
           />
         </el-form-item>
         <el-form-item label="启用状态" prop="status" required>
-          <el-switch
-            v-model="formData.status"
-            active-text="开启"
-            inactive-text="停用"
-          />
+          <el-switch v-model="formData.status" active-text="开启" inactive-text="停用" />
         </el-form-item>
         <el-form-item label="排序标记" prop="sort">
-          <el-input-number
-            v-model.number="formData.sort"
-            placeholder="排序标记"
-          />
+          <el-input-number v-model.number="formData.sort" placeholder="排序标记" />
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -151,15 +125,15 @@
     deleteSysDictionaryDetail,
     updateSysDictionaryDetail,
     findSysDictionaryDetail,
-    getSysDictionaryDetailList
+    getSysDictionaryDetailList,
   } from '@/api/sysDictionaryDetail' // 此处请自行替换地址
   import { ref, watch } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { formatBoolean, formatDate } from '@/utils/format'
-  import { useAppStore } from "@/pinia";
+  import { useAppStore } from '@/pinia'
 
   defineOptions({
-    name: 'SysDictionaryDetail'
+    name: 'SysDictionaryDetail',
   })
 
   const appStore = useAppStore()
@@ -167,38 +141,38 @@
   const props = defineProps({
     sysDictionaryID: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   })
 
   const formData = ref({
     label: null,
     value: null,
     status: true,
-    sort: null
+    sort: null,
   })
   const rules = ref({
     label: [
       {
         required: true,
         message: '请输入展示值',
-        trigger: 'blur'
-      }
+        trigger: 'blur',
+      },
     ],
     value: [
       {
         required: true,
         message: '请输入字典值',
-        trigger: 'blur'
-      }
+        trigger: 'blur',
+      },
     ],
     sort: [
       {
         required: true,
         message: '排序标记',
-        trigger: 'blur'
-      }
-    ]
+        trigger: 'blur',
+      },
+    ],
   })
 
   const page = ref(1)
@@ -223,7 +197,7 @@
     const table = await getSysDictionaryDetailList({
       page: page.value,
       pageSize: pageSize.value,
-      sysDictionaryID: props.sysDictionaryID
+      sysDictionaryID: props.sysDictionaryID,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -254,20 +228,20 @@
       value: null,
       status: true,
       sort: null,
-      sysDictionaryID: props.sysDictionaryID
+      sysDictionaryID: props.sysDictionaryID,
     }
   }
   const deleteSysDictionaryDetailFunc = async (row) => {
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const res = await deleteSysDictionaryDetail({ ID: row.ID })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === 1 && page.value > 1) {
           page.value--
@@ -297,7 +271,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
         })
         closeDrawer()
         getTableData()
@@ -314,7 +288,7 @@
     () => props.sysDictionaryID,
     () => {
       getTableData()
-    }
+    },
   )
 </script>
 

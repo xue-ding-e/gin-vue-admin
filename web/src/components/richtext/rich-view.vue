@@ -18,7 +18,7 @@
 
   const emits = defineEmits(['change', 'update:modelValue'])
   const editorConfig = ref({
-    readOnly: true
+    readOnly: true,
   })
   const change = (editor) => {
     emits('change', editor)
@@ -28,8 +28,8 @@
   const props = defineProps({
     modelValue: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   })
 
   const editorRef = shallowRef()
@@ -51,7 +51,7 @@
     () => props.modelValue,
     () => {
       valueHtml.value = props.modelValue
-    }
+    },
   )
 </script>
 

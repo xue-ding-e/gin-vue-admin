@@ -18,7 +18,7 @@ export const useUserStore = defineStore('user', () => {
     uuid: '',
     nickname: '',
     headerImg: '',
-    authority: {}
+    authority: {},
   })
   const token = useStorage('token', '')
   const xToken = useCookies('x-token')
@@ -46,7 +46,7 @@ export const useUserStore = defineStore('user', () => {
   const ResetUserInfo = (value = {}) => {
     userInfo.value = {
       ...userInfo.value,
-      ...value
+      ...value,
     }
   }
   /* 获取用户信息*/
@@ -62,11 +62,11 @@ export const useUserStore = defineStore('user', () => {
     try {
       loadingInstance.value = ElLoading.service({
         fullscreen: true,
-        text: '登录中，请稍候...'
+        text: '登录中，请稍候...',
       })
 
       const res = await login(loginInfo)
-      
+
       if (res.code !== 0) {
         ElMessage.error(res.message || '登录失败')
         return false
@@ -136,6 +136,6 @@ export const useUserStore = defineStore('user', () => {
     LoginOut,
     setToken,
     loadingInstance,
-    ClearStorage
+    ClearStorage,
   }
 })

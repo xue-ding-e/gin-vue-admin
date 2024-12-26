@@ -15,7 +15,7 @@
 
 <script setup>
   defineOptions({
-    name: 'RouterHolder'
+    name: 'RouterHolder',
   })
   import { useRouterStore } from '@/pinia/modules/router'
   const routerStore = useRouterStore()

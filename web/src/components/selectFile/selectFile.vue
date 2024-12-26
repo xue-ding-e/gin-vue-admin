@@ -12,7 +12,7 @@
       :accept="accept"
       class="upload-btn"
     >
-      <el-button type="primary"> 上传文件 </el-button>
+      <el-button type="primary">上传文件</el-button>
     </el-upload>
   </div>
 </template>
@@ -23,18 +23,18 @@
   import { getBaseUrl } from '@/utils/format'
 
   defineOptions({
-    name: 'UploadCommon'
+    name: 'UploadCommon',
   })
 
   defineProps({
     limit: {
       type: Number,
-      default: 3
+      default: 3,
     },
     accept: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   })
 
   const fullscreenLoading = ref(false)
@@ -50,14 +50,14 @@
     if (code !== 0) {
       ElMessage({
         type: 'error',
-        message: '上传失败' + res.msg
+        message: '上传失败' + res.msg,
       })
       fileList.value.pop()
       return
     }
     model.value.push({
       name: data.file.name,
-      url: data.file.url
+      url: data.file.url,
     })
     emits('on-success', res)
   }
@@ -73,7 +73,7 @@
   const uploadError = (err) => {
     ElMessage({
       type: 'error',
-      message: '上传失败'
+      message: '上传失败',
     })
     fullscreenLoading.value = false
     emits('on-error', err)

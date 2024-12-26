@@ -11,7 +11,7 @@ export const createSysDictionary = (data) => {
   return service({
     url: '/sysDictionary/createSysDictionary',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -27,7 +27,7 @@ export const deleteSysDictionary = (data) => {
   return service({
     url: '/sysDictionary/deleteSysDictionary',
     method: 'delete',
-    data
+    data,
   })
 }
 
@@ -43,7 +43,7 @@ export const updateSysDictionary = (data) => {
   return service({
     url: '/sysDictionary/updateSysDictionary',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -59,7 +59,7 @@ export const findSysDictionary = (params) => {
   return service({
     url: '/sysDictionary/findSysDictionary',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -75,6 +75,6 @@ export const getSysDictionaryList = (params) => {
   return service({
     url: '/sysDictionary/getSysDictionaryList',
     method: 'get',
-    params
+    params,
   })
 }

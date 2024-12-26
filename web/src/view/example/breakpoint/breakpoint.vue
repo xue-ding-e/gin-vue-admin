@@ -15,13 +15,9 @@
           />
         </div>
       </form>
-      <el-button
-        :disabled="limitFileSize"
-        type="primary"
-        class="uploadBtn"
-        @click="getFile"
-        >上传文件</el-button
-      >
+      <el-button :disabled="limitFileSize" type="primary" class="uploadBtn" @click="getFile">
+        上传文件
+      </el-button>
       <div class="el-upload__tip">请上传不超过5MB的文件</div>
       <div class="list">
         <transition name="list" tag="p">
@@ -53,13 +49,13 @@
     findFile,
     breakpointContinueFinish,
     removeChunk,
-    breakpointContinue
+    breakpointContinue,
   } from '@/api/breakpoint'
   import { ref, watch } from 'vue'
   import { ElMessage } from 'element-plus'
 
   defineOptions({
-    name: 'BreakPoint'
+    name: 'BreakPoint',
   })
 
   const file = ref(null)
@@ -111,7 +107,7 @@
         const params = {
           fileName: file.value.name,
           fileMd5: fileMd5.value,
-          chunkTotal: formDataList.value.length
+          chunkTotal: formDataList.value.length,
         }
         const res = await findFile(params)
         // 全部切完以后 发一个请求给后端 拉当前文件后台存储的切片信息 用于检测有多少上传成功的切片
@@ -120,10 +116,7 @@
         if (!IsFinish) {
           // 当是断点续传时候
           waitUpLoad.value = formDataList.value.filter((all) => {
-            return !(
-              finishList &&
-              finishList.some((fi) => fi.FileChunkNumber === all.key)
-            ) // 找出需要上传的切片
+            return !(finishList && finishList.some((fi) => fi.FileChunkNumber === all.key)) // 找出需要上传的切片
           })
         } else {
           waitUpLoad.value = [] // 秒传则没有需要上传的切片
@@ -170,11 +163,9 @@
     () => waitNum.value,
     () => {
       percentage.value = Math.floor(
-        ((formDataList.value.length - waitNum.value) /
-          formDataList.value.length) *
-          100
+        ((formDataList.value.length - waitNum.value) / formDataList.value.length) * 100,
       )
-    }
+    },
   )
 
   const upLoadFileSlice = async (item) => {
@@ -188,7 +179,7 @@
       // 切片传完以后 合成文件
       const params = {
         fileName: file.value.name,
-        fileMd5: fileMd5.value
+        fileMd5: fileMd5.value,
       }
       const res = await breakpointContinueFinish(params)
       if (res.code === 0) {
@@ -196,7 +187,7 @@
         const params = {
           fileName: file.value.name,
           fileMd5: fileMd5.value,
-          filePath: res.data.filePath
+          filePath: res.data.filePath,
         }
         ElMessage.success('上传成功')
         await removeChunk(params)

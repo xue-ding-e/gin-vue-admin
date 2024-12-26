@@ -13,6 +13,6 @@ export default function useChartOption(sourceOption) {
     return sourceOption(isDark.value)
   })
   return {
-    chartOption
+    chartOption,
   }
 }

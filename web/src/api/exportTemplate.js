@@ -12,7 +12,7 @@ export const createSysExportTemplate = (data) => {
   return service({
     url: '/sysExportTemplate/createSysExportTemplate',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -28,7 +28,7 @@ export const deleteSysExportTemplate = (data) => {
   return service({
     url: '/sysExportTemplate/deleteSysExportTemplate',
     method: 'delete',
-    data
+    data,
   })
 }
 
@@ -44,7 +44,7 @@ export const deleteSysExportTemplateByIds = (data) => {
   return service({
     url: '/sysExportTemplate/deleteSysExportTemplateByIds',
     method: 'delete',
-    data
+    data,
   })
 }
 
@@ -60,7 +60,7 @@ export const updateSysExportTemplate = (data) => {
   return service({
     url: '/sysExportTemplate/updateSysExportTemplate',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -76,7 +76,7 @@ export const findSysExportTemplate = (params) => {
   return service({
     url: '/sysExportTemplate/findSysExportTemplate',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -92,6 +92,6 @@ export const getSysExportTemplateList = (params) => {
   return service({
     url: '/sysExportTemplate/getSysExportTemplateList',
     method: 'get',
-    params
+    params,
   })
 }

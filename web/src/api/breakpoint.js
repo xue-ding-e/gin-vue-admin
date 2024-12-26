@@ -11,7 +11,7 @@ export const findFile = (params) => {
   return service({
     url: '/fileUploadAndDownload/findFile',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -21,7 +21,7 @@ export const breakpointContinue = (data) => {
     method: 'post',
     donNotShowLoading: true,
     headers: { 'Content-Type': 'multipart/form-data' },
-    data
+    data,
   })
 }
 
@@ -29,7 +29,7 @@ export const breakpointContinueFinish = (params) => {
   return service({
     url: '/fileUploadAndDownload/breakpointContinueFinish',
     method: 'post',
-    params
+    params,
   })
 }
 
@@ -38,6 +38,6 @@ export const removeChunk = (data, params) => {
     url: '/fileUploadAndDownload/removeChunk',
     method: 'post',
     data,
-    params
+    params,
   })
 }

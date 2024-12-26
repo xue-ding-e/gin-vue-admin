@@ -23,8 +23,8 @@
   defineProps({
     mode: {
       type: String,
-      default: 'normal'
-    }
+      default: 'normal',
+    },
   })
 
   import { storeToRefs } from 'pinia'

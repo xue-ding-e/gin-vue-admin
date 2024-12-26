@@ -1,15 +1,13 @@
 <template>
-  <el-button type="primary" icon="download" @click="exportTemplate"
-    >下载模板</el-button
-  >
+  <el-button type="primary" icon="download" @click="exportTemplate">下载模板</el-button>
 </template>
 
 <script setup>
   const props = defineProps({
     templateId: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   })
 
   import { ElMessage } from 'element-plus'
@@ -20,8 +18,8 @@
       return
     }
     let baseUrl = import.meta.env.VITE_APP_PROXY_PREFIX
-    if (baseUrl === "/"){
-      baseUrl = ""
+    if (baseUrl === '/') {
+      baseUrl = ''
     }
     const url = `${baseUrl}/sysExportTemplate/exportTemplate?templateID=${props.templateId}`
     window.open(url, '_blank')

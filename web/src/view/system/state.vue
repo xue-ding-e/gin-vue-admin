@@ -69,11 +69,7 @@
                 </el-row>
               </el-col>
               <el-col :span="12">
-                <el-progress
-                  type="dashboard"
-                  :percentage="item.usedPercent"
-                  :color="colors"
-                />
+                <el-progress type="dashboard" :percentage="item.usedPercent" :color="colors" />
               </el-col>
             </el-row>
           </div>
@@ -95,18 +91,10 @@
               <el-col :span="12">physical number of cores:</el-col>
               <el-col :span="12">{{ state.cpu.cores }}</el-col>
             </el-row>
-            <el-row
-              v-for="(item, index) in state.cpu.cpus"
-              :key="index"
-              :gutter="10"
-            >
+            <el-row v-for="(item, index) in state.cpu.cpus" :key="index" :gutter="10">
               <el-col :span="12">core {{ index }}:</el-col>
               <el-col :span="12">
-                <el-progress
-                  type="line"
-                  :percentage="+item.toFixed(0)"
-                  :color="colors"
-                />
+                <el-progress type="line" :percentage="+item.toFixed(0)" :color="colors" />
               </el-col>
             </el-row>
           </div>
@@ -134,17 +122,11 @@
                 </el-row>
                 <el-row :gutter="10">
                   <el-col :span="12">used (GB)</el-col>
-                  <el-col :span="12">{{
-                    (state.ram.usedMb / 1024).toFixed(2)
-                  }}</el-col>
+                  <el-col :span="12">{{ (state.ram.usedMb / 1024).toFixed(2) }}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="12">
-                <el-progress
-                  type="dashboard"
-                  :percentage="state.ram.usedPercent"
-                  :color="colors"
-                />
+                <el-progress type="dashboard" :percentage="state.ram.usedPercent" :color="colors" />
               </el-col>
             </el-row>
           </div>
@@ -158,7 +140,7 @@
   import { onUnmounted, ref } from 'vue'
 
   defineOptions({
-    name: 'State'
+    name: 'State',
   })
 
   const timer = ref(null)
@@ -166,7 +148,7 @@
   const colors = ref([
     { color: '#5cb87a', percentage: 20 },
     { color: '#e6a23c', percentage: 40 },
-    { color: '#f56c6c', percentage: 80 }
+    { color: '#f56c6c', percentage: 80 },
   ])
 
   const reload = async () => {

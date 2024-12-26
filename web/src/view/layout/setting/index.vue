@@ -1,11 +1,5 @@
 <template>
-  <el-drawer
-    v-model="drawer"
-    title="系统配置"
-    direction="rtl"
-    :size="width"
-    :show-close="false"
-  >
+  <el-drawer v-model="drawer" title="系统配置" direction="rtl" :size="width" :show-close="false">
     <template #header>
       <div class="flex justify-between items-center">
         <span class="text-lg">系统配置</span>
@@ -38,10 +32,7 @@
               <Select />
             </el-icon>
           </div>
-          <el-color-picker
-            v-model="customColor"
-            @change="appStore.togglePrimaryColor"
-          />
+          <el-color-picker v-model="customColor" @change="appStore.togglePrimaryColor" />
         </div>
       </div>
       <div class="mb-8">
@@ -49,10 +40,7 @@
         <div class="mt-2 text-sm p-2">
           <div class="flex items-center justify-between">
             <div>展示水印</div>
-            <el-switch
-              v-model="config.show_watermark"
-              @change="appStore.toggleConfigWatermark"
-            />
+            <el-switch v-model="config.show_watermark" @change="appStore.toggleConfigWatermark" />
           </div>
           <div class="flex items-center justify-between">
             <div>灰色模式</div>
@@ -60,10 +48,7 @@
           </div>
           <div class="flex items-center justify-between">
             <div>色弱模式</div>
-            <el-switch
-              v-model="config.weakness"
-              @change="appStore.toggleWeakness"
-            />
+            <el-switch v-model="config.weakness" @change="appStore.toggleWeakness" />
           </div>
           <div class="flex items-center justify-between">
             <div>菜单模式</div>
@@ -85,10 +70,7 @@
 
           <div class="flex items-center justify-between">
             <div>显示标签页</div>
-            <el-switch
-              v-model="config.showTabs"
-              @change="appStore.toggleTabs"
-            />
+            <el-switch v-model="config.showTabs" @change="appStore.toggleTabs" />
           </div>
         </div>
       </div>
@@ -141,41 +123,34 @@
   const appStore = useAppStore()
   const { config, device } = storeToRefs(appStore)
   defineOptions({
-    name: 'GvaSetting'
+    name: 'GvaSetting',
   })
 
   const width = computed(() => {
     return device.value === 'mobile' ? '100%' : '500px'
   })
 
-  const colors = [
-    '#EB2F96',
-    '#3b82f6',
-    '#2FEB54',
-    '#EBEB2F',
-    '#EB2F2F',
-    '#2FEBEB'
-  ]
+  const colors = ['#EB2F96', '#3b82f6', '#2FEB54', '#EBEB2F', '#EB2F2F', '#2FEBEB']
 
   const drawer = defineModel('drawer', {
     default: true,
-    type: Boolean
+    type: Boolean,
   })
 
   const options = ['dark', 'light', 'auto']
   const sideModes = [
     {
       label: '正常模式',
-      value: 'normal'
+      value: 'normal',
     },
     {
       label: '顶部菜单栏模式',
-      value: 'head'
+      value: 'head',
     },
     {
       label: '组合模式',
-      value: 'combination'
-    }
+      value: 'combination',
+    },
   ]
 
   const saveConfig = async () => {

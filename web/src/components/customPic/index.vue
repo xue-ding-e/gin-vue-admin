@@ -25,24 +25,24 @@
   import { computed, ref } from 'vue'
 
   defineOptions({
-    name: 'CustomPic'
+    name: 'CustomPic',
   })
 
   const props = defineProps({
     picType: {
       type: String,
       required: false,
-      default: 'avatar'
+      default: 'avatar',
     },
     picSrc: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     preview: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   })
 
   const path = ref(import.meta.env.VITE_APP_PROXY_PREFIX + '/')

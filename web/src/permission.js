@@ -74,8 +74,8 @@ router.beforeEach(async (to, from) => {
         return {
           name: 'Login',
           query: {
-            redirect: document.location.hash
-          }
+            redirect: document.location.hash,
+          },
         }
       }
     } else {
@@ -100,7 +100,7 @@ router.beforeEach(async (to, from) => {
         } else {
           return {
             name: 'Login',
-            query: { redirect: to.href }
+            query: { redirect: to.href },
           }
         }
       } else {
@@ -116,8 +116,8 @@ router.beforeEach(async (to, from) => {
       return {
         name: 'Login',
         query: {
-          redirect: document.location.hash
-        }
+          redirect: document.location.hash,
+        },
       }
     }
   }

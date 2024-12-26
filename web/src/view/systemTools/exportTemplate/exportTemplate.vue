@@ -17,9 +17,7 @@
           <template #label>
             <span>
               创建日期
-              <el-tooltip
-                content="搜索范围是开始日期（包含）至结束日期（不包含）"
-              >
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
                 <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
@@ -30,9 +28,7 @@
             placeholder="开始日期"
             :disabled-date="
               (time) =>
-                searchInfo.endCreatedAt
-                  ? time.getTime() > searchInfo.endCreatedAt.getTime()
-                  : false
+                searchInfo.endCreatedAt ? time.getTime() > searchInfo.endCreatedAt.getTime() : false
             "
           />
           —
@@ -58,26 +54,23 @@
           <el-input v-model="searchInfo.templateID" placeholder="搜索条件" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit"
-            >查询</el-button
-          >
+          <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDialog"
-          >新增</el-button
-        >
+        <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
 
         <el-button
           icon="delete"
           style="margin-left: 10px"
           :disabled="!multipleSelection.length"
           @click="onDelete"
-          >删除</el-button
         >
+          删除
+        </el-button>
       </div>
       <el-table
         ref="multipleTable"
@@ -89,33 +82,16 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column align="left" label="日期" width="180">
-          <template #default="scope">{{
-            formatDate(scope.row.CreatedAt)
-          }}</template>
+          <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         <el-table-column align="left" label="数据库" width="120">
           <template #default="scope">
             <span>{{ scope.row.dbName || 'GVA库' }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="模板标识"
-          prop="templateID"
-          width="120"
-        />
-        <el-table-column
-          align="left"
-          label="模板名称"
-          prop="name"
-          width="120"
-        />
-        <el-table-column
-          align="left"
-          label="表名称"
-          prop="tableName"
-          width="120"
-        />
+        <el-table-column align="left" label="模板标识" prop="templateID" width="120" />
+        <el-table-column align="left" label="模板名称" prop="name" width="120" />
+        <el-table-column align="left" label="表名称" prop="tableName" width="120" />
         <el-table-column
           align="left"
           label="模板信息"
@@ -126,36 +102,35 @@
         <el-table-column align="left" label="操作" min-width="280">
           <template #default="scope">
             <el-button
-                type="primary"
-                link
-                icon="documentCopy"
-                class="table-button"
-                @click="copyFunc(scope.row)"
-            >复制</el-button
+              type="primary"
+              link
+              icon="documentCopy"
+              class="table-button"
+              @click="copyFunc(scope.row)"
             >
+              复制
+            </el-button>
             <el-button
               type="primary"
               link
               icon="edit-pen"
               class="table-button"
               @click="showCode(scope.row)"
-              >代码</el-button
             >
+              代码
+            </el-button>
             <el-button
               type="primary"
               link
               icon="edit"
               class="table-button"
               @click="updateSysExportTemplateFunc(scope.row)"
-              >变更</el-button
             >
-            <el-button
-              type="primary"
-              link
-              icon="delete"
-              @click="deleteRow(scope.row)"
-              >删除</el-button
-            >
+              变更
+            </el-button>
+            <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -206,7 +181,8 @@
               effect="light"
             >
               <div>
-                业务库 <el-icon><QuestionFilled /></el-icon>
+                业务库
+                <el-icon><QuestionFilled /></el-icon>
               </div>
             </el-tooltip>
           </template>
@@ -225,21 +201,14 @@
             >
               <div>
                 <span>{{ item.aliasName }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{
-                  item.dbName
-                }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.dbName }}</span>
               </div>
             </el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item label="需用到的表" prop="tables">
-          <el-select
-            multiple
-            v-model="tables"
-            clearable
-            placeholder="使用AI的情况下请选择"
-          >
+          <el-select multiple v-model="tables" clearable placeholder="使用AI的情况下请选择">
             <el-option
               v-for="item in tableOptions"
               :key="item.tableName"
@@ -258,12 +227,10 @@
               :rows="5"
               placeholder="试试描述你要做的导出功能让AI帮你完成，在此之前请选择你需要导出的表所在的业务库，如不做选择，则默认使用gva库"
             />
-            <el-button
-              class="absolute bottom-2 right-2"
-              type="primary"
-              @click="autoExport"
-              ><el-icon><ai-gva /></el-icon>帮写</el-button
-            >
+            <el-button class="absolute bottom-2 right-2" type="primary" @click="autoExport">
+              <el-icon><ai-gva /></el-icon>
+              帮写
+            </el-button>
           </div>
         </el-form-item>
 
@@ -282,27 +249,18 @@
                 :value="item.tableName"
               />
             </el-select>
-            <el-button
-              :disabled="!formData.tableName"
-              type="primary"
-              @click="getColumnFunc(true)"
-              ><el-icon><ai-gva /></el-icon>自动补全</el-button
-            >
-            <el-button
-              :disabled="!formData.tableName"
-              type="primary"
-              @click="getColumnFunc(false)"
-              >自动生成模板</el-button
-            >
+            <el-button :disabled="!formData.tableName" type="primary" @click="getColumnFunc(true)">
+              <el-icon><ai-gva /></el-icon>
+              自动补全
+            </el-button>
+            <el-button :disabled="!formData.tableName" type="primary" @click="getColumnFunc(false)">
+              自动生成模板
+            </el-button>
           </div>
         </el-form-item>
 
         <el-form-item label="模板名称:" prop="name">
-          <el-input
-            v-model="formData.name"
-            :clearable="true"
-            placeholder="请输入模板名称"
-          />
+          <el-input v-model="formData.name" :clearable="true" placeholder="请输入模板名称" />
         </el-form-item>
 
         <el-form-item label="模板标识:" prop="templateID">
@@ -325,21 +283,17 @@
               <el-option label="RIGHT JOIN" value="RIGHT JOIN" />
             </el-select>
             <el-input v-model="join.table" placeholder="请输入关联表" />
-            <el-input
-              v-model="join.on"
-              placeholder="关联条件 table1.a = table2.b"
-            />
+            <el-input v-model="join.on" placeholder="关联条件 table1.a = table2.b" />
             <el-button
               type="danger"
               icon="delete"
               @click="() => formData.joinTemplate.splice(key, 1)"
-              >删除</el-button
             >
+              删除
+            </el-button>
           </div>
           <div class="flex justify-end w-full">
-            <el-button type="primary" icon="plus" @click="addJoin"
-              >添加条件</el-button
-            >
+            <el-button type="primary" icon="plus" @click="addJoin">添加条件</el-button>
           </div>
         </el-form-item>
 
@@ -369,15 +323,9 @@
             :key="key"
             class="flex gap-4 w-full mb-2"
           >
-            <el-input
-              v-model="condition.from"
-              placeholder="需要从查询条件取的json key"
-            />
+            <el-input v-model="condition.from" placeholder="需要从查询条件取的json key" />
             <el-input v-model="condition.column" placeholder="表对应的column" />
-            <el-select
-              v-model="condition.operator"
-              placeholder="请选择查询条件"
-            >
+            <el-select v-model="condition.operator" placeholder="请选择查询条件">
               <el-option
                 v-for="item in typeSearchOptions"
                 :key="item.value"
@@ -389,13 +337,12 @@
               type="danger"
               icon="delete"
               @click="() => formData.conditions.splice(key, 1)"
-              >删除</el-button
             >
+              删除
+            </el-button>
           </div>
           <div class="flex justify-end w-full">
-            <el-button type="primary" icon="plus" @click="addCondition"
-              >添加条件</el-button
-            >
+            <el-button type="primary" icon="plus" @click="addCondition">添加条件</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -417,12 +364,7 @@
           </div>
         </div>
       </template>
-      <v-ace-editor
-        v-model:value="webCode"
-        lang="vue"
-        theme="github_dark"
-        class="h-full"
-      />
+      <v-ace-editor v-model:value="webCode" lang="vue" theme="github_dark" class="h-full" />
     </el-drawer>
   </div>
 </template>
@@ -434,7 +376,7 @@
     deleteSysExportTemplateByIds,
     updateSysExportTemplate,
     findSysExportTemplate,
-    getSysExportTemplateList
+    getSysExportTemplateList,
   } from '@/api/exportTemplate.js'
 
   // 全量引入格式化工具 请按需保留
@@ -450,7 +392,7 @@
   import 'ace-builds/src-noconflict/theme-github_dark'
 
   defineOptions({
-    name: 'ExportTemplate'
+    name: 'ExportTemplate',
   })
 
   const templatePlaceholder = `模板信息格式：key标识数据库column列名称（在join模式下需要写为 table.column），value标识导出excel列名称，如key为数据库关键字或函数，请按照关键字的处理模式处理，当前以mysql为例，如下：
@@ -475,7 +417,7 @@ JOINS模式下不支持导入
     limit: 0,
     order: '',
     conditions: [],
-    joinTemplate: []
+    joinTemplate: [],
   })
 
   const prompt = ref('')
@@ -484,39 +426,39 @@ JOINS模式下不支持导入
   const typeSearchOptions = ref([
     {
       label: '=',
-      value: '='
+      value: '=',
     },
     {
       label: '<>',
-      value: '<>'
+      value: '<>',
     },
     {
       label: '>',
-      value: '>'
+      value: '>',
     },
     {
       label: '<',
-      value: '<'
+      value: '<',
     },
     {
       label: 'LIKE',
-      value: 'LIKE'
+      value: 'LIKE',
     },
     {
       label: 'BETWEEN',
-      value: 'BETWEEN'
+      value: 'BETWEEN',
     },
     {
       label: 'NOT BETWEEN',
-      value: 'NOT BETWEEN'
-    }
+      value: 'NOT BETWEEN',
+    },
   ])
 
   const addCondition = () => {
     formData.value.conditions.push({
       from: '',
       column: '',
-      operator: ''
+      operator: '',
     })
   }
 
@@ -524,7 +466,7 @@ JOINS模式下不支持导入
     formData.value.joinTemplate.push({
       joins: 'LEFT JOIN',
       table: '',
-      on: ''
+      on: '',
     })
   }
 
@@ -534,82 +476,75 @@ JOINS模式下不支持导入
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
+        trigger: ['input', 'blur'],
+      },
     ],
     tableName: [
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
+        trigger: ['input', 'blur'],
+      },
     ],
     templateID: [
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
+        trigger: ['input', 'blur'],
+      },
     ],
     templateInfo: [
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
-    ]
+        trigger: ['input', 'blur'],
+      },
+    ],
   })
 
   const searchRule = reactive({
     createdAt: [
       {
         validator: (rule, value, callback) => {
-          if (
-            searchInfo.value.startCreatedAt &&
-            !searchInfo.value.endCreatedAt
-          ) {
+          if (searchInfo.value.startCreatedAt && !searchInfo.value.endCreatedAt) {
             callback(new Error('请填写结束日期'))
-          } else if (
-            !searchInfo.value.startCreatedAt &&
-            searchInfo.value.endCreatedAt
-          ) {
+          } else if (!searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt) {
             callback(new Error('请填写开始日期'))
           } else if (
             searchInfo.value.startCreatedAt &&
             searchInfo.value.endCreatedAt &&
             (searchInfo.value.startCreatedAt.getTime() ===
               searchInfo.value.endCreatedAt.getTime() ||
-              searchInfo.value.startCreatedAt.getTime() >
-                searchInfo.value.endCreatedAt.getTime())
+              searchInfo.value.startCreatedAt.getTime() > searchInfo.value.endCreatedAt.getTime())
           ) {
             callback(new Error('开始日期应当早于结束日期'))
           } else {
             callback()
           }
         },
-        trigger: 'change'
-      }
-    ]
+        trigger: 'change',
+      },
+    ],
   })
 
   const elFormRef = ref()
@@ -631,7 +566,7 @@ JOINS模式下不支持导入
     const promises = tables.value.map(async (item) => {
       const res = await getColumn({
         businessDB: formData.value.dbName,
-        tableName: item
+        tableName: item,
       })
       if (res.code === 0) {
         tablesMap[item] = res.data.columns
@@ -645,7 +580,7 @@ JOINS模式下不支持导入
     if (tables.value.length === 0) {
       ElMessage({
         type: 'error',
-        message: '请先选择需要参与导出的表'
+        message: '请先选择需要参与导出的表',
       })
       return
     }
@@ -655,7 +590,7 @@ JOINS模式下不支持导入
       prompt: prompt.value,
       businessDB: formData.value.dbName || '',
       tableMap: tableMap,
-      command: 'autoExportTemplate'
+      command: 'autoExportTemplate',
     })
     aiLoading.value = false
     if (aiRes.code === 0) {
@@ -696,7 +631,7 @@ JOINS模式下不支持导入
     if (!formData.value.tableName) {
       ElMessage({
         type: 'error',
-        message: '请先选择业务库及选择表后再进行操作'
+        message: '请先选择业务库及选择表后再进行操作',
       })
       return
     }
@@ -704,22 +639,18 @@ JOINS模式下不支持导入
     aiLoading.value = true
     const res = await getColumn({
       businessDB: formData.value.dbName,
-      tableName: formData.value.tableName
+      tableName: formData.value.tableName,
     })
     if (res.code === 0) {
       if (aiFLag) {
         const aiRes = await butler({
           data: res.data.columns,
-          command: 'exportCompletion'
+          command: 'exportCompletion',
         })
         if (aiRes.code === 0) {
           const aiData = JSON.parse(aiRes.data)
           aiLoading.value = false
-          formData.value.templateInfo = JSON.stringify(
-            aiData.templateInfo,
-            null,
-            2
-          )
+          formData.value.templateInfo = JSON.stringify(aiData.templateInfo, null, 2)
           formData.value.name = aiData.name
           formData.value.templateID = aiData.templateID
           return
@@ -769,7 +700,7 @@ JOINS模式下不支持导入
     const table = await getSysExportTemplateList({
       page: page.value,
       pageSize: pageSize.value,
-      ...searchInfo.value
+      ...searchInfo.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -801,7 +732,7 @@ JOINS模式下不支持导入
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(() => {
       deleteSysExportTemplateFunc(row)
     })
@@ -812,13 +743,13 @@ JOINS模式下不支持导入
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const ids = []
       if (multipleSelection.value.length === 0) {
         ElMessage({
           type: 'warning',
-          message: '请选择要删除的数据'
+          message: '请选择要删除的数据',
         })
         return
       }
@@ -830,7 +761,7 @@ JOINS模式下不支持导入
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === ids.length && page.value > 1) {
           page.value--
@@ -887,7 +818,7 @@ JOINS模式下不支持导入
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: '删除成功'
+        message: '删除成功',
       })
       if (tableData.value.length === 1 && page.value > 1) {
         page.value--
@@ -924,7 +855,7 @@ JOINS模式下不支持导入
       limit: 0,
       order: '',
       conditions: [],
-      joinTemplate: []
+      joinTemplate: [],
     }
   }
   // 弹窗确定
@@ -935,7 +866,7 @@ JOINS模式下不支持导入
     } catch (_) {
       ElMessage({
         type: 'error',
-        message: '模板信息格式不正确，请检查'
+        message: '模板信息格式不正确，请检查',
       })
       return
     }
@@ -949,7 +880,7 @@ JOINS模式下不支持导入
       ) {
         ElMessage({
           type: 'error',
-          message: '请填写完整的导出条件'
+          message: '请填写完整的导出条件',
         })
         return
       }
@@ -960,7 +891,7 @@ JOINS模式下不支持导入
       if (!reqData.joinTemplate[i].joins || !reqData.joinTemplate[i].on) {
         ElMessage({
           type: 'error',
-          message: '请填写完整的关联'
+          message: '请填写完整的关联',
         })
         return
       }
@@ -984,7 +915,7 @@ JOINS模式下不支持导入
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
         })
         closeDialog()
         getTableData()

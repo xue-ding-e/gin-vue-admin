@@ -6,7 +6,7 @@
   import { useRouter } from 'vue-router'
 
   defineOptions({
-    name: 'Reload'
+    name: 'Reload',
   })
 
   const router = useRouter()

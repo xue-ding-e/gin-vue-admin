@@ -13,9 +13,7 @@
           <template #label>
             <span>
               创建日期
-              <el-tooltip
-                content="搜索范围是开始日期（包含）至结束日期（不包含）"
-              >
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
                 <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
@@ -26,9 +24,7 @@
             placeholder="开始日期"
             :disabled-date="
               (time) =>
-                searchInfo.endCreatedAt
-                  ? time.getTime() > searchInfo.endCreatedAt.getTime()
-                  : false
+                searchInfo.endCreatedAt ? time.getTime() > searchInfo.endCreatedAt.getTime() : false
             "
           />
           —
@@ -50,10 +46,8 @@
         </template>
 
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit">
-            查询
-          </el-button>
-          <el-button icon="refresh" @click="onReset"> 重置 </el-button>
+          <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
+          <el-button icon="refresh" @click="onReset">重置</el-button>
           <el-button
             v-if="!showAllQuery"
             link
@@ -63,13 +57,7 @@
           >
             展开
           </el-button>
-          <el-button
-            v-else
-            link
-            type="primary"
-            icon="arrow-up"
-            @click="showAllQuery = false"
-          >
+          <el-button v-else link type="primary" icon="arrow-up" @click="showAllQuery = false">
             收起
           </el-button>
         </el-form-item>
@@ -77,9 +65,7 @@
     </div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDialog">
-          新增
-        </el-button>
+        <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
         <el-button
           icon="delete"
           style="margin-left: 10px"
@@ -108,9 +94,7 @@
         <el-table-column align="left" label="标题" prop="title" width="120" />
         <el-table-column align="left" label="作者" prop="userID" width="120">
           <template #default="scope">
-            <span>{{
-              filterDataSource(dataSource.userID, scope.row.userID)
-            }}</span>
+            <span>{{ filterDataSource(dataSource.userID, scope.row.userID) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="附件" prop="attachments" width="200">
@@ -126,12 +110,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="操作"
-          fixed="right"
-          min-width="240"
-        >
+        <el-table-column align="left" label="操作" fixed="right" min-width="240">
           <template #default="scope">
             <el-button
               type="primary"
@@ -142,12 +121,7 @@
             >
               变更
             </el-button>
-            <el-button
-              type="primary"
-              link
-              icon="delete"
-              @click="deleteRow(scope.row)"
-            >
+            <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">
               删除
             </el-button>
           </template>
@@ -176,8 +150,8 @@
         <div class="flex justify-between items-center">
           <span class="text-lg">{{ type === 'create' ? '添加' : '修改' }}</span>
           <div>
-            <el-button type="primary" @click="enterDialog"> 确 定 </el-button>
-            <el-button @click="closeDialog"> 取 消 </el-button>
+            <el-button type="primary" @click="enterDialog">确 定</el-button>
+            <el-button @click="closeDialog">取 消</el-button>
           </div>
         </div>
       </template>
@@ -190,11 +164,7 @@
         label-width="80px"
       >
         <el-form-item label="标题:" prop="title">
-          <el-input
-            v-model="formData.title"
-            :clearable="true"
-            placeholder="请输入标题"
-          />
+          <el-input v-model="formData.title" :clearable="true" placeholder="请输入标题" />
         </el-form-item>
         <el-form-item label="内容:" prop="content">
           <RichEdit v-model="formData.content" />
@@ -230,7 +200,7 @@
     deleteInfoByIds,
     updateInfo,
     findInfo,
-    getInfoList
+    getInfoList,
   } from '@/plugin/announcement/api/info'
   import { getUrl } from '@/utils/image'
   // 富文本组件
@@ -244,7 +214,7 @@
   import { ref, reactive } from 'vue'
 
   defineOptions({
-    name: 'Info'
+    name: 'Info',
   })
 
   // 控制更多查询条件显示/隐藏状态
@@ -255,7 +225,7 @@
     title: '',
     content: '',
     userID: undefined,
-    attachments: []
+    attachments: [],
   })
   const dataSource = ref([])
   const getDataSourceFunc = async () => {
@@ -273,32 +243,25 @@
     createdAt: [
       {
         validator: (rule, value, callback) => {
-          if (
-            searchInfo.value.startCreatedAt &&
-            !searchInfo.value.endCreatedAt
-          ) {
+          if (searchInfo.value.startCreatedAt && !searchInfo.value.endCreatedAt) {
             callback(new Error('请填写结束日期'))
-          } else if (
-            !searchInfo.value.startCreatedAt &&
-            searchInfo.value.endCreatedAt
-          ) {
+          } else if (!searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt) {
             callback(new Error('请填写开始日期'))
           } else if (
             searchInfo.value.startCreatedAt &&
             searchInfo.value.endCreatedAt &&
             (searchInfo.value.startCreatedAt.getTime() ===
               searchInfo.value.endCreatedAt.getTime() ||
-              searchInfo.value.startCreatedAt.getTime() >
-                searchInfo.value.endCreatedAt.getTime())
+              searchInfo.value.startCreatedAt.getTime() > searchInfo.value.endCreatedAt.getTime())
           ) {
             callback(new Error('开始日期应当早于结束日期'))
           } else {
             callback()
           }
         },
-        trigger: 'change'
-      }
-    ]
+        trigger: 'change',
+      },
+    ],
   })
 
   const elFormRef = ref()
@@ -343,7 +306,7 @@
     const table = await getInfoList({
       page: page.value,
       pageSize: pageSize.value,
-      ...searchInfo.value
+      ...searchInfo.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -375,7 +338,7 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(() => {
       deleteInfoFunc(row)
     })
@@ -386,13 +349,13 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const IDs = []
       if (multipleSelection.value.length === 0) {
         ElMessage({
           type: 'warning',
-          message: '请选择要删除的数据'
+          message: '请选择要删除的数据',
         })
         return
       }
@@ -404,7 +367,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === IDs.length && page.value > 1) {
           page.value--
@@ -433,7 +396,7 @@
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: '删除成功'
+        message: '删除成功',
       })
       if (tableData.value.length === 1 && page.value > 1) {
         page.value--
@@ -458,7 +421,7 @@
       title: '',
       content: '',
       userID: undefined,
-      attachments: []
+      attachments: [],
     }
   }
   // 弹窗确定
@@ -480,7 +443,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
         })
         closeDialog()
         getTableData()

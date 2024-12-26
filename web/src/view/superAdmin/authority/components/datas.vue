@@ -6,24 +6,17 @@
     />
     <div class="sticky top-0.5 z-10 my-4">
       <el-button class="float-left" type="primary" @click="all">全选</el-button>
-      <el-button class="float-left" type="primary" @click="self"
-        >本角色</el-button
-      >
-      <el-button class="float-left" type="primary" @click="selfAndChildren"
-        >本角色及子角色</el-button
-      >
-      <el-button class="float-right" type="primary" @click="authDataEnter"
-        >确 定</el-button
-      >
+      <el-button class="float-left" type="primary" @click="self">本角色</el-button>
+      <el-button class="float-left" type="primary" @click="selfAndChildren">
+        本角色及子角色
+      </el-button>
+      <el-button class="float-right" type="primary" @click="authDataEnter">确 定</el-button>
     </div>
     <div class="clear-both pt-4">
       <el-checkbox-group v-model="dataAuthorityId" @change="selectAuthority">
-        <el-checkbox
-          v-for="(item, key) in authoritys"
-          :key="key"
-          :label="item"
-          >{{ item.authorityName }}</el-checkbox
-        >
+        <el-checkbox v-for="(item, key) in authoritys" :key="key" :label="item">
+          {{ item.authorityName }}
+        </el-checkbox>
       </el-checkbox-group>
     </div>
   </div>
@@ -36,7 +29,7 @@
   import { ElMessage } from 'element-plus'
 
   defineOptions({
-    name: 'Datas'
+    name: 'Datas',
   })
 
   const props = defineProps({
@@ -44,14 +37,14 @@
       default: function () {
         return {}
       },
-      type: Object
+      type: Object,
     },
     authority: {
       default: function () {
         return []
       },
-      type: Array
-    }
+      type: Array,
+    },
   })
 
   const authoritys = ref([])
@@ -77,12 +70,8 @@
       props.row.dataAuthorityId.forEach((item) => {
         const obj =
           authoritys.value &&
-          authoritys.value.filter(
-            (au) => au.authorityId === item.authorityId
-          ) &&
-          authoritys.value.filter(
-            (au) => au.authorityId === item.authorityId
-          )[0]
+          authoritys.value.filter((au) => au.authorityId === item.authorityId) &&
+          authoritys.value.filter((au) => au.authorityId === item.authorityId)[0]
         dataAuthorityId.value.push(obj)
       })
   }
@@ -102,7 +91,7 @@
   }
   const self = () => {
     dataAuthorityId.value = authoritys.value.filter(
-      (item) => item.authorityId === props.row.authorityId
+      (item) => item.authorityId === props.row.authorityId,
     )
     emit('changeRow', 'dataAuthorityId', dataAuthorityId.value)
     needConfirm.value = true
@@ -110,9 +99,7 @@
   const selfAndChildren = () => {
     const arrBox = []
     getChildrenId(props.row, arrBox)
-    dataAuthorityId.value = authoritys.value.filter(
-      (item) => arrBox.indexOf(item.authorityId) > -1
-    )
+    dataAuthorityId.value = authoritys.value.filter((item) => arrBox.indexOf(item.authorityId) > -1)
     emit('changeRow', 'dataAuthorityId', dataAuthorityId.value)
     needConfirm.value = true
   }
@@ -140,6 +127,6 @@
 
   defineExpose({
     enterAndNext,
-    needConfirm
+    needConfirm,
   })
 </script>

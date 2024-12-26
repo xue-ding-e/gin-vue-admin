@@ -10,22 +10,22 @@
   import { onMounted, onUnmounted, ref } from 'vue'
 
   defineOptions({
-    name: 'Screenfull'
+    name: 'Screenfull',
   })
 
   defineProps({
     width: {
       type: Number,
-      default: 22
+      default: 22,
     },
     height: {
       type: Number,
-      default: 22
+      default: 22,
     },
     fill: {
       type: String,
-      default: '#48576a'
-    }
+      default: '#48576a',
+    },
   })
 
   onMounted(() => {

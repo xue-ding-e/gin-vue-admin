@@ -10,11 +10,7 @@
             <el-row>
               <el-col :span="8" :offset="8">
                 <a href="https://github.com/flipped-aurora/gin-vue-admin">
-                  <img
-                    class="org-img dom-center"
-                    src="@/assets/logo.png"
-                    alt="gin-vue-admin"
-                  />
+                  <img class="org-img dom-center" src="@/assets/logo.png" alt="gin-vue-admin" />
                 </a>
               </el-col>
             </el-row>
@@ -65,17 +61,13 @@
                 </a>
               </el-col>
             </el-row>
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"
-            >
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               <div v-for="(item, index) in members" :key="index" :span="8">
                 <a :href="item.html_url" class="flex items-center">
                   <img class="w-8 h-8 rounded-full" :src="item.avatar_url" />
-                  <el-link
-                    class="text-blue-700 ml-2 text-xl font-bold font-sans"
-                    style=""
-                    >{{ item.login }}</el-link
-                  >
+                  <el-link class="text-blue-700 ml-2 text-xl font-bold font-sans" style="">
+                    {{ item.login }}
+                  </el-link>
                 </a>
               </div>
             </div>
@@ -102,9 +94,7 @@
               </el-timeline-item>
             </el-timeline>
           </div>
-          <el-button class="load-more" type="primary" link @click="loadMore">
-            Load more
-          </el-button>
+          <el-button class="load-more" type="primary" link @click="loadMore">Load more</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -118,7 +108,7 @@
   const page = ref(0)
 
   defineOptions({
-    name: 'About'
+    name: 'About',
   })
 
   const loadMore = () => {
@@ -135,7 +125,7 @@
             from: formatTimeToStr(element.commit.author.date, 'yyyy-MM-dd'),
             title: element.commit.author.name,
             showDayAndMonth: true,
-            message: element.commit.message
+            message: element.commit.message,
           })
         }
       })

@@ -15,6 +15,6 @@
   const routerStore = useRouterStore()
 
   defineOptions({
-    name: 'SuperAdmin'
+    name: 'SuperAdmin',
   })
 </script>

@@ -19,16 +19,14 @@
         @keyup.enter="handleInputConfirm"
         @blur="handleInputConfirm"
       />
-      <el-button v-else class="button-new-tag" size="small" @click="showInput">
-        + 新增
-      </el-button>
+      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新增</el-button>
     </template>
   </div>
 </template>
 
 <script setup>
   defineOptions({
-    name: 'ArrayCtrl'
+    name: 'ArrayCtrl',
   })
 
   import { nextTick, ref } from 'vue'
@@ -42,8 +40,8 @@
   defineProps({
     editable: {
       type: Boolean,
-      default: () => false
-    }
+      default: () => false,
+    },
   })
 
   const handleClose = (tag) => {

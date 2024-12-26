@@ -3,7 +3,7 @@
 </template>
 <script>
   export default {
-    name: 'Docx'
+    name: 'Docx',
   }
 </script>
 <script setup>
@@ -15,7 +15,7 @@
   import '@vue-office/docx/lib/index.css'
 
   const model = defineModel({
-    type: String
+    type: String,
   })
 
   const docx = ref(null)
@@ -24,7 +24,7 @@
     (value) => {
       docx.value = value
     },
-    { immediate: true }
+    { immediate: true },
   )
   const rendered = () => {}
 </script>

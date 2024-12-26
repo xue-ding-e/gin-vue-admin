@@ -10,7 +10,7 @@ export const initDB = (data) => {
     url: '/init/initdb',
     method: 'post',
     data,
-    donNotShowLoading: true
+    donNotShowLoading: true,
   })
 }
 
@@ -22,6 +22,6 @@ export const initDB = (data) => {
 export const checkDB = () => {
   return service({
     url: '/init/checkdb',
-    method: 'post'
+    method: 'post',
   })
 }

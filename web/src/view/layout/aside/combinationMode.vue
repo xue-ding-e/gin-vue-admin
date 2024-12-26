@@ -26,7 +26,7 @@
       class="relative h-full bg-white text-slate-700 dark:text-slate-300 dark:bg-slate-900 border-r shadow dark:shadow-gray-700"
       :class="isCollapse ? '' : '  px-2'"
       :style="{
-        width: layoutSideWidth + 'px'
+        width: layoutSideWidth + 'px',
       }"
     >
       <el-scrollbar>
@@ -39,11 +39,7 @@
           @select="(index, _, ele) => selectMenuItem(index, _, ele, false)"
         >
           <template v-for="item in routerStore.leftMenu">
-            <aside-component
-              v-if="!item.hidden"
-              :key="item.name"
-              :router-info="item"
-            />
+            <aside-component v-if="!item.hidden" :key="item.name" :router-info="item" />
           </template>
         </el-menu>
       </el-scrollbar>
@@ -73,14 +69,14 @@
   const { device, config } = storeToRefs(appStore)
 
   defineOptions({
-    name: 'GvaAside'
+    name: 'GvaAside',
   })
 
   defineProps({
     mode: {
       type: String,
-      default: 'normal'
-    }
+      default: 'normal',
+    },
   })
 
   const route = useRoute()

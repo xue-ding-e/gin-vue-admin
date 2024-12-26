@@ -12,21 +12,16 @@
           <el-input v-model="searchInfo.status" placeholder="搜索条件" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit"
-            >查询</el-button
-          >
+          <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button
-          icon="delete"
-          :disabled="!multipleSelection.length"
-          @click="onDelete"
-          >删除</el-button
-        >
+        <el-button icon="delete" :disabled="!multipleSelection.length" @click="onDelete">
+          删除
+        </el-button>
       </div>
       <el-table
         ref="multipleTable"
@@ -39,15 +34,11 @@
         <el-table-column align="left" type="selection" width="55" />
         <el-table-column align="left" label="操作人" width="140">
           <template #default="scope">
-            <div>
-              {{ scope.row.user.userName }}({{ scope.row.user.nickname }})
-            </div>
+            <div>{{ scope.row.user.userName }}({{ scope.row.user.nickname }})</div>
           </template>
         </el-table-column>
         <el-table-column align="left" label="日期" width="180">
-          <template #default="scope">{{
-            formatDate(scope.row.CreatedAt)
-          }}</template>
+          <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         <el-table-column align="left" label="状态码" prop="status" width="120">
           <template #default="scope">
@@ -57,26 +48,12 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="请求IP" prop="ip" width="120" />
-        <el-table-column
-          align="left"
-          label="请求方法"
-          prop="method"
-          width="120"
-        />
-        <el-table-column
-          align="left"
-          label="请求路径"
-          prop="path"
-          width="240"
-        />
+        <el-table-column align="left" label="请求方法" prop="method" width="120" />
+        <el-table-column align="left" label="请求路径" prop="path" width="240" />
         <el-table-column align="left" label="请求" prop="path" width="80">
           <template #default="scope">
             <div>
-              <el-popover
-                v-if="scope.row.body"
-                placement="left-start"
-                :width="444"
-              >
+              <el-popover v-if="scope.row.body" placement="left-start" :width="444">
                 <div class="popover-box">
                   <pre>{{ fmtBody(scope.row.body) }}</pre>
                 </div>
@@ -92,11 +69,7 @@
         <el-table-column align="left" label="响应" prop="path" width="80">
           <template #default="scope">
             <div>
-              <el-popover
-                v-if="scope.row.resp"
-                placement="left-start"
-                :width="444"
-              >
+              <el-popover v-if="scope.row.resp" placement="left-start" :width="444">
                 <div class="popover-box">
                   <pre>{{ fmtBody(scope.row.resp) }}</pre>
                 </div>
@@ -115,8 +88,9 @@
               type="primary"
               link
               @click="deleteSysOperationRecordFunc(scope.row)"
-              >删除</el-button
             >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -139,14 +113,14 @@
   import {
     deleteSysOperationRecord,
     getSysOperationRecordList,
-    deleteSysOperationRecordByIds
+    deleteSysOperationRecordByIds,
   } from '@/api/sysOperationRecord' // 此处请自行替换地址
   import { formatDate } from '@/utils/format'
   import { ref } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
 
   defineOptions({
-    name: 'SysOperationRecord'
+    name: 'SysOperationRecord',
   })
 
   const page = ref(1)
@@ -182,7 +156,7 @@
     const table = await getSysOperationRecordList({
       page: page.value,
       pageSize: pageSize.value,
-      ...searchInfo.value
+      ...searchInfo.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -202,7 +176,7 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const ids = []
       multipleSelection.value &&
@@ -213,7 +187,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === ids.length && page.value > 1) {
           page.value--
@@ -226,13 +200,13 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const res = await deleteSysOperationRecord({ ID: row.ID })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === 1 && page.value > 1) {
           page.value--

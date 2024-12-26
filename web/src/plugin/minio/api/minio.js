@@ -11,7 +11,7 @@ export const createMinio = (data) => {
   return service({
     url: '/MI/createMinio',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -27,7 +27,7 @@ export const deleteMinio = (params) => {
   return service({
     url: '/MI/deleteMinio',
     method: 'delete',
-    params
+    params,
   })
 }
 
@@ -43,7 +43,7 @@ export const deleteMinioByIds = (params) => {
   return service({
     url: '/MI/deleteMinioByIds',
     method: 'delete',
-    params
+    params,
   })
 }
 
@@ -59,7 +59,7 @@ export const updateMinio = (data) => {
   return service({
     url: '/MI/updateMinio',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -75,7 +75,7 @@ export const findMinio = (params) => {
   return service({
     url: '/MI/findMinio',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -91,7 +91,7 @@ export const getMinioList = (params) => {
   return service({
     url: '/MI/getMinioList',
     method: 'get',
-    params
+    params,
   })
 }
 // @Tags Minio

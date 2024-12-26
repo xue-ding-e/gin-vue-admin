@@ -3,7 +3,7 @@
     :index="routerInfo.name"
     class="dark:text-slate-300 overflow-hidden"
     :style="{
-      height: sideHeight
+      height: sideHeight,
     }"
   >
     <el-icon v-if="routerInfo.meta.icon">
@@ -23,7 +23,7 @@
   const { config } = storeToRefs(appStore)
 
   defineOptions({
-    name: 'MenuItem'
+    name: 'MenuItem',
   })
 
   defineProps({
@@ -31,8 +31,8 @@
       default: function () {
         return null
       },
-      type: Object
-    }
+      type: Object,
+    },
   })
 
   const sideHeight = computed(() => {

@@ -10,9 +10,9 @@ const createIconComponent = (name) => ({
   name: 'SvgIcon',
   render() {
     return h(svgIcon, {
-      name: name
+      name: name,
     })
-  }
+  },
 })
 
 const registerIcons = async (app) => {
@@ -39,7 +39,7 @@ const registerIcons = async (app) => {
     const iconComponent = createIconComponent(key)
     config.logs.push({
       key: key,
-      label: key
+      label: key,
     })
     app.component(key, iconComponent)
   }

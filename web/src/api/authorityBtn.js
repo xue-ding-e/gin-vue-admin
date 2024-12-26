@@ -4,7 +4,7 @@ export const getAuthorityBtnApi = (data) => {
   return service({
     url: '/authorityBtn/getAuthorityBtn',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -12,7 +12,7 @@ export const setAuthorityBtnApi = (data) => {
   return service({
     url: '/authorityBtn/setAuthorityBtn',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -20,6 +20,6 @@ export const canRemoveAuthorityBtnApi = (params) => {
   return service({
     url: '/authorityBtn/canRemoveAuthorityBtn',
     method: 'post',
-    params
+    params,
   })
 }

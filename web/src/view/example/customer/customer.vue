@@ -5,9 +5,7 @@
     />
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDrawer"
-          >新增</el-button
-        >
+        <el-button type="primary" icon="plus" @click="openDrawer">新增</el-button>
       </div>
       <el-table
         ref="multipleTable"
@@ -22,40 +20,17 @@
             <span>{{ formatDate(scope.row.CreatedAt) }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          align="left"
-          label="姓名"
-          prop="customerName"
-          width="120"
-        />
-        <el-table-column
-          align="left"
-          label="电话"
-          prop="customerPhoneData"
-          width="120"
-        />
-        <el-table-column
-          align="left"
-          label="接入人ID"
-          prop="sysUserId"
-          width="120"
-        />
+        <el-table-column align="left" label="姓名" prop="customerName" width="120" />
+        <el-table-column align="left" label="电话" prop="customerPhoneData" width="120" />
+        <el-table-column align="left" label="接入人ID" prop="sysUserId" width="120" />
         <el-table-column align="left" label="操作" min-width="160">
           <template #default="scope">
-            <el-button
-              type="primary"
-              link
-              icon="edit"
-              @click="updateCustomer(scope.row)"
-              >变更</el-button
-            >
-            <el-button
-              type="primary"
-              link
-              icon="delete"
-              @click="deleteCustomer(scope.row)"
-              >删除</el-button
-            >
+            <el-button type="primary" link icon="edit" @click="updateCustomer(scope.row)">
+              变更
+            </el-button>
+            <el-button type="primary" link icon="delete" @click="deleteCustomer(scope.row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -71,11 +46,7 @@
         />
       </div>
     </div>
-    <el-drawer
-      v-model="drawerFormVisible"
-      :before-close="closeDrawer"
-      :show-close="false"
-    >
+    <el-drawer v-model="drawerFormVisible" :before-close="closeDrawer" :show-close="false">
       <template #header>
         <div class="flex justify-between items-center">
           <span class="text-lg">客户</span>
@@ -103,7 +74,7 @@
     updateExaCustomer,
     deleteExaCustomer,
     getExaCustomer,
-    getExaCustomerList
+    getExaCustomerList,
   } from '@/api/customer'
   import WarningBar from '@/components/warningBar/warningBar.vue'
   import { ref } from 'vue'
@@ -111,12 +82,12 @@
   import { formatDate } from '@/utils/format'
 
   defineOptions({
-    name: 'Customer'
+    name: 'Customer',
   })
 
   const form = ref({
     customerName: '',
-    customerPhoneData: ''
+    customerPhoneData: '',
   })
 
   const page = ref(1)
@@ -139,7 +110,7 @@
   const getTableData = async () => {
     const table = await getExaCustomerList({
       page: page.value,
-      pageSize: pageSize.value
+      pageSize: pageSize.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -165,20 +136,20 @@
     drawerFormVisible.value = false
     form.value = {
       customerName: '',
-      customerPhoneData: ''
+      customerPhoneData: '',
     }
   }
   const deleteCustomer = async (row) => {
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const res = await deleteExaCustomer({ ID: row.ID })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === 1 && page.value > 1) {
           page.value--

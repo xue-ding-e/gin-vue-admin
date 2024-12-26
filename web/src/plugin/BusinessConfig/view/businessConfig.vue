@@ -5,7 +5,10 @@
       <el-tabs v-model="activeNames">
         <el-tab-pane label="业务设置" name="1" class="mt-3.5">
           <el-form-item label="文件上传最大值">
-            <el-input v-model.number="config.business['文件上传最大值']" placeholder="请输入文件上传最大值" />
+            <el-input
+              v-model.number="config.business['文件上传最大值']"
+              placeholder="请输入文件上传最大值"
+            />
           </el-form-item>
         </el-tab-pane>
 
@@ -51,16 +54,22 @@
           <el-form-item label="限流时间">
             <el-input-number v-model.number="config.system['iplimit-time']" />
           </el-form-item>
-          <el-tooltip content="请修改完成后，注意一并修改前端env环境下的VITE_BASE_PATH" placement="top-start">
+          <el-tooltip
+            content="请修改完成后，注意一并修改前端env环境下的VITE_BASE_PATH"
+            placement="top-start"
+          >
             <el-form-item label="全局路由前缀">
-              <el-input v-model.trim="config.system['router-prefix']" placeholder="请输入全局路由前缀" />
+              <el-input
+                v-model.trim="config.system['router-prefix']"
+                placeholder="请输入全局路由前缀"
+              />
             </el-form-item>
           </el-tooltip>
         </el-tab-pane>
       </el-tabs>
     </el-form>
     <div class="mt-4">
-      <el-button type="primary" @click="save">保存 </el-button>
+      <el-button type="primary" @click="save">保存</el-button>
       <el-button type="primary" @click="refeshConfigCacheToDBFunc">刷新缓存存储到数据库</el-button>
       <!-- <el-button type="primary" @click="refeshConfigCacheToEtcdFunc">刷新缓存存储到etcd</el-button> -->
     </div>
@@ -68,7 +77,12 @@
 </template>
 
 <script setup>
-  import { getBusinessConfig, setBusinessConfig, refeshConfigCacheToDB, refeshConfigCacheToEtcd } from '@/plugin/BusinessConfig/api/businessConfig'
+  import {
+    getBusinessConfig,
+    setBusinessConfig,
+    refeshConfigCacheToDB,
+    refeshConfigCacheToEtcd,
+  } from '@/plugin/BusinessConfig/api/businessConfig'
   import { ref } from 'vue'
   import { ElMessage } from 'element-plus'
   import { number } from 'echarts'

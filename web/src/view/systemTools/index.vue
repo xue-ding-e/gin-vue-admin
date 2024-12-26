@@ -15,6 +15,6 @@
   const routerStore = useRouterStore()
 
   defineOptions({
-    name: 'System'
+    name: 'System',
   })
 </script>

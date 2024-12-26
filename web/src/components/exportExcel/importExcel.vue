@@ -1,11 +1,6 @@
 <template>
-  <el-upload
-    :action="url"
-    :show-file-list="false"
-    :on-success="handleSuccess"
-    :multiple="false"
-  >
-    <el-button type="primary" icon="upload" class="ml-3"> 导入 </el-button>
+  <el-upload :action="url" :show-file-list="false" :on-success="handleSuccess" :multiple="false">
+    <el-button type="primary" icon="upload" class="ml-3">导入</el-button>
   </el-upload>
 </template>
 
@@ -13,15 +8,15 @@
   import { ElMessage } from 'element-plus'
 
   let baseUrl = import.meta.env.VITE_APP_PROXY_PREFIX
-  if (baseUrl === "/"){
-    baseUrl = ""
+  if (baseUrl === '/') {
+    baseUrl = ''
   }
 
   const props = defineProps({
     templateId: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   })
 
   const emit = defineEmits(['on-success'])

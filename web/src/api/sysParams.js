@@ -11,7 +11,7 @@ export const createSysParams = (data) => {
   return service({
     url: '/sysParams/createSysParams',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -27,7 +27,7 @@ export const deleteSysParams = (params) => {
   return service({
     url: '/sysParams/deleteSysParams',
     method: 'delete',
-    params
+    params,
   })
 }
 
@@ -43,7 +43,7 @@ export const deleteSysParamsByIds = (params) => {
   return service({
     url: '/sysParams/deleteSysParamsByIds',
     method: 'delete',
-    params
+    params,
   })
 }
 
@@ -59,7 +59,7 @@ export const updateSysParams = (data) => {
   return service({
     url: '/sysParams/updateSysParams',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -75,7 +75,7 @@ export const findSysParams = (params) => {
   return service({
     url: '/sysParams/findSysParams',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -91,7 +91,7 @@ export const getSysParamsList = (params) => {
   return service({
     url: '/sysParams/getSysParamsList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -106,6 +106,6 @@ export const getSysParam = (params) => {
   return service({
     url: '/sysParams/getSysParam',
     method: 'get',
-    params
+    params,
   })
 }

@@ -9,7 +9,7 @@
         v-if="!isCollapse"
         class="flex items-center"
         :style="{
-          height: sideHeight
+          height: sideHeight,
         }"
       >
         <el-icon v-if="routerInfo.meta.icon">
@@ -36,7 +36,7 @@
   const { config } = storeToRefs(appStore)
 
   defineOptions({
-    name: 'AsyncSubmenu'
+    name: 'AsyncSubmenu',
   })
 
   defineProps({
@@ -44,12 +44,12 @@
       default: function () {
         return null
       },
-      type: Object
-    }
+      type: Object,
+    },
   })
 
   const isCollapse = inject('isCollapse', {
-    default: false
+    default: false,
   })
 
   const sideHeight = computed(() => {

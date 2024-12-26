@@ -18,7 +18,7 @@
 </template>
 <script>
   export default {
-    name: 'Office'
+    name: 'Office',
   }
 </script>
 <script setup>
@@ -41,7 +41,7 @@
       const image = ['png', 'jpg', 'jpeg', 'gif']
       ext.value = image.includes(fileExt?.toLowerCase()) ? 'image' : fileExt
     },
-    { immediate: true }
+    { immediate: true },
   )
   const fullFileURL = computed(() => {
     return path.value + '/' + fileUrl.value

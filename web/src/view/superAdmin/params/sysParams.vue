@@ -13,9 +13,7 @@
           <template #label>
             <span>
               创建日期
-              <el-tooltip
-                content="搜索范围是开始日期（包含）至结束日期（不包含）"
-              >
+              <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
                 <el-icon><QuestionFilled /></el-icon>
               </el-tooltip>
             </span>
@@ -26,9 +24,7 @@
             placeholder="开始日期"
             :disabled-date="
               (time) =>
-                searchInfo.endCreatedAt
-                  ? time.getTime() > searchInfo.endCreatedAt.getTime()
-                  : false
+                searchInfo.endCreatedAt ? time.getTime() > searchInfo.endCreatedAt.getTime() : false
             "
           ></el-date-picker>
           —
@@ -57,9 +53,7 @@
         </template>
 
         <el-form-item>
-          <el-button type="primary" icon="search" @click="onSubmit"
-            >查询</el-button
-          >
+          <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
           <el-button
             link
@@ -67,31 +61,26 @@
             icon="arrow-down"
             @click="showAllQuery = true"
             v-if="!showAllQuery"
-            >展开</el-button
           >
-          <el-button
-            link
-            type="primary"
-            icon="arrow-up"
-            @click="showAllQuery = false"
-            v-else
-            >收起</el-button
-          >
+            展开
+          </el-button>
+          <el-button link type="primary" icon="arrow-up" @click="showAllQuery = false" v-else>
+            收起
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="plus" @click="openDialog"
-          >新增</el-button
-        >
+        <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
         <el-button
           icon="delete"
           style="margin-left: 10px"
           :disabled="!multipleSelection.length"
           @click="onDelete"
-          >删除</el-button
         >
+          删除
+        </el-button>
       </div>
       <el-table
         ref="multipleTable"
@@ -104,55 +93,31 @@
         <el-table-column type="selection" width="55" />
 
         <el-table-column align="left" label="日期" prop="createdAt" width="180">
-          <template #default="scope">{{
-            formatDate(scope.row.CreatedAt)
-          }}</template>
+          <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
 
-        <el-table-column
-          align="left"
-          label="参数名称"
-          prop="name"
-          width="120"
-        />
+        <el-table-column align="left" label="参数名称" prop="name" width="120" />
         <el-table-column align="left" label="参数键" prop="key" width="120" />
         <el-table-column align="left" label="参数值" prop="value" width="120" />
-        <el-table-column
-          align="left"
-          label="参数说明"
-          prop="desc"
-          width="120"
-        />
-        <el-table-column
-          align="left"
-          label="操作"
-          fixed="right"
-          min-width="240"
-        >
+        <el-table-column align="left" label="参数说明" prop="desc" width="120" />
+        <el-table-column align="left" label="操作" fixed="right" min-width="240">
           <template #default="scope">
-            <el-button
-              type="primary"
-              link
-              class="table-button"
-              @click="getDetails(scope.row)"
-              ><el-icon style="margin-right: 5px"><InfoFilled /></el-icon
-              >查看详情</el-button
-            >
+            <el-button type="primary" link class="table-button" @click="getDetails(scope.row)">
+              <el-icon style="margin-right: 5px"><InfoFilled /></el-icon>
+              查看详情
+            </el-button>
             <el-button
               type="primary"
               link
               icon="edit"
               class="table-button"
               @click="updateSysParamsFunc(scope.row)"
-              >变更</el-button
             >
-            <el-button
-              type="primary"
-              link
-              icon="delete"
-              @click="deleteRow(scope.row)"
-              >删除</el-button
-            >
+              变更
+            </el-button>
+            <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -193,18 +158,10 @@
         label-width="80px"
       >
         <el-form-item label="参数名称:" prop="name">
-          <el-input
-            v-model="formData.name"
-            :clearable="true"
-            placeholder="请输入参数名称"
-          />
+          <el-input v-model="formData.name" :clearable="true" placeholder="请输入参数名称" />
         </el-form-item>
         <el-form-item label="参数键:" prop="key">
-          <el-input
-            v-model="formData.key"
-            :clearable="true"
-            placeholder="请输入参数键"
-          />
+          <el-input v-model="formData.key" :clearable="true" placeholder="请输入参数键" />
         </el-form-item>
         <el-form-item label="参数值:" prop="value">
           <el-input
@@ -216,43 +173,32 @@
           />
         </el-form-item>
         <el-form-item label="参数说明:" prop="desc">
-          <el-input
-            v-model="formData.desc"
-            :clearable="true"
-            placeholder="请输入参数说明"
-          />
+          <el-input v-model="formData.desc" :clearable="true" placeholder="请输入参数说明" />
         </el-form-item>
       </el-form>
 
-      <div
-        class="usage-instructions bg-gray-100 border border-gray-300 rounded-lg p-4 mt-5"
-      >
+      <div class="usage-instructions bg-gray-100 border border-gray-300 rounded-lg p-4 mt-5">
         <h3 class="mb-3 text-lg text-gray-800">使用说明</h3>
         <p class="mb-2 text-sm text-gray-600">
           前端可以通过引入
-          <code class="bg-blue-100 px-1 py-0.5 rounded"
-            >import { getParams } from '@/utils/dictionary'</code
-          >
+          <code class="bg-blue-100 px-1 py-0.5 rounded">
+            import { getParams } from '@/utils/dictionary'
+          </code>
           然后通过
-          <code class="bg-blue-100 px-1 py-0.5 rounded"
-            >await getParams("{{ formData.key }}")</code
-          >
+          <code class="bg-blue-100 px-1 py-0.5 rounded">await getParams("{{ formData.key }}")</code>
           来获取对应的参数。
         </p>
         <p class="text-sm text-gray-600">
           后端需要提前
-          <code class="bg-blue-100 px-1 py-0.5 rounded"
-            >import
-            "github.com/flipped-aurora/gin-vue-admin/server/service/system"</code
-          >
+          <code class="bg-blue-100 px-1 py-0.5 rounded">
+            import "github.com/flipped-aurora/gin-vue-admin/server/service/system"
+          </code>
         </p>
         <p class="mb-2 text-sm text-gray-600">
           然后调用
-          <code class="bg-blue-100 px-1 py-0.5 rounded"
-            >new(system.SysParamsService).GetSysParam("{{
-              formData.key
-            }}")</code
-          >
+          <code class="bg-blue-100 px-1 py-0.5 rounded">
+            new(system.SysParamsService).GetSysParam("{{ formData.key }}")
+          </code>
           来获取对应的 value 值。
         </p>
       </div>
@@ -290,7 +236,7 @@
     deleteSysParamsByIds,
     updateSysParams,
     findSysParams,
-    getSysParamsList
+    getSysParamsList,
   } from '@/api/sysParams'
 
   // 全量引入格式化工具 请按需保留
@@ -299,7 +245,7 @@
   import { ref, reactive } from 'vue'
 
   defineOptions({
-    name: 'SysParams'
+    name: 'SysParams',
   })
 
   // 控制更多查询条件显示/隐藏状态
@@ -310,7 +256,7 @@
     name: '',
     key: '',
     value: '',
-    desc: ''
+    desc: '',
   })
 
   // 验证规则
@@ -319,70 +265,63 @@
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
+        trigger: ['input', 'blur'],
+      },
     ],
     key: [
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
+        trigger: ['input', 'blur'],
+      },
     ],
     value: [
       {
         required: true,
         message: '',
-        trigger: ['input', 'blur']
+        trigger: ['input', 'blur'],
       },
       {
         whitespace: true,
         message: '不能只输入空格',
-        trigger: ['input', 'blur']
-      }
-    ]
+        trigger: ['input', 'blur'],
+      },
+    ],
   })
 
   const searchRule = reactive({
     createdAt: [
       {
         validator: (rule, value, callback) => {
-          if (
-            searchInfo.value.startCreatedAt &&
-            !searchInfo.value.endCreatedAt
-          ) {
+          if (searchInfo.value.startCreatedAt && !searchInfo.value.endCreatedAt) {
             callback(new Error('请填写结束日期'))
-          } else if (
-            !searchInfo.value.startCreatedAt &&
-            searchInfo.value.endCreatedAt
-          ) {
+          } else if (!searchInfo.value.startCreatedAt && searchInfo.value.endCreatedAt) {
             callback(new Error('请填写开始日期'))
           } else if (
             searchInfo.value.startCreatedAt &&
             searchInfo.value.endCreatedAt &&
             (searchInfo.value.startCreatedAt.getTime() ===
               searchInfo.value.endCreatedAt.getTime() ||
-              searchInfo.value.startCreatedAt.getTime() >
-                searchInfo.value.endCreatedAt.getTime())
+              searchInfo.value.startCreatedAt.getTime() > searchInfo.value.endCreatedAt.getTime())
           ) {
             callback(new Error('开始日期应当早于结束日期'))
           } else {
             callback()
           }
         },
-        trigger: 'change'
-      }
-    ]
+        trigger: 'change',
+      },
+    ],
   })
 
   const elFormRef = ref()
@@ -427,7 +366,7 @@
     const table = await getSysParamsList({
       page: page.value,
       pageSize: pageSize.value,
-      ...searchInfo.value
+      ...searchInfo.value,
     })
     if (table.code === 0) {
       tableData.value = table.data.list
@@ -459,7 +398,7 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(() => {
       deleteSysParamsFunc(row)
     })
@@ -470,13 +409,13 @@
     ElMessageBox.confirm('确定要删除吗?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning'
+      type: 'warning',
     }).then(async () => {
       const IDs = []
       if (multipleSelection.value.length === 0) {
         ElMessage({
           type: 'warning',
-          message: '请选择要删除的数据'
+          message: '请选择要删除的数据',
         })
         return
       }
@@ -488,7 +427,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '删除成功'
+          message: '删除成功',
         })
         if (tableData.value.length === IDs.length && page.value > 1) {
           page.value--
@@ -517,7 +456,7 @@
     if (res.code === 0) {
       ElMessage({
         type: 'success',
-        message: '删除成功'
+        message: '删除成功',
       })
       if (tableData.value.length === 1 && page.value > 1) {
         page.value--
@@ -542,7 +481,7 @@
       name: '',
       key: '',
       value: '',
-      desc: ''
+      desc: '',
     }
   }
   // 弹窗确定
@@ -564,7 +503,7 @@
       if (res.code === 0) {
         ElMessage({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
         })
         closeDialog()
         getTableData()
