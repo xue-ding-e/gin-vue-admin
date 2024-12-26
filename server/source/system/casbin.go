@@ -239,13 +239,13 @@ func (i *initCasbin) InitializeData(ctx context.Context) (context.Context, error
 }
 
 func (i *initCasbin) DataInserted(ctx context.Context) bool {
-	//db, ok := ctx.Value("db").(*gorm.DB)
-	//if !ok {
-	//	return false
-	//}
-	//if errors.Is(db.Where(adapter.CasbinRule{Ptype: "p", V0: "9528", V1: "/user/getUserInfo", V2: "GET"}).
-	//	First(&adapter.CasbinRule{}).Error, gorm.ErrRecordNotFound) { // 判断是否存在数据
-	//	return false
-	//}
+	db, ok := ctx.Value("db").(*gorm.DB)
+	if !ok {
+		return false
+	}
+	if errors.Is(db.Where(adapter.CasbinRule{Ptype: "p", V0: "888", V1: "/user/getUserInfo", V2: "GET"}).
+		First(&adapter.CasbinRule{}).Error, gorm.ErrRecordNotFound) { // 判断是否存在数据
+		return false
+	}
 	return true
 }
