@@ -58,7 +58,7 @@ func (i *initUser) InitializeData(ctx context.Context) (next context.Context, er
 		{CommonUser: sysModel.CommonUser{
 			Username:    "admin",
 			Password:    adminPassword,
-			NickName:    "薛定饿了不养喵",
+			Nickname:    "薛定饿了不养喵",
 			HeaderImg:   "https://qmplusimg.henrongyi.top/gva_header.jpg",
 			AuthorityId: 888,
 			Phone:       "17611111111",
@@ -67,7 +67,7 @@ func (i *initUser) InitializeData(ctx context.Context) (next context.Context, er
 		//{CommonUser: sysModel.CommonUser{
 		//	Username:    "a303176530",
 		//	Password:    password,
-		//	NickName:    "用户1",
+		//	Nickname:    "用户1",
 		//	HeaderImg:   "https:///qmplusimg.henrongyi.top/1572075907logo.png",
 		//	AuthorityId: 5555,
 		//	Phone:       "17611111111",

@@ -163,7 +163,7 @@ func (b *BaseApi) Register(c *gin.Context) {
 		})
 	}
 	user := &system.SysUser{CommonUser: system.CommonUser{
-		Username: r.Username, NickName: r.NickName, Password: r.Password, HeaderImg: r.HeaderImg, AuthorityId: r.AuthorityId, Authorities: authorities, Enable: r.Enable, Phone: r.Phone, Email: r.Email,
+		Username: r.Username, Nickname: r.Nickname, Password: r.Password, HeaderImg: r.HeaderImg, AuthorityId: r.AuthorityId, Authorities: authorities, Enable: r.Enable, Phone: r.Phone, Email: r.Email,
 	}}
 	userReturn, err := userService.Register(*user)
 	if err != nil {
@@ -378,7 +378,7 @@ func (b *BaseApi) SetUserInfo(c *gin.Context) {
 		GVA_MODEL: global.GVA_MODEL{
 			ID: user.ID,
 		},
-		NickName:  user.NickName,
+		Nickname:  user.Nickname,
 		HeaderImg: user.HeaderImg,
 		Phone:     user.Phone,
 		Email:     user.Email,
@@ -413,7 +413,7 @@ func (b *BaseApi) SetSelfInfo(c *gin.Context) {
 		GVA_MODEL: global.GVA_MODEL{
 			ID: user.ID,
 		},
-		NickName:  user.NickName,
+		Nickname:  user.Nickname,
 		HeaderImg: user.HeaderImg,
 		Phone:     user.Phone,
 		Email:     user.Email,

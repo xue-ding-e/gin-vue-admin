@@ -9,7 +9,7 @@ import (
 type Register struct {
 	Username     string `json:"userName" example:"用户名"`
 	Password     string `json:"passWord" example:"密码"`
-	NickName     string `json:"nickname" example:"昵称"`
+	Nickname     string `json:"nickname" example:"昵称"`
 	HeaderImg    string `json:"headerImg" example:"头像链接"`
 	AuthorityId  uint   `json:"authorityId" swaggertype:"string" example:"int 角色id"`
 	Enable       int    `json:"enable" swaggertype:"string" example:"int 是否启用"`
@@ -46,7 +46,7 @@ type SetUserAuthorities struct {
 
 type ChangeUserInfo struct {
 	ID           uint                  `gorm:"primarykey"`                                                                           // 主键ID
-	NickName     string                `json:"nickname" gorm:"default:系统用户;comment:用户昵称"`                                            // 用户昵称
+	Nickname     string                `json:"nickname" gorm:"default:系统用户;comment:用户昵称"`                                            // 用户昵称
 	Phone        string                `json:"phone"  gorm:"comment:用户手机号"`                                                          // 用户手机号
 	AuthorityIds []uint                `json:"authorityIds" gorm:"-"`                                                                // 角色ID
 	Email        string                `json:"email"  gorm:"comment:用户邮箱"`                                                           // 用户邮箱
@@ -60,7 +60,7 @@ type GetUserList struct {
 	common.PageInfo
 	ID       string `json:"id" form:"id"`
 	Username string `json:"username" form:"username"`
-	NickName string `json:"nickname" form:"nickname"`
+	Nickname string `json:"nickname" form:"nickname"`
 	Phone    string `json:"phone" form:"phone"`
 	Email    string `json:"email" form:"email"`
 }

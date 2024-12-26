@@ -122,7 +122,7 @@ func LoginToken(user system.Login) (token string, claims systemReq.CustomClaims,
 	j := &JWT{SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey)} // 唯一签名
 	claims = j.CreateClaims(systemReq.BaseClaims{
 		ID:          user.GetUserId(),
-		NickName:    user.GetNickname(),
+		Nickname:    user.GetNickname(),
 		Username:    user.GetUsername(),
 		AuthorityId: user.GetAuthorityId(),
 	})

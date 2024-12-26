@@ -92,8 +92,8 @@ func (userService *UserService) GetUserInfoList(info systemReq.GetUserList) (lis
 	if info.ID != "" {
 		db = db.Where("id = ?", info.ID)
 	}
-	if info.NickName != "" {
-		db = db.Where("nickname LIKE ?", "%"+info.NickName+"%")
+	if info.Nickname != "" {
+		db = db.Where("nickname LIKE ?", "%"+info.Nickname+"%")
 	}
 	if info.Phone != "" {
 		db = db.Where("phone LIKE ?", "%"+info.Phone+"%")
@@ -233,7 +233,7 @@ func (userService *UserService) SetUserInfo(req system.SysUser) error {
 		Where("id=?", req.ID).
 		Updates(map[string]interface{}{
 			"updated_at": time.Now(),
-			"nickname":   req.NickName,
+			"nickname":   req.Nickname,
 			"header_img": req.HeaderImg,
 			"phone":      req.Phone,
 			"email":      req.Email,
