@@ -2,9 +2,7 @@
   <div
     class="rounded-lg flex items-center justify-evenly w-full h-full relative md:w-screen md:h-screen md:bg-[#194bfb] overflow-hidden"
   >
-    <div
-      class="rounded-md w-full h-full flex items-center justify-center overflow-hidden"
-    >
+    <div class="rounded-md w-full h-full flex items-center justify-center overflow-hidden">
       <div
         class="oblique h-[130%] w-3/5 bg-white dark:bg-slate-900 transform -rotate-12 absolute -ml-80"
       />
@@ -13,48 +11,35 @@
         :class="[page.showReadme ? 'slide-out-right' : 'slide-in-fwd-top']"
       >
         <div class="text-lg">
-          <div
-            class="font-sans text-4xl font-bold text-center mb-4 dark:text-white"
-          >
+          <div class="font-sans text-4xl font-bold text-center mb-4 dark:text-white">
             GIN-VUE-ADMIN
           </div>
           <p class="text-gray-600 dark:text-gray-300 mb-2">初始化须知</p>
+          <p class="text-gray-600 dark:text-gray-300 mb-2">1.您需有用一定的VUE和GOLANG基础</p>
           <p class="text-gray-600 dark:text-gray-300 mb-2">
-            1.您需有用一定的VUE和GOLANG基础
-          </p>
-          <p class="text-gray-600 dark:text-gray-300 mb-2">
-            2.请您确认是否已经阅读过<a
-              class="text-blue-600 font-bold"
-              href="https://www.gin-vue-admin.com"
-              target="_blank"
-              >官方文档</a
-            >
+            2.请您确认是否已经阅读过
+            <a class="text-blue-600 font-bold" href="https://www.gin-vue-admin.com" target="_blank">
+              官方文档
+            </a>
             <a
               class="text-blue-600 font-bold"
               href="https://www.bilibili.com/video/BV1kv4y1g7nT?p=2"
               target="_blank"
-              >初始化视频</a
             >
+              初始化视频
+            </a>
           </p>
+          <p class="text-gray-600 dark:text-gray-300 mb-2">3.请您确认是否了解后续的配置流程</p>
           <p class="text-gray-600 dark:text-gray-300 mb-2">
-            3.请您确认是否了解后续的配置流程
-          </p>
-          <p class="text-gray-600 dark:text-gray-300 mb-2">
-            4.如果您使用mysql数据库，请确认数据库引擎为<span
-              class="text-red-600 font-bold text-3xl ml-2"
-              >innoDB</span
-            >
+            4.如果您使用mysql数据库，请确认数据库引擎为
+            <span class="text-red-600 font-bold text-3xl ml-2">innoDB</span>
           </p>
           <p class="text-gray-600 dark:text-gray-300 mb-2">
             注：开发组不为文档中书写过的内容提供无偿服务
           </p>
           <p class="flex items-center justify-between mt-8">
-            <el-button type="primary" size="large" @click="goDoc">
-              阅读文档
-            </el-button>
-            <el-button type="primary" size="large" @click="showNext">
-              我已确认
-            </el-button>
+            <el-button type="primary" size="large" @click="goDoc">阅读文档</el-button>
+            <el-button type="primary" size="large" @click="showNext">我已确认</el-button>
           </p>
         </div>
       </div>
@@ -65,18 +50,10 @@
       >
         <el-form ref="formRef" :model="form" label-width="100px" size="large">
           <el-form-item label="管理员密码">
-            <el-input
-              v-model="form.adminPassword"
-              placeholder="admin账号的默认密码"
-            ></el-input>
+            <el-input v-model="form.adminPassword" placeholder="admin账号的默认密码"></el-input>
           </el-form-item>
           <el-form-item label="数据库类型">
-            <el-select
-              v-model="form.dbType"
-              placeholder="请选择"
-              class="w-full"
-              @change="changeDB"
-            >
+            <el-select v-model="form.dbType" placeholder="请选择" class="w-full" @change="changeDB">
               <el-option key="mysql" label="mysql" value="mysql" />
               <el-option key="pgsql" label="pgsql" value="pgsql" />
               <el-option key="oracle" label="oracle" value="oracle" />
@@ -91,31 +68,19 @@
             <el-input v-model="form.port" placeholder="请输入数据库端口" />
           </el-form-item>
           <el-form-item v-if="form.dbType !== 'sqlite'" label="userName">
-            <el-input
-              v-model="form.userName"
-              placeholder="请输入数据库用户名"
-            />
+            <el-input v-model="form.userName" placeholder="请输入数据库用户名" />
           </el-form-item>
           <el-form-item v-if="form.dbType !== 'sqlite'" label="password">
-            <el-input
-              v-model="form.password"
-              placeholder="请输入数据库密码（没有则为空）"
-            />
+            <el-input v-model="form.password" placeholder="请输入数据库密码（没有则为空）" />
           </el-form-item>
           <el-form-item label="dbName">
             <el-input v-model="form.dbName" placeholder="请输入数据库名称" />
           </el-form-item>
           <el-form-item v-if="form.dbType === 'sqlite'" label="dbPath">
-            <el-input
-              v-model="form.dbPath"
-              placeholder="请输入sqlite数据库文件存放路径"
-            />
+            <el-input v-model="form.dbPath" placeholder="请输入sqlite数据库文件存放路径" />
           </el-form-item>
           <el-form-item v-if="form.dbType === 'pgsql'" label="template">
-            <el-input
-              v-model="form.template"
-              placeholder="请输入postgresql指定template"
-            />
+            <el-input v-model="form.template" placeholder="请输入postgresql指定template" />
           </el-form-item>
           <el-form-item>
             <div style="text-align: right">
@@ -140,14 +105,14 @@
   import { useRouter } from 'vue-router'
 
   defineOptions({
-    name: 'Init'
+    name: 'Init',
   })
 
   const router = useRouter()
 
   const page = reactive({
     showReadme: false,
-    showForm: false
+    showForm: false,
   })
 
   const showNext = () => {
@@ -172,8 +137,12 @@
     password: '',
     dbName: 'gva',
     dbPath: '',
-    template: 'template0'
+    template: 'template0',
   })
+
+  if (import.meta.env.MODE == 'development') {
+    form.password = '123456'
+  }
 
   const changeDB = (val) => {
     switch (val) {
@@ -187,7 +156,7 @@
           userName: 'root',
           password: '',
           dbName: 'gva',
-          dbPath: ''
+          dbPath: '',
         })
         break
       case 'pgsql':
@@ -200,7 +169,7 @@
           password: '',
           dbName: 'gva',
           dbPath: '',
-          template: 'template0'
+          template: 'template0',
         })
         break
       case 'oracle':
@@ -212,7 +181,7 @@
           userName: 'oracle',
           password: '',
           dbName: 'gva',
-          dbPath: ''
+          dbPath: '',
         })
         break
       case 'mssql':
@@ -224,7 +193,7 @@
           userName: 'mssql',
           password: '',
           dbName: 'gva',
-          dbPath: ''
+          dbPath: '',
         })
         break
       case 'sqlite':
@@ -236,7 +205,7 @@
           userName: '',
           password: '',
           dbName: 'gva',
-          dbPath: ''
+          dbPath: '',
         })
         break
       default:
@@ -248,7 +217,7 @@
           userName: 'root',
           password: '',
           dbName: 'gva',
-          dbPath: ''
+          dbPath: '',
         })
     }
   }
@@ -256,7 +225,7 @@
     if (form.adminPassword.length < 6) {
       ElMessage({
         type: 'error',
-        message: '密码长度不能小于6位'
+        message: '密码长度不能小于6位',
       })
       return
     }
@@ -265,7 +234,7 @@
       lock: true,
       text: '正在初始化数据库，请稍候',
       spinner: 'loading',
-      background: 'rgba(0, 0, 0, 0.7)'
+      background: 'rgba(0, 0, 0, 0.7)',
     })
     try {
       const res = await initDB(form)
@@ -273,7 +242,7 @@
         out.value = true
         ElMessage({
           type: 'success',
-          message: res.msg
+          message: res.msg,
         })
         router.push({ name: 'Login' })
       }
@@ -286,18 +255,15 @@
 
 <style lang="scss" scoped>
   .slide-in-fwd-top {
-    -webkit-animation: slide-in-fwd-top 0.4s
-      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    -webkit-animation: slide-in-fwd-top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     animation: slide-in-fwd-top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
   .slide-out-right {
-    -webkit-animation: slide-out-right 0.5s
-      cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+    -webkit-animation: slide-out-right 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
     animation: slide-out-right 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
   }
   .slide-in-left {
-    -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-      both;
+    -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
   @-webkit-keyframes slide-in-fwd-top {
