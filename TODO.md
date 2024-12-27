@@ -74,6 +74,8 @@ const formatRouter = (routes, routeMap, parent) => {
 
 #### 急!!!!!
 
+所有json的userName改为username
+
 自动化代码,web template , form增加default 值(closeDialog等直接使用默认空值) 
 
 tokenNext 和 clams改造方便增删(下次遇到立刻更改)  遇到了 例如authority等信息
