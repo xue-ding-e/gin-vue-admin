@@ -72,6 +72,8 @@ const formatRouter = (routes, routeMap, parent) => {
 
 ### 本体
 
+gin-mode生产环境
+
 #### 急!!!!!
 
 web原生添加Pinia 持久化
