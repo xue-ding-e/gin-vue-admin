@@ -44,7 +44,7 @@ func (self *{{.Abbreviation}}) Create{{.StructName}}(c *gin.Context) {
 	{{- end }}
 	err = service{{ .StructName }}.Create{{.StructName}}(&info)
 	if err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+        global.GVA_LOG.Debug("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败:" + err.Error(), c)
 		return
 	}
@@ -67,7 +67,7 @@ func (self *{{.Abbreviation}}) Delete{{.StructName}}(c *gin.Context) {
 {{- end }}
 	err := service{{ .StructName }}.Delete{{.StructName}}({{.PrimaryField.FieldJson}} {{- if .AutoCreateResource -}},userID{{- end -}})
 	if err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+        global.GVA_LOG.Debug("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败:" + err.Error(), c)
 		return
 	}
@@ -89,7 +89,7 @@ func (self *{{.Abbreviation}}) Delete{{.StructName}}ByIds(c *gin.Context) {
 {{- end }}
 	err := service{{ .StructName }}.Delete{{.StructName}}ByIds({{.PrimaryField.FieldJson}}s{{- if .AutoCreateResource }},userID{{- end }})
 	if err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+        global.GVA_LOG.Debug("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败:" + err.Error(), c)
 		return
 	}
@@ -117,7 +117,7 @@ func (self *{{.Abbreviation}}) Update{{.StructName}}(c *gin.Context) {
 {{- end }}
 	err = service{{ .StructName }}.Update{{.StructName}}(info)
     if err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+        global.GVA_LOG.Debug("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败:" + err.Error(), c)
 		return
 	}
@@ -137,7 +137,7 @@ func (self *{{.Abbreviation}}) Find{{.StructName}}(c *gin.Context) {
 	{{.PrimaryField.FieldJson}} := c.Query("{{.PrimaryField.FieldJson}}")
 	re{{.Abbreviation}}, err := service{{ .StructName }}.Get{{.StructName}}({{.PrimaryField.FieldJson}})
 	if err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+        global.GVA_LOG.Debug("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败:" + err.Error(), c)
 		return
 	}
@@ -156,7 +156,7 @@ func (self *{{.Abbreviation}}) Find{{.StructName}}(c *gin.Context) {
 func (a *{{.Abbreviation}}) Get{{.StructName}}List(c *gin.Context) {
 	list, err := service{{ .StructName }}.Get{{.StructName}}InfoList()
 	if err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
+	    global.GVA_LOG.Debug("获取失败!", zap.Error(err))
         response.FailWithMessage("获取失败:" + err.Error(), c)
         return
     }
@@ -181,7 +181,7 @@ func (self *{{.Abbreviation}}) Get{{.StructName}}List(c *gin.Context) {
 	}
 	list, total, err := service{{ .StructName }}.Get{{.StructName}}InfoList(pageInfo)
 	if err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
+	    global.GVA_LOG.Debug("获取失败!", zap.Error(err))
         response.FailWithMessage("获取失败:" + err.Error(), c)
         return
     }
@@ -206,7 +206,7 @@ func (self *{{.Abbreviation}}) Get{{.StructName}}DataSource(c *gin.Context) {
     // 此接口为获取数据源定义的数据
    dataSource, err := service{{ .StructName }}.Get{{.StructName}}DataSource()
    if err != nil {
-		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Debug("查询失败!", zap.Error(err))
         response.FailWithMessage("查询失败:" + err.Error(), c)
 		return
    }

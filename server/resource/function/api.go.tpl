@@ -10,7 +10,7 @@ func (a *{{.Abbreviation}}) {{.FuncName}}(c *gin.Context) {
     // 请添加自己的业务逻辑
     err := service{{ .StructName }}.{{.FuncName}}()
        if err != nil {
-    		global.GVA_LOG.Error("失败!", zap.Error(err))
+    		global.GVA_LOG.Debug("失败!", zap.Error(err))
             response.FailWithMessage("失败", c)
     		return
        }
@@ -31,7 +31,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api){{.FuncName}}(c *gin.Context) {
     // 请添加自己的业务逻辑
     err := {{.Abbreviation}}Service.{{.FuncName}}()
     if err != nil {
-        global.GVA_LOG.Error("失败!", zap.Error(err))
+        global.GVA_LOG.Debug("失败!", zap.Error(err))
    		response.FailWithMessage("失败", c)
    		return
    	}
