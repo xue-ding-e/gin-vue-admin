@@ -72,41 +72,9 @@ const formatRouter = (routes, routeMap, parent) => {
 
 ### 本体
 
-gin-mode生产环境
-
 #### 急!!!!!
 
-web原生添加Pinia 持久化
-
-添加GVA_MODEL2(去掉ID)
-
-web增加xInputCents组件
-
-```
- 不显示 record not found 错误
- 
-return &gorm.Config{
-		Logger: logger.New(NewWriter(general, log.New(os.Stdout, "\r\n", log.LstdFlags)), logger.Config{
-			SlowThreshold:             200 * time.Millisecond,
-			LogLevel:                  general.LogLevel(),
-			IgnoreRecordNotFoundError: true, // 不显示 record not found 错误
-			Colorful:                  true,
-		}),
-		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   prefix,
-			SingularTable: singular,
-		},
-		DisableForeignKeyConstraintWhenMigrating: true,
-	}
-```
-
-web wallet 金额;
-
-getUrl增加的base64图片的判断
-
-所有json的userName改为username
-
-自动化代码,web template , form增加default 值(closeDialog等直接使用默认空值) 
+自动化代码,web template , form增加default 值(closeDialog等直接使用默认空值)
 
 tokenNext 和 clams改造方便增删(下次遇到立刻更改)  遇到了 例如authority等信息
 
@@ -122,7 +90,9 @@ common封装登录返回的信息( Login去掉密码验证)  ( 时不知道什�
 
 #### 不急
 
-后端生成gorm的时候调换顺序,将gorm的注释comment放到最前面
+自动化代码server gorm comment注释顺序放最前面
+
+自动化代码template和script顺序更改(template script style -> script template style)
 
 menu底部横向滑动栏,固定位置 以及其他横向滑动栏检查 (或者始终将滑动栏固定到顶部或者底部fiexd等样式)
 
@@ -139,4 +109,3 @@ server dockerfile  gva原生更新到xuedinge分支
 build状态删除console.log
 
 各个部分拆分成插件,合并、删除重复的业务
-
