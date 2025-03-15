@@ -12,6 +12,10 @@ type Response struct {
 	Data interface{} `json:"data"`
 	Msg  string      `json:"msg"`
 }
+type ResponseNoMessage struct {
+	Code int         `json:"code"`
+	Data interface{} `json:"data"`
+}
 
 const (
 	SYSTEM_ERROR = 110
@@ -27,9 +31,20 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 		msg,
 	})
 }
+func ResultNoMessage(code int, data interface{}, c *gin.Context) {
+	// 开始时间
+	c.JSON(http.StatusOK, ResponseNoMessage{
+		code,
+		data,
+	})
+}
 
 func Ok(c *gin.Context) {
 	Result(SUCCESS, map[string]interface{}{}, "操作成功", c)
+}
+
+func Ok2(c *gin.Context) {
+	Result(SUCCESS, map[string]interface{}{}, "", c)
 }
 
 func OkWithMessage(message string, c *gin.Context) {
