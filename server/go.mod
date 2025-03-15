@@ -2,8 +2,6 @@ module github.com/flipped-aurora/gin-vue-admin/server
 
 go 1.22.2
 
-toolchain go1.22.2
-
 require (
 	github.com/Jeffail/gabs/v2 v2.7.0
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
@@ -97,7 +95,6 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/pprof v0.0.0-20240409012703-83162a5b38cd // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
@@ -130,13 +127,12 @@ require (
 	github.com/mozillazg/go-httpheader v0.4.0 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/nwaples/rardecode/v2 v2.0.1 // indirect
-	github.com/otiai10/mint v1.6.3 // indirect
 	github.com/onsi/ginkgo/v2 v2.9.5 // indirect
+	github.com/otiai10/mint v1.6.3 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
-	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
 	github.com/quic-go/quic-go v0.43.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
@@ -189,4 +185,6 @@ require (
 	modernc.org/sqlite v1.34.5 // indirect
 )
 
-replace github.com/gin-gonic/gin => github.com/xue-ding-e/gin v0.0.3
+replace github.com/gin-gonic/gin => github.com/xue-ding-e/gin v0.0.5
+
+replace github.com/swaggo/swag => github.com/xue-ding-e/swag v1.16.4-xuedinge0.1
