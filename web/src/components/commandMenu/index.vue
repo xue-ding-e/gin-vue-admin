@@ -45,7 +45,8 @@
   const options = reactive([])
   const deepMenus = (menus) => {
     const arr = []
-    menus.forEach((menu) => {
+    menus?.forEach((menu) => {
+      if (!menu?.children) return
       if (menu.children && menu.children.length > 0) {
         arr.push(...deepMenus(menu.children))
       } else {
@@ -65,7 +66,7 @@
       label: '跳转',
       children: [],
     }
-    const menus = deepMenus(routerStore.asyncRouters[0].children)
+    const menus = deepMenus(routerStore.asyncRouters[0]?.children || [])
     option.children.push(...menus)
     options.push(option)
   }

@@ -131,7 +131,7 @@
 <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
     <template #default="scope">
          <div class="file-list">
-           <el-tag v-for="file in scope.row.{{.FieldJson}}" :key="file.uid" @click="downloadFile(file.url)">{{"{{"}}file.name{{"}}"}}</el-tag>
+           <el-tag v-for="file in scope.row.{{.FieldJson}}" :key="file.uid" @click="onDownloadFile(file.url)">{{"{{"}}file.name{{"}}"}}</el-tag>
          </div>
     </template>
 </el-table-column>
@@ -608,7 +608,7 @@ getDataSourceFunc()
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" :width="headerWidth('{{.FieldDesc}}')">
                         <template #default="scope">
                              <div class="file-list">
-                               <el-tag v-for="file in scope.row.{{.FieldJson}}" :key="file.uid" @click="downloadFile(file.url)">{{"{{"}}file.name{{"}}"}}</el-tag>
+                               <el-tag v-for="file in scope.row.{{.FieldJson}}" :key="file.uid" @click="onDownloadFile(file.url)">{{"{{"}}file.name{{"}}"}}</el-tag>
                              </div>
                         </template>
                     </el-table-column>
@@ -1298,11 +1298,6 @@ const enterDialog = async () => {
               }
       })
 }
-{{if .HasFile }}
-const downloadFile = (url) => {
-    window.open(getUrl(url), '_blank')
-}
-{{end}}
 
 const detailFrom = ref({})
 

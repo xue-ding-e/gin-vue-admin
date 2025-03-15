@@ -18,13 +18,15 @@ export const useAppStore = defineStore('app', () => {
     layout_side_item_height: 48,
     show_watermark: true,
     side_mode: 'normal',
+    // 页面过渡动画配置
+    transition_type: 'slide'
   })
 
   const isDark = useDark({
     selector: 'html',
     attribute: 'class',
     valueDark: 'dark',
-    valueLight: 'light',
+    valueLight: 'light'
   })
 
   const preferredDark = usePreferredDark()
@@ -93,6 +95,10 @@ export const useAppStore = defineStore('app', () => {
     config.side_mode = e
   }
 
+  const toggleTransition = (e) => {
+    config.transition_type = e
+  }
+
   // 监听色弱模式和灰色模式
   watchEffect(() => {
     document.documentElement.classList.toggle('html-weakenss', config.weakness)
@@ -122,5 +128,6 @@ export const useAppStore = defineStore('app', () => {
     toggleConfigSideItemHeight,
     toggleConfigWatermark,
     toggleSideMode,
+    toggleTransition
   }
 })

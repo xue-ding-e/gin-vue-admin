@@ -8,8 +8,8 @@
     </template>
     <div class="flex flex-col">
       <div class="mb-8">
-        <div class="text-gray-800 dark:text-gray-100">默认主题</div>
-        <div class="mt-2 text-sm p-2 flex items-center gap-2">
+        <Title title="默认主题"></Title>
+        <div class="mt-2 text-sm p-2 flex items-center justify-center gap-2">
           <el-segmented
             v-model="config.darkMode"
             :options="options"
@@ -19,8 +19,8 @@
         </div>
       </div>
       <div class="mb-8">
-        <div class="text-gray-800 dark:text-gray-100">主题色</div>
-        <div class="mt-2 text-sm p-2 flex items-center gap-2">
+        <Title title="主题色"></Title>
+        <div class="mt-2 text-sm p-2 flex items-center gap-2 justify-center">
           <div
             v-for="item in colors"
             :key="item"
@@ -36,8 +36,8 @@
         </div>
       </div>
       <div class="mb-8">
-        <div class="text-gray-800 dark:text-gray-100">界面显示</div>
-        <div class="mt-2 text-sm p-2">
+        <Title title="主题配置"></Title>
+        <div class="mt-2 text-md p-2 flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div>展示水印</div>
             <el-switch v-model="config.show_watermark" @change="appStore.toggleConfigWatermark" />
@@ -58,26 +58,31 @@
               size="default"
               @change="appStore.toggleSideMode"
             />
-            <!-- <el-select
-              v-model="config.side_mode"
-              @change="handleSideModelChange"
-            >
-              <el-option value="normal" label="标准模式" />
-              <el-option value="head" label="顶部导航栏" />
-              <el-option value="multilayer" disabled label="多侧边导航模式" />
-            </el-select> -->
           </div>
 
           <div class="flex items-center justify-between">
             <div>显示标签页</div>
             <el-switch v-model="config.showTabs" @change="appStore.toggleTabs" />
           </div>
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex-shrink-0">页面切换动画</div>
+            <el-select
+              v-model="config.transition_type"
+              @change="appStore.toggleTransition"
+              class="w-40"
+            >
+              <el-option value="fade" label="淡入淡出" />
+              <el-option value="slide" label="滑动" />
+              <el-option value="zoom" label="缩放" />
+              <el-option value="none" label="无动画" />
+            </el-select>
+          </div>
         </div>
       </div>
 
       <div class="mb-8">
-        <div class="text-gray-800 dark:text-gray-100">layout 大小配置</div>
-        <div class="mt-2 text-sm p-2">
+        <Title title="layout 大小配置"></Title>
+        <div class="mt-2 text-md p-2 flex flex-col gap-2">
           <div class="flex items-center justify-between mb-2">
             <div>侧边栏展开宽度</div>
             <el-input-number
@@ -120,6 +125,7 @@
   import { ref, computed } from 'vue'
   import { ElMessage } from 'element-plus'
   import { setSelfSetting } from '@/api/user'
+  import Title from './title.vue'
   const appStore = useAppStore()
   const { config, device } = storeToRefs(appStore)
   defineOptions({

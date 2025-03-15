@@ -17,8 +17,11 @@
           (device === 'mobile' && config.side_mode == 'combination')
         "
       />
-      <gva-aside v-if="config.side_mode === 'combination' && device !== 'mobile'" mode="normal" />
-      <div class="flex-1 p-2 w-0 h-full">
+      <gva-aside
+        v-if="config.side_mode === 'combination' && device !== 'mobile'"
+        mode="normal"
+      />
+      <div class="flex-1 px-2 w-0 h-full">
         <gva-tabs v-if="config.showTabs" />
         <div class="h-2"></div>
         <div
@@ -26,8 +29,11 @@
           :class="config.showTabs ? 'gva-container2' : 'gva-container pt-1'"
         >
           <router-view v-if="reloadFlag" v-slot="{ Component, route }">
-            <div id="gva-base-load-dom" class="gva-body-h border-radius bg-white dark:bg-slate-800">
-              <transition mode="out-in" name="el-fade-in-linear">
+            <div
+              id="gva-base-load-dom"
+              class="gva-body-h bg-gray-50 dark:bg-slate-800"
+            >
+              <transition mode="out-in" :name="config.transition_type">
                 <keep-alive :include="routerStore.keepAliveRouters">
                   <component :is="Component" :key="route.fullPath" />
                 </keep-alive>
@@ -54,6 +60,7 @@
   import { useUserStore } from '@/pinia/modules/user'
   import { useAppStore } from '@/pinia'
   import { storeToRefs } from 'pinia'
+  import '@/style/transition.scss'
   const appStore = useAppStore()
   const { config, isDark, device } = storeToRefs(appStore)
 

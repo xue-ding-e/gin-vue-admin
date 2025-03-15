@@ -1,10 +1,10 @@
 package request
 
 import (
-	jwt "github.com/golang-jwt/jwt/v4"
+	jwt "github.com/golang-jwt/jwt/v5"
 )
 
-// Custom claims structure
+// CustomClaims structure
 type CustomClaims struct {
 	BaseClaims
 	BufferTime int64
