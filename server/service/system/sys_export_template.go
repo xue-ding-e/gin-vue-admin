@@ -4,6 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"mime/multipart"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
@@ -11,15 +17,12 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/xuri/excelize/v2"
 	"gorm.io/gorm"
-	"mime/multipart"
-	"net/url"
-	"strconv"
-	"strings"
-	"time"
 )
 
 type SysExportTemplateService struct {
 }
+
+var SysExportTemplateServiceApp = new(SysExportTemplateService)
 
 // CreateSysExportTemplate 创建导出模板记录
 // Author [piexlmax](https://github.com/piexlmax)
@@ -151,10 +154,13 @@ func (sysExportTemplateService *SysExportTemplateService) ExportExcel(templateID
 		return nil, "", err
 	}
 	var tableTitle []string
+	var selectKeyFmt []string
 	for _, key := range columns {
+		selectKeyFmt = append(selectKeyFmt, key)
 		tableTitle = append(tableTitle, templateInfoMap[key])
 	}
-	selects := strings.Join(columns, ", ")
+
+	selects := strings.Join(selectKeyFmt, ", ")
 	var tableMap []map[string]interface{}
 	db := global.GVA_DB
 	if template.DBName != "" {
@@ -163,7 +169,7 @@ func (sysExportTemplateService *SysExportTemplateService) ExportExcel(templateID
 
 	if len(template.JoinTemplate) > 0 {
 		for _, join := range template.JoinTemplate {
-			db = db.Joins(join.JOINS + "`" + join.Table + "`" + " ON " + join.ON)
+			db = db.Joins(join.JOINS + " " + join.Table + " ON " + join.ON)
 		}
 	}
 
@@ -190,8 +196,8 @@ func (sysExportTemplateService *SysExportTemplateService) ExportExcel(templateID
 		}
 	}
 	// 模板的默认limit
-	if limit == "" && template.Limit != 0 {
-		db = db.Limit(template.Limit)
+	if limit == "" && template.Limit != nil && *template.Limit != 0 {
+		db = db.Limit(*template.Limit)
 	}
 
 	// 通过参数传入offset
@@ -205,7 +211,7 @@ func (sysExportTemplateService *SysExportTemplateService) ExportExcel(templateID
 
 	// 获取当前表的所有字段
 	table := template.TableName
-	orderColumns, err := global.GVA_DB.Migrator().ColumnTypes(table)
+	orderColumns, err := db.Migrator().ColumnTypes(table)
 	if err != nil {
 		return nil, "", err
 	}
@@ -248,9 +254,11 @@ func (sysExportTemplateService *SysExportTemplateService) ExportExcel(templateID
 	}
 	var rows [][]string
 	rows = append(rows, tableTitle)
-	for _, table := range tableMap {
+	for _, exTable := range tableMap {
 		var row []string
 		for _, column := range columns {
+			column = strings.ReplaceAll(column, "\"", "")
+			column = strings.ReplaceAll(column, "`", "")
 			if len(template.JoinTemplate) > 0 {
 				columnAs := strings.Split(column, " as ")
 				if len(columnAs) > 1 {
@@ -262,15 +270,20 @@ func (sysExportTemplateService *SysExportTemplateService) ExportExcel(templateID
 					}
 				}
 			}
-			row = append(row, fmt.Sprintf("%v", table[column]))
+			// 需要对时间类型特殊处理
+			if t, ok := exTable[column].(time.Time); ok {
+				row = append(row, t.Format("2006-01-02 15:04:05"))
+			} else {
+				row = append(row, fmt.Sprintf("%v", exTable[column]))
+			}
 		}
 		rows = append(rows, row)
 	}
 	for i, row := range rows {
 		for j, colCell := range row {
-			err := f.SetCellValue("Sheet1", fmt.Sprintf("%s%d", getColumnName(j+1), i+1), colCell)
-			if err != nil {
-				return nil, "", err
+			sErr := f.SetCellValue("Sheet1", fmt.Sprintf("%s%d", getColumnName(j+1), i+1), colCell)
+			if sErr != nil {
+				return nil, "", sErr
 			}
 		}
 	}

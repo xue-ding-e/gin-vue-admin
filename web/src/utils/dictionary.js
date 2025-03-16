@@ -1,6 +1,6 @@
 import { useDictionaryStore } from '@/pinia/modules/dictionary'
 //  获取字典方法 使用示例 getDict('sex').then(res)  或者 async函数下 const res = await getDict('sex')
-export const getDict = async(type) => {
+export const getDict = async (type) => {
   const dictionaryStore = useDictionaryStore()
   await dictionaryStore.getDictionary(type)
   return dictionaryStore.dictionaryMap[type]
@@ -17,7 +17,7 @@ export const showDictLabel = (
     return ''
   }
   const dictMap = {}
-  dict.forEach(item => {
+  dict.forEach((item) => {
     if (Reflect.has(item, keyCode) && Reflect.has(item, valueCode)) {
       dictMap[item[keyCode]] = item[valueCode]
     }

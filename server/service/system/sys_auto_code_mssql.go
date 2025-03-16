@@ -15,7 +15,7 @@ type autoCodeMssql struct{}
 // Author [SliverHorn](https://github.com/SliverHorn)
 func (s *autoCodeMssql) GetDB(businessDB string) (data []response.Db, err error) {
 	var entities []response.Db
-	sql := "select name AS 'database' from sysdatabases;"
+	sql := "select name AS 'database' from sys.databases;"
 	if businessDB == "" {
 		err = global.GVA_DB.Raw(sql).Scan(&entities).Error
 	} else {
@@ -53,7 +53,8 @@ SELECT
     CASE
         WHEN pk.object_id IS NOT NULL THEN 1
         ELSE 0
-    END AS primary_key
+    END AS primary_key,
+    sc.column_id
 FROM
     %s.sys.columns sc
 JOIN
@@ -68,6 +69,8 @@ LEFT JOIN
     %s.sys.key_constraints pk ON pk.object_id = si.object_id
 WHERE
     st.is_user_defined=0 AND sc.object_id = so.object_id
+ORDER BY
+    sc.column_id
 `, dbName, dbName, tableName, dbName, dbName, dbName)
 
 	if businessDB == "" {
