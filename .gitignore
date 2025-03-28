@@ -43,6 +43,7 @@ yarn-error.log*
 /web/pnpm-lock.yaml
 /web/node_modules
 /web/dist
+deploy.js
 
 uni
 unibest
