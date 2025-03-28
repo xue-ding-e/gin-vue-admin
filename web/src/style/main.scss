@@ -27,9 +27,6 @@
   @apply w-4 h-4;
 }
 
-::-webkit-scrollbar {
-  @apply hidden;
-}
 
 .gva-search-box {
   @apply px-4 pt-4 bg-white text-slate-700 dark:text-slate-400 dark:bg-slate-900 rounded my-2;
