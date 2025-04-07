@@ -540,7 +540,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 								RightRouterGroupName: "private",
 							}
 							asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()] = pluginInitializeRouter
-							fmt.Println("asts=>", asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()])
+							//fmt.Println("asts=>", asts[pluginInitializeRouter.Path+"=>"+pluginInitializeRouter.Type.String()])
 							creates[four] = pluginInitializeRouter.Path
 						}
 						if data != -1 {
@@ -556,7 +556,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 							}
 							// 将 AST 添加到 asts 映射中
 							asts[pluginInitializeData.Path+"=>"+pluginInitializeData.Type.String()] = pluginInitializeData
-							fmt.Println("asts=>", asts[pluginInitializeData.Path+"=>"+pluginInitializeData.Type.String()])
+							//fmt.Println("asts=>", asts[pluginInitializeData.Path+"=>"+pluginInitializeData.Type.String()])
 							creates[four] = pluginInitializeData.Path
 							code[four] = create
 						}
