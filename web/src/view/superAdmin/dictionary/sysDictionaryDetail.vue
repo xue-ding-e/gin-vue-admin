@@ -145,12 +145,23 @@
     },
   })
 
+  // 添加自动去除空格的开关
+  const trimLabelSpace = ref(true)
+  const trimValueSpace = ref(true)
+
   const formData = ref({
     label: null,
     value: null,
     status: true,
     sort: null,
   })
+
+  // 计算当前最大排序值
+  const maxSort = computed(() => {
+    if (!tableData.value || tableData.value.length === 0) return 0
+    return Math.max(...tableData.value.map(item => item.sort || 0))
+  })
+
   const rules = ref({
     label: [
       {
@@ -255,6 +266,16 @@
   const enterDrawer = async () => {
     drawerForm.value.validate(async (valid) => {
       formData.value.sysDictionaryID = props.sysDictionaryID
+
+      // 处理首尾空格
+      if (trimLabelSpace.value && formData.value.label) {
+        formData.value.label = formData.value.label.trim()
+      }
+
+      if (trimValueSpace.value && formData.value.value) {
+        formData.value.value = formData.value.value.trim()
+      }
+
       if (!valid) return
       let res
       switch (type.value) {
@@ -273,8 +294,11 @@
           type: 'success',
           message: '创建/更改成功',
         })
-        closeDrawer()
-        getTableData()
+        if (type.value != 'create'){
+          closeDrawer()
+        }
+        await getTableData()
+        formData.value.sort = maxSort.value + 1
       }
     })
   }
