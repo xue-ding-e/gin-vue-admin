@@ -1,8 +1,9 @@
 package response
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Response struct {
@@ -16,9 +17,8 @@ type ResponseNoMessage struct {
 }
 
 const (
-	SYSTEM_ERROR = 110
-	ERROR        = 7
-	SUCCESS      = 0
+	ERROR   = 7
+	SUCCESS = 0
 )
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
@@ -60,17 +60,12 @@ func OkWithDetailed(data interface{}, message string, c *gin.Context) {
 func Fail(c *gin.Context) {
 	Result(ERROR, map[string]interface{}{}, "操作失败", c)
 }
-
-func FailSystemError(c *gin.Context) {
-	Result(SYSTEM_ERROR, map[string]interface{}{}, "系统错误", c)
+func Fail2(c *gin.Context) {
+	Result(ERROR, map[string]interface{}{}, "操作失败", c)
 }
 
 func FailWithMessage(message string, c *gin.Context) {
 	Result(ERROR, map[string]interface{}{}, message, c)
-}
-
-func FailSystemErrorWithMessage(message string, c *gin.Context) {
-	Result(SYSTEM_ERROR, map[string]interface{}{}, message, c)
 }
 
 func NoAuth(message string, c *gin.Context) {
@@ -83,8 +78,4 @@ func NoAuth(message string, c *gin.Context) {
 
 func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 	Result(ERROR, data, message, c)
-}
-
-func FailSystemErrorWithDetailed(data interface{}, message string, c *gin.Context) {
-	Result(SYSTEM_ERROR, data, message, c)
 }

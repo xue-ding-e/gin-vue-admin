@@ -294,7 +294,7 @@ func (s *autoCodePackage) templates(ctx context.Context, entity model.SysAutoCod
 					}
 					return nil, nil, nil, errors.Errorf("[filpath:%s]非法模版文件!", three)
 				}
-				fmt.Println("secondDirs[j].Name() =>", secondDirs[j].Name())
+				//fmt.Println("secondDirs[j].Name() =>", secondDirs[j].Name())
 				switch secondDirs[j].Name() {
 				case "api", "router", "service":
 					var threeDirs []os.DirEntry
