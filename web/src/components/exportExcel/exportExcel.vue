@@ -7,6 +7,10 @@
 import { exportExcel } from '@/api/exportTemplate'
 
   const props = defineProps({
+    filterDeleted: {
+      type: Boolean,
+      default: true
+    },
     templateId: {
       type: String,
       required: true,
@@ -41,6 +45,11 @@ import { exportExcel } from '@/api/exportTemplate'
       baseUrl = ''
     }
     const paramsCopy = JSON.parse(JSON.stringify(props.condition))
+
+    if (props.filterDeleted) {
+      paramsCopy.filterDeleted = 'true'
+    }
+
     if (props.limit) {
       paramsCopy.limit = props.limit
     }
