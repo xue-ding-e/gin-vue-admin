@@ -43,7 +43,7 @@ export default ({ mode }) => {
     },
   }
 
-  const base: process.env.VITE_ROUTER_BASE_PREFIX + '/',
+  const base = process.env.VITE_ROUTER_BASE_PREFIX + '/'
   // const base = "/"
   const root = "./"
   const outDir = "dist"
