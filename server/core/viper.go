@@ -14,6 +14,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+/*
+打印日志不要使用全局global.GVA_LOG因为此时还没加载
+*/
+
 // Viper 配置
 func Viper() *viper.Viper {
 	config := getConfigPath()
@@ -88,8 +92,7 @@ func loadAdditionalConfig(mergeConfigPath string, config *config.Server) {
 			if err = v.Unmarshal(config); err != nil {
 				panic(fmt.Errorf("fatal error unmarshal config: %w", err))
 			}
-			global.GVA_LOG.Sugar().Infof("成功加载配置文件: %s\n", path)
-			//fmt.Printf("成功加载配置文件: %s\n", path)
+			fmt.Printf("成功加载配置文件: %s\n", path)
 		}
 		return nil
 	})
