@@ -29,7 +29,7 @@
   const menuComponent = computed(() => {
     if (
       props.routerInfo.children &&
-      props.routerInfo.children.filter((item) => !item.hidden).length
+      props.routerInfo.children?.filter((item) => !item.hidden).length
     ) {
       return AsyncSubmenu
     } else {
