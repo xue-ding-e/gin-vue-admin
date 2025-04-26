@@ -3,6 +3,7 @@ package core
 import (
 	"flag"
 	"fmt"
+	"github.com/flipped-aurora/gin-vue-admin/server/config"
 	"os"
 	"path/filepath"
 
@@ -36,9 +37,66 @@ func Viper() *viper.Viper {
 		panic(fmt.Errorf("fatal error unmarshal config: %w", err))
 	}
 
+	//mergeConfigPath := "生产环境所需/config"
+	//loadAdditionalConfig(mergeConfigPath, &global.GVA_CONFIG)
 	// root 适配性 根据root位置去找到对应迁移位置,保证root路径有效
 	global.GVA_CONFIG.AutoCode.Root, _ = filepath.Abs("..")
 	return v
+}
+
+// 递归读取指定路径下的所有*.yaml文件
+func loadAdditionalConfig(mergeConfigPath string, config *config.Server) {
+	// 定义支持的配置文件扩展名
+	supportedExts := []string{".yaml", ".yml"}
+
+	// 递归遍历目录
+	err := filepath.Walk(mergeConfigPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// 获取文件扩展名
+		ext := filepath.Ext(path)
+
+		// 检查是否是支持的配置文件类型
+		isSupported := false
+		for _, supportedExt := range supportedExts {
+			if ext == supportedExt {
+				isSupported = true
+				break
+			}
+		}
+
+		// 只处理支持的配置文件类型
+		if !info.IsDir() && isSupported {
+			v := viper.New()
+			v.SetConfigFile(path)
+			v.SetConfigType(ext[1:]) // 去掉点号，只保留扩展名部分
+			err := v.ReadInConfig()
+			if err != nil {
+				panic(fmt.Errorf("读取配置文件 %s 失败: %s", path, err))
+			}
+			v.WatchConfig()
+
+			v.OnConfigChange(func(e fsnotify.Event) {
+				fmt.Println("config file changed:", e.Name)
+				if err = v.Unmarshal(config); err != nil {
+					fmt.Println(err)
+				}
+			})
+
+			if err = v.Unmarshal(config); err != nil {
+				panic(fmt.Errorf("fatal error unmarshal config: %w", err))
+			}
+			global.GVA_LOG.Sugar().Infof("成功加载配置文件: %s\n", path)
+			//fmt.Printf("成功加载配置文件: %s\n", path)
+		}
+		return nil
+	})
+
+	if err != nil {
+		panic(fmt.Errorf("遍历配置文件目录失败: %s\n", err))
+	}
 }
 
 // getConfigPath 获取配置文件路径, 优先级: 命令行 > 环境变量 > 默认值
