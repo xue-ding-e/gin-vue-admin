@@ -49,7 +49,7 @@ func (a *AutoCodePackageApi) Create(c *gin.Context) {
 // @Security  ApiKeyAuth
 // @accept    application/json
 // @Produce   application/json
-// @Param     data  body      system.SysAutoCode                                         true  "更新package"
+// @Param     data  body      request.SysAutoCodePackageCreate                                         true  "更新package"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "更新package成功"
 // @Router    /autoCode/updatePackageDetail [post]
 func (a *AutoCodePackageApi) UpdatePackageDetail(c *gin.Context) {
@@ -81,7 +81,7 @@ func (a *AutoCodePackageApi) UpdatePackageDetail(c *gin.Context) {
 // @Security  ApiKeyAuth
 // @accept    application/json
 // @Produce   application/json
-// @Param     data  body      common.GetById                                         true  "创建package"
+// @Param     data  body      request.GetById                                         true  "创建package"
 // @Success   200   {object}  response.Response{data=map[string]interface{},msg=string}  "删除package成功"
 // @Router    /autoCode/delPackage [post]
 func (a *AutoCodePackageApi) Delete(c *gin.Context) {
@@ -102,8 +102,8 @@ func (a *AutoCodePackageApi) Delete(c *gin.Context) {
 // @Security  ApiKeyAuth
 // @accept    application/json
 // @Produce   application/json
-// @Param     id  body      int                                                true  "package ID"
-// @Success   200  {object}  response.Response{data=system.SysAutoCode,msg=string}  "根据ID获取package成功"
+// @Param     data  body      request.GetById                                         true  "创建package"
+// @Success   200  {object}  response.Response{data=response.LoginSysUserResponse,msg=string}  "根据ID获取package成功"
 // @Router    /autoCode/getPackageByID [post]
 func (a *AutoCodePackageApi) GetPackageById(c *gin.Context) {
 	var info common.GetById
