@@ -180,9 +180,8 @@ export const enterSyncApi = (data) => {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Success 200 {string} json "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /swagger/doc.json [get]
-export const getSwaggerDoc= () => {
+export const getSwaggerDoc = () => {
   return service({
     url: '/swagger/doc.json',
     method: 'get',

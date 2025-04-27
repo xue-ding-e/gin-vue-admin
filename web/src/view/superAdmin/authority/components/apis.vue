@@ -200,7 +200,7 @@
   }
 
   // 根据角色名自动选中API
-  const autoSelectApisByRole = (roleName) = () => {
+  const autoSelectApisByRole = (roleName) => {
     if (!apiTree.value || !swaggerData.value || !swaggerData.value.paths)
       return
 
