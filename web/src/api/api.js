@@ -174,3 +174,17 @@ export const enterSyncApi = (data) => {
     data,
   })
 }
+
+// @Tags Api
+// @Summary 获取Swagger文档
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Router /swagger/doc.json [get]
+export const getSwaggerDoc = () => {
+  return service({
+    url: '/swagger/doc.json',
+    method: 'get',
+    skip: true,
+  })
+}
