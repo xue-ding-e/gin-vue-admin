@@ -82,6 +82,10 @@ service.interceptors.response.use(
     if (response.headers['new-token']) {
       userStore.setToken(response.headers['new-token'])
     }
+    // 如果请求中包含skip参数，则直接返回原始响应数据
+    if (response.config.skip) {
+      return response.data
+    }
     if (response.data.code === 0 || response.headers.success === 'true') {
       if (response.headers.msg) {
         response.data.msg = decodeURI(response.headers.msg)
