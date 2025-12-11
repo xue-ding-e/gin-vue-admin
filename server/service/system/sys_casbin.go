@@ -8,6 +8,7 @@ import (
 
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	_ "github.com/go-sql-driver/mysql"
@@ -69,6 +70,9 @@ func (casbinService *CasbinService) UpdateCasbin(adminAuthorityID, AuthorityID u
 	success, _ := e.AddPolicies(rules)
 	if !success {
 		return errors.New("存在相同api,添加失败,请联系管理员")
+	}
+	if err := casbinService.ensureAncestorGrouping(AuthorityID); err != nil {
+		return err
 	}
 	return nil
 }
@@ -170,4 +174,24 @@ func (casbinService *CasbinService) FreshCasbin() (err error) {
 	e := utils.GetCasbin()
 	err = e.LoadPolicy()
 	return err
+}
+
+func (casbinService *CasbinService) ensureAncestorGrouping(childID uint) error {
+	var auth system.SysAuthority
+	if err := global.GVA_DB.Where("authority_id = ?", childID).First(&auth).Error; err != nil {
+		return err
+	}
+	e := utils.GetCasbin()
+	current := auth.ParentId
+	for current != nil && *current != 0 {
+		pid := strconv.Itoa(int(*current))
+		cid := strconv.Itoa(int(childID))
+		_, _ = e.AddGroupingPolicy(pid, cid)
+		var parentAuth system.SysAuthority
+		if err := global.GVA_DB.Where("authority_id = ?", *current).First(&parentAuth).Error; err != nil {
+			return err
+		}
+		current = parentAuth.ParentId
+	}
+	return nil
 }

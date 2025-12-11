@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 
+	gormadapter "github.com/casbin/gorm-adapter/v3"
 	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
@@ -47,9 +48,19 @@ func (authorityService *AuthorityService) CreateAuthority(auth system.SysAuthori
 		for _, v := range casbinInfos {
 			rules = append(rules, []string{authorityId, v.Path, v.Method})
 		}
-		return CasbinServiceApp.AddPolicies(tx, rules)
+		if err := CasbinServiceApp.AddPolicies(tx, rules); err != nil {
+			return err
+		}
+		if auth.ParentId != nil && *auth.ParentId != 0 {
+			parentID := strconv.Itoa(int(*auth.ParentId))
+			if err := tx.Create(&gormadapter.CasbinRule{Ptype: "g", V0: parentID, V1: authorityId}).Error; err != nil {
+				return err
+			}
+		}
+		return nil
 	})
 
+	_ = CasbinServiceApp.FreshCasbin()
 	return auth, e
 }
 
@@ -115,7 +126,6 @@ func (authorityService *AuthorityService) UpdateAuthority(auth system.SysAuthori
 	var oldAuthority system.SysAuthority
 	err = global.GVA_DB.Where("authority_id = ?", auth.AuthorityId).First(&oldAuthority).Error
 	if err != nil {
-		global.GVA_LOG.Debug(err.Error())
 		return system.SysAuthority{}, errors.New("查询角色数据失败")
 	}
 	err = global.GVA_DB.Model(&oldAuthority).Updates(&auth).Error
@@ -172,7 +182,11 @@ func (authorityService *AuthorityService) DeleteAuthority(auth *system.SysAuthor
 		if err = CasbinServiceApp.RemoveFilteredPolicy(tx, authorityId); err != nil {
 			return err
 		}
+		if err = tx.Where("ptype = ? AND (v0 = ? OR v1 = ?)", "g", authorityId, authorityId).Delete(&gormadapter.CasbinRule{}).Error; err != nil {
+			return err
+		}
 
+		_ = CasbinServiceApp.FreshCasbin()
 		return nil
 	})
 }
